@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --primary: 59 130 246;
+  --secondary: 100 116 139;
+  --accent: 139 92 246;
+  --glass: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='light'] {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: 37 99 235;
+  --secondary: 148 163 184;
+  --accent: 124 58 237;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='creative'] {
+  --background: #1e1b4b;
+  --foreground: #eef2ff;
+  --primary: 236 72 153;
+  --secondary: 129 140 248;
+  --accent: 245 158 11;
+}
+
+[data-theme='calm'] {
+  --background: #064e3b;
+  --foreground: #ecfdf5;
+  --primary: 16 185 129;
+  --secondary: 110 231 183;
+  --accent: 52 211 153;
+}
+
+body {
+  @apply bg-background text-foreground transition-colors duration-300;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.glass-card {
+  @apply bg-[var(--glass)] backdrop-blur-xl border border-[var(--glass-border)] rounded-2xl shadow-2xl;
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-primary text-white rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-secondary/20 text-foreground border border-secondary/30 rounded-xl font-semibold transition-all hover:bg-secondary/30;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary/30 rounded-full hover:bg-secondary/50;
+}

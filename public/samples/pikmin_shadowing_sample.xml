@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ShadowingSession version="1.0">
+
+  <SessionInfo>
+    <Title>Pikmin Adventure Shadowing</Title>
+    <Description>Pikmin 게임을 주제로 한 영어 쉐도잉 세션</Description>
+    <CreatedAt>2026-01-15</CreatedAt>
+  </SessionInfo>
+
+  <SessionSummary>
+    <OverallComment></OverallComment>
+    <CompletedAt></CompletedAt>
+    <TotalSentences>10</TotalSentences>
+    <DifficultWordsReview></DifficultWordsReview>
+  </SessionSummary>
+
+  <Sentences>
+    <Sentence>
+      <Index>1</Index>
+      <English>The Pikmin follow the captain wherever he goes.</English>
+      <Korean>피크민들은 대장이 가는 곳마다 따라갑니다.</Korean>
+      <Words>
+        <Word>
+          <Term>follow</Term>
+          <Meaning>따라가다</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+        <Word>
+          <Term>captain</Term>
+          <Meaning>대장, 지휘관</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>2</Index>
+      <English>Each Pikmin has a unique ability depending on its color.</English>
+      <Korean>각 피크민은 색깔에 따라 고유한 능력을 가지고 있습니다.</Korean>
+      <Words>
+        <Word>
+          <Term>unique</Term>
+          <Meaning>독특한</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+        <Word>
+          <Term>depending on</Term>
+          <Meaning>~에 따라</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>3</Index>
+      <English>Red Pikmin are resistant to fire.</English>
+      <Korean>빨간 피크민은 불에 강합니다.</Korean>
+      <Words>
+        <Word>
+          <Term>resistant</Term>
+          <Meaning>저항력이 있는</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>4</Index>
+      <English>Blue Pikmin can survive underwater.</English>
+      <Korean>파란 피크민은 물속에서도 살아남을 수 있습니다.</Korean>
+      <Words>
+        <Word>
+          <Term>survive</Term>
+          <Meaning>살아남다</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+        <Word>
+          <Term>underwater</Term>
+          <Meaning>물속에서</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>5</Index>
+      <English>Yellow Pikmin can be thrown higher than others.</English>
+      <Korean>노란 피크민은 다른 피크민보다 더 높이 던질 수 있습니다.</Korean>
+      <Words>
+        <Word>
+          <Term>throw</Term>
+          <Meaning>던지다</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+        <Word>
+          <Term>higher</Term>
+          <Meaning>더 높게</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>6</Index>
+      <English>The captain must manage the Pikmin carefully.</English>
+      <Korean>대장은 피크민들을 신중하게 관리해야 합니다.</Korean>
+      <Words>
+        <Word>
+          <Term>manage</Term>
+          <Meaning>관리하다</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+        <Word>
+          <Term>carefully</Term>
+          <Meaning>신중하게</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>7</Index>
+      <English>Some enemies are dangerous if approached blindly.</English>
+      <Korean>일부 적들은 무작정 접근하면 위험합니다.</Korean>
+      <Words>
+        <Word>
+          <Term>enemy</Term>
+          <Meaning>적</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+        <Word>
+          <Term>approach</Term>
+          <Meaning>접근하다</Meaning>
+          <Difficulty>medium</Difficulty>
+        </Word>
+        <Word>
+          <Term>blindly</Term>
+          <Meaning>무작정</Meaning>
+          <Difficulty>hard</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>8</Index>
+      <English>Teamwork is essential to complete the mission.</English>
+      <Korean>임무를 완수하려면 팀워크가 필수적입니다.</Korean>
+      <Words>
+        <Word>
+          <Term>teamwork</Term>
+          <Meaning>팀워크</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+        <Word>
+          <Term>essential</Term>
+          <Meaning>필수적인</Meaning>
+          <Difficulty>hard</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>9</Index>
+      <English>The day ends when the sun goes down.</English>
+      <Korean>해가 지면 하루가 끝납니다.</Korean>
+      <Words>
+        <Word>
+          <Term>end</Term>
+          <Meaning>끝나다</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+    <Sentence>
+      <Index>10</Index>
+      <English>Pikmin left behind will be lost forever.</English>
+      <Korean>뒤에 남겨진 피크민은 영원히 잃게 됩니다.</Korean>
+      <Words>
+        <Word>
+          <Term>left behind</Term>
+          <Meaning>뒤에 남겨진</Meaning>
+          <Difficulty>hard</Difficulty>
+        </Word>
+        <Word>
+          <Term>forever</Term>
+          <Meaning>영원히</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+  </Sentences>
+</ShadowingSession>

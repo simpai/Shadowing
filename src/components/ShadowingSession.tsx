@@ -1,0 +1,283 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Pause, SkipForward, SkipBack, RefreshCw, Volume2, Globe, MessageSquare, Mic } from 'lucide-react';
+import { ShadowData, Sentence } from '../lib/xmlParser';
+import { storage, ShadowAudio } from '../lib/storage';
+
+interface ShadowingSessionProps {
+    xmlData: ShadowData;
+    voiceConfig: {
+        voiceId: string;
+        repeat: number;
+        followDelayRatio: number;
+        speed: number;
+        stability: number;
+    };
+    sessionId: number;
+    onFinish: () => void;
+    isRecording?: boolean;
+    onReadyToRecord?: () => Promise<boolean>;
+}
+
+export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voiceConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentRepeat, setCurrentRepeat] = useState(0);
+    const [isWaiting, setIsWaiting] = useState(false);
+    const [isStarting, setIsStarting] = useState(true);
+    const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
+    const [countdown, setCountdown] = useState(3);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const timeoutRef = useRef<number | null>(null);
+    const hasInitiated = useRef(false);
+
+    const currentSentence = xmlData.sentences[currentIndex];
+
+    // Handle initial countdown and recording start
+    useEffect(() => {
+        if (hasInitiated.current) return;
+        hasInitiated.current = true;
+
+        const initiate = async () => {
+            if (onReadyToRecord) {
+                // Wait for the screen transition (opacity transition in App.tsx) to settle
+                await new Promise(r => setTimeout(r, 800));
+                const success = await onReadyToRecord();
+                if (!success) {
+                    onFinish(); // If recording fails/cancelled, go back
+                    return;
+                }
+            }
+            setIsWaitingForRecord(false);
+        };
+
+        initiate();
+    }, []);
+
+    useEffect(() => {
+        if (!isWaitingForRecord && isStarting && countdown > 0) {
+            const timer = setInterval(() => {
+                setCountdown(prev => prev - 1);
+            }, 1000);
+            return () => clearInterval(timer);
+        } else if (!isWaitingForRecord && isStarting && countdown === 0) {
+            setIsStarting(false);
+        }
+    }, [isWaitingForRecord, isStarting, countdown]);
+
+    const playSentence = async () => {
+        if (isStarting || isWaitingForRecord) return; // Don't play while countdown or prompt is active
+
+        if (!currentSentence) {
+            onFinish();
+            return;
+        }
+
+        const audioId = `${sessionId}_${currentSentence.index}_${voiceConfig.voiceId}_${voiceConfig.speed}_${voiceConfig.stability}`;
+        const audioData = await storage.getAudio(audioId);
+
+        if (audioData) {
+            const url = URL.createObjectURL(audioData.audioBlob);
+            if (audioRef.current) {
+                audioRef.current.src = url;
+                audioRef.current.play();
+                setIsPlaying(true);
+                setIsWaiting(false);
+            }
+        }
+    };
+
+    const handleAudioEnd = () => {
+        setIsPlaying(false);
+        setIsWaiting(true);
+
+        // Calculate wait time: audioDuration * followDelayRatio
+        const audioDuration = audioRef.current?.duration || 0;
+        const waitTime = audioDuration * voiceConfig.followDelayRatio * 1000;
+
+        timeoutRef.current = setTimeout(() => {
+            setIsWaiting(false);
+            if (currentRepeat < voiceConfig.repeat - 1) {
+                setCurrentRepeat(prev => prev + 1);
+            } else {
+                setCurrentRepeat(0);
+                if (currentIndex < xmlData.sentences.length - 1) {
+                    setCurrentIndex(prev => prev + 1);
+                } else {
+                    onFinish();
+                }
+            }
+        }, waitTime);
+    };
+
+    useEffect(() => {
+        if (!isStarting) {
+            playSentence();
+        }
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, [currentIndex, currentRepeat, isStarting]);
+
+    return (
+        <div className="w-full flex flex-col gap-4 relative">
+            <AnimatePresence>
+                {(isStarting || isWaitingForRecord) && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-xl"
+                    >
+                        {!isWaitingForRecord && (
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="text-center space-y-8"
+                            >
+                                <div className="space-y-4">
+                                    <motion.div
+                                        animate={{
+                                            scale: [1, 1.05, 1],
+                                            opacity: [0.8, 1, 0.8]
+                                        }}
+                                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                        className="text-6xl md:text-8xl font-black text-white tracking-tighter"
+                                    >
+                                        Listen & Repeat
+                                    </motion.div>
+                                    <p className="text-2xl md:text-3xl text-blue-400 font-bold tracking-widest uppercase">
+                                        듣고 따라하세요
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-center items-center">
+                                    <motion.div
+                                        key={countdown}
+                                        initial={{ scale: 1.5, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        className="text-9xl font-black text-white/20 tabular-nums"
+                                    >
+                                        {countdown}
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* HUD */}
+            <div className={`flex justify-between items-center text-[10px] md:text-xs text-slate-500 font-mono transition-opacity duration-500 ${isStarting ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="flex items-center gap-2">
+                    <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{xmlData.sentences.length}</span>
+                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Repeat {currentRepeat + 1}/{voiceConfig.repeat}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    {isRecording && (
+                        <div className="flex items-center gap-1.5 text-rose-500 font-bold mr-2 animate-pulse">
+                            <Mic className="w-3 h-3 fill-rose-500" />
+                            <span>REC</span>
+                        </div>
+                    )}
+                    <span className="hidden sm:inline">{voiceConfig.voiceId === '21m00Tcm4TlvDq8ikWAM' ? 'Rachel' : 'Selected Voice'}</span>
+                    <span>Speed: {voiceConfig.speed}x</span>
+                </div>
+            </div>
+
+            <audio ref={audioRef} onEnded={handleAudioEnd} className="hidden" />
+
+            {/* Main UI */}
+            <div className="glass-card px-4 md:px-12 py-8 flex flex-col items-center text-center gap-6 relative overflow-hidden min-h-[350px] justify-center w-full">
+                {/* Progress Background */}
+                <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+                    <div className={`absolute inset-0 bg-blue-500 transition-transform duration-[2000ms] ${isPlaying ? 'scale-110' : 'scale-100'}`} />
+                </div>
+
+                <motion.div
+                    key={currentSentence?.english || 'loading'}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="z-10 space-y-6 w-full max-w-5xl mx-auto"
+                >
+                    <div className="space-y-4">
+                        <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tight leading-tight drop-shadow-2xl">
+                            {currentSentence?.english}
+                        </h2>
+                        <p className="text-xl md:text-2xl text-slate-400 font-medium">
+                            {currentSentence?.korean}
+                        </p>
+                    </div>
+
+                    <div className="min-h-[120px] flex flex-col items-center justify-center">
+                        <AnimatePresence mode="wait">
+                            {isWaiting ? (
+                                <motion.div
+                                    key="shadowing"
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 1.1, opacity: 0 }}
+                                    className="flex flex-col items-center gap-2 text-blue-400"
+                                >
+                                    <Mic className="w-12 h-12 animate-pulse" />
+                                    <span className="text-sm font-black tracking-[0.3em] uppercase">Repeat</span>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="listening"
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 1.1, opacity: 0 }}
+                                    className="flex flex-col items-center gap-2 text-slate-400"
+                                >
+                                    <Volume2 className="w-12 h-12" />
+                                    <span className="text-sm font-black tracking-[0.3em] uppercase">Listen</span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Words List */}
+            <div className={`flex flex-wrap justify-center gap-2 transition-all duration-500 ${isRecording ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+                {currentSentence.words.map((word, idx) => (
+                    <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="bg-slate-800/40 border border-slate-700/50 px-3 py-1.5 rounded-full flex items-center gap-3 group hover:bg-slate-800 transition-colors"
+                    >
+                        <div className="flex items-baseline gap-2">
+                            <span className="font-bold text-white group-hover:text-blue-400 transition-colors">{word.term}</span>
+                            <span className="text-xs text-slate-400 whitespace-nowrap">{word.meaning}</span>
+                        </div>
+                        <div className="flex gap-0.5">
+                            {[1, 2, 3].map(d => (
+                                <div key={d} className={`w-1 h-1 rounded-full ${d <= word.difficulty ? 'bg-blue-500' : 'bg-slate-700'}`} />
+                            ))}
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+
+            {/* Controls */}
+            <div className={`flex justify-center items-center gap-8 py-4 transition-all duration-500 ${isRecording ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100'}`}>
+                <button
+                    onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
+                    className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                >
+                    <SkipBack className="w-6 h-6" />
+                </button>
+                <button
+                    onClick={() => setCurrentIndex(Math.min(xmlData.sentences.length - 1, currentIndex + 1))}
+                    className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                >
+                    <SkipForward className="w-6 h-6" />
+                </button>
+            </div>
+        </div>
+    );
+};

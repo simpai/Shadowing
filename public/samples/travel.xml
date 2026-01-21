@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ShadowingSession version="1.0">
+
+  <SessionInfo>
+    <Title>Pikmin Adventure Shadowing</Title>
+    <Description>Pikmin 게임을 주제로 한 영어 쉐도잉 세션</Description>
+    <CreatedAt>2026-01-15</CreatedAt>
+  </SessionInfo>
+
+  <SessionSummary>
+    <OverallComment></OverallComment>
+    <CompletedAt></CompletedAt>
+    <TotalSentences>10</TotalSentences>
+    <DifficultWordsReview></DifficultWordsReview>
+  </SessionSummary>
+
+  <Sentences>
+    <Sentence>
+      <Index>1</Index>
+      <English>The Pikmin follow the captain wherever he goes.</English>
+      <Korean>피크민들은 대장이 가는 곳마다 따라갑니다.</Korean>
+      <Words>
+        <Word>
+          <Term>follow</Term>
+          <Meaning>따라가다</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+        <Word>
+          <Term>captain</Term>
+          <Meaning>대장, 지휘관</Meaning>
+          <Difficulty>easy</Difficulty>
+        </Word>
+      </Words>
+    </Sentence>
+  </Sentences>
+</ShadowingSession>
