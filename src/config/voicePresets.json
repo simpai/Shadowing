@@ -10,17 +10,17 @@
     },
     {
         "id": "emily-uk-rp",
-        "name": "Emily — British RP (Standard)",
-        "description": "Classic British RP, soft, warm and confident storyteller.",
-        "voiceId": "tmtVLLFJVXmAZYwJoVdL",
+        "name": "Lily - Velvety Actress(British RP)",
+        "description": "Velvety British female voice delivers news and narrations with warmth and clarity.",
+        "voiceId": "pFZP5JQG7iQjIQuC4Bku",
         "similarity_boost": 0.8,
         "style": 0.2,
         "use_speaker_boost": true
     },
     {
         "id": "raj-indian-english",
-        "name": "Raj — Indian English (Business)",
-        "description": "Indian English accent for global business listening training.",
+        "name": "Raj - Professional Indian English",
+        "description": "Authentic Indian English accent with clear articulation and a professional, trustworthy tone. Versatile voice ideal for BFSI (Banking & Finance), Loan Journeys, and Sales Pitches. Optimized for Customer Support and Audio Agents (IVR/Call Centers) with a natural, conversational flow. Capable of warm storytelling for EdTech and seamless Hinglish delivery. High-quality studio recording perfect for corporate narration, explainers, and AI voice agents.",
         "voiceId": "wJ5MX7uuKXZwFqGdWM4N",
         "similarity_boost": 0.65,
         "style": 0.3,
