@@ -1,0 +1,178 @@
+{
+    "title": "Pikmin Adventure Shadowing",
+    "description": "Pikmin 게임을 주제로 한 영어 쉐도잉 세션",
+    "createdAt": "2026-01-15",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "The Pikmin follow the captain wherever he goes.",
+            "korean": "피크민들은 대장이 가는 곳마다 따라갑니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "follow",
+                    "meaning": "따라가다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "captain",
+                    "meaning": "대장, 지휘관",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Each Pikmin has a unique ability depending on its color.",
+            "korean": "각 피크민은 색깔에 따라 고유한 능력을 가지고 있습니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "unique",
+                    "meaning": "독특한",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "depending on",
+                    "meaning": "~에 따라",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "Red Pikmin are resistant to fire.",
+            "korean": "빨간 피크민은 불에 강합니다.",
+            "stability": 0.3,
+            "words": [
+                {
+                    "term": "resistant",
+                    "meaning": "저항력이 있는",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Blue Pikmin can survive underwater.",
+            "korean": "파란 피크민은 물속에서도 살아남을 수 있습니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "survive",
+                    "meaning": "살아남다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "underwater",
+                    "meaning": "물속에서",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Yellow Pikmin can be thrown higher than others.",
+            "korean": "노란 피크민은 다른 피크민보다 더 높이 던질 수 있습니다.",
+            "words": [
+                {
+                    "term": "throw",
+                    "meaning": "던지다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "higher",
+                    "meaning": "더 높게",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "The captain must manage the Pikmin carefully.",
+            "korean": "대장은 피크민들을 신중하게 관리해야 합니다.",
+            "words": [
+                {
+                    "term": "manage",
+                    "meaning": "관리하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "carefully",
+                    "meaning": "신중하게",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Some enemies are dangerous if approached blindly.",
+            "korean": "일부 적들은 무작정 접근하면 위험합니다.",
+            "words": [
+                {
+                    "term": "enemy",
+                    "meaning": "적",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "approach",
+                    "meaning": "접근하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "blindly",
+                    "meaning": "무작정",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Teamwork is essential to complete the mission.",
+            "korean": "임무를 완수하려면 팀워크가 필수적입니다.",
+            "words": [
+                {
+                    "term": "teamwork",
+                    "meaning": "팀워크",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "essential",
+                    "meaning": "필수적인",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "The day ends when the sun goes down.",
+            "korean": "해가 지면 하루가 끝납니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "end",
+                    "meaning": "끝나다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Pikmin left behind will be lost forever.",
+            "korean": "뒤에 남겨진 피크민은 영원히 잃게 됩니다.",
+            "stability": 0.2,
+            "words": [
+                {
+                    "term": "left behind",
+                    "meaning": "뒤에 남겨진",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "forever",
+                    "meaning": "영원히",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

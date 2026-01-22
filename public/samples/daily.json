@@ -1,0 +1,33 @@
+{
+    "title": "Daily Coffee Shop",
+    "description": "Practical English for ordering and chatting in a cafe.",
+    "createdAt": "2026-01-22",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "I would like to order a large iced Americano, please.",
+            "korean": "아이스 아메리카노 라지 사이즈 한 잔 주문할게요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "order",
+                    "meaning": "주문하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Would you like some room for cream in your coffee?",
+            "korean": "커피에 크림 넣을 공간을 좀 남겨드릴까요?",
+            "stability": 0.3,
+            "words": [
+                {
+                    "term": "room",
+                    "meaning": "공간, 여유",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

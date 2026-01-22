@@ -5,7 +5,9 @@ export interface ShadowSession {
     title: string;
     description: string;
     createdAt: string;
-    xmlData: string;
+    completedAt?: string;
+    totalSentences?: number;
+    rawData: string;
     userNote?: string;
 }
 
@@ -16,6 +18,9 @@ export interface ShadowAudio {
     voiceId: string;
     speed: number;
     stability: number;
+    similarityBoost: number;
+    style?: number;
+    useSpeakerBoost?: boolean;
     audioBlob: Blob;
     duration: number;
 }
@@ -26,6 +31,9 @@ export interface GlobalAudio {
     voiceId: string;
     speed: number;
     stability: number;
+    similarityBoost: number;
+    style?: number;
+    useSpeakerBoost?: boolean;
     audioBlob: Blob;
     duration: number;
 }
@@ -53,6 +61,14 @@ class StorageService {
         return (await db.add('sessions', session)) as number;
     }
 
+    async updateSession(id: number, session: Partial<ShadowSession>): Promise<void> {
+        const db = await this.dbPromise;
+        const existing = await db.get('sessions', id);
+        if (existing) {
+            await db.put('sessions', { ...existing, ...session });
+        }
+    }
+
     async getSessions(): Promise<ShadowSession[]> {
         const db = await this.dbPromise;
         return db.getAll('sessions');
@@ -60,9 +76,14 @@ class StorageService {
 
     async saveAudio(audio: ShadowAudio): Promise<string> {
         const db = await this.dbPromise;
-        const id = `${audio.xmlId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.speed}_${audio.stability}`;
+        const id = `${audio.xmlId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.speed}_${audio.stability}_${audio.similarityBoost}`;
         await db.put('audio', { ...audio, id });
         return id;
+    }
+
+    async deleteAudio(id: string): Promise<void> {
+        const db = await this.dbPromise;
+        await db.delete('audio', id);
     }
 
     async getAudio(id: string): Promise<ShadowAudio | undefined> {
@@ -78,6 +99,26 @@ class StorageService {
     async getGlobalAudio(id: string): Promise<GlobalAudio | undefined> {
         const db = await this.dbPromise;
         return db.get('global_audio', id);
+    }
+
+    async getGlobalAudios(): Promise<GlobalAudio[]> {
+        const db = await this.dbPromise;
+        return db.getAll('global_audio');
+    }
+
+    async deleteGlobalAudio(id: string): Promise<void> {
+        const db = await this.dbPromise;
+        await db.delete('global_audio', id);
+    }
+
+    async clearAllAudio(): Promise<void> {
+        const db = await this.dbPromise;
+        const tx = db.transaction(['audio', 'global_audio'], 'readwrite');
+        await Promise.all([
+            tx.objectStore('audio').clear(),
+            tx.objectStore('global_audio').clear(),
+            tx.done
+        ]);
     }
 
     // LocalStorage Helpers

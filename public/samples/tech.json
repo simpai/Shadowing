@@ -1,0 +1,43 @@
+{
+    "title": "Tech Interview Prep",
+    "description": "Tech Interview Prep",
+    "createdAt": "2026-01-15",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "The Pikmin follow the captain wherever he goes.",
+            "korean": "피크민들은 대장이 가는 곳마다 따라갑니다.",
+            "stability": 0.2,
+            "words": [
+                {
+                    "term": "follow",
+                    "meaning": "따라가다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "captain",
+                    "meaning": "대장, 지휘관",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Each Pikmin has a unique ability depending on its color.",
+            "korean": "각 피크민은 색깔에 따라 고유한 능력을 가지고 있습니다.",
+            "stability": 0.9,
+            "words": [
+                {
+                    "term": "unique",
+                    "meaning": "독특한",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "depending on",
+                    "meaning": "~에 따라",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

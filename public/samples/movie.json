@@ -1,0 +1,33 @@
+{
+    "title": "Famous Movie Quotes",
+    "description": "Iconic lines from cinema to practice emotional delivery.",
+    "createdAt": "2026-01-22",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "I'm going to make him an offer he can't refuse.",
+            "korean": "그가 거절할 수 없는 제안을 할 거야.",
+            "stability": 0.1,
+            "words": [
+                {
+                    "term": "refuse",
+                    "meaning": "거절하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "May the Force be with you.",
+            "korean": "포스가 당신과 함께하기를.",
+            "stability": 0.9,
+            "words": [
+                {
+                    "term": "Force",
+                    "meaning": "포스(스타워즈의 힘)",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

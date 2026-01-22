@@ -2,31 +2,31 @@
     {
         "id": "business",
         "name": "Business Meeting Essentials",
-        "path": "/samples/business.xml"
+        "path": "/samples/business.json"
     },
     {
         "id": "daily",
         "name": "Daily Coffee Shop",
-        "path": "/samples/daily.xml"
+        "path": "/samples/daily.json"
     },
     {
         "id": "travel",
         "name": "Airport & Travel",
-        "path": "/samples/travel.xml"
+        "path": "/samples/travel.json"
     },
     {
         "id": "tech",
         "name": "Tech Interview Prep",
-        "path": "/samples/tech.xml"
+        "path": "/samples/tech.json"
     },
     {
         "id": "movie",
         "name": "Famous Movie Quotes",
-        "path": "/samples/movie.xml"
+        "path": "/samples/movie.json"
     },
     {
         "id": "pikmin",
         "name": "Pikmin Adventure Shadowing",
-        "path": "/samples/pikmin_shadowing_sample.xml"
+        "path": "/samples/pikmin_shadowing_sample.json"
     }
 ]

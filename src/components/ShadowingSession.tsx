@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, SkipForward, SkipBack, RefreshCw, Volume2, Globe, MessageSquare, Mic } from 'lucide-react';
-import { ShadowData, Sentence } from '../lib/xmlParser';
+import { ShadowData, Sentence } from '../lib/dataParser';
 import { storage, ShadowAudio } from '../lib/storage';
 
 interface ShadowingSessionProps {
-    xmlData: ShadowData;
+    sessionData: ShadowData;
     voiceConfig: {
         voiceId: string;
         repeat: number;
         followDelayRatio: number;
         speed: number;
-        stability: number;
+        similarityBoost: number;
+        style?: number;
+        useSpeakerBoost?: boolean;
     };
     sessionId: number;
     onFinish: () => void;
@@ -19,19 +21,19 @@ interface ShadowingSessionProps {
     onReadyToRecord?: () => Promise<boolean>;
 }
 
-export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voiceConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
+export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, voiceConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentRepeat, setCurrentRepeat] = useState(0);
     const [isWaiting, setIsWaiting] = useState(false);
     const [isStarting, setIsStarting] = useState(true);
     const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
-    const [countdown, setCountdown] = useState(3);
+    const [isPrepared, setIsPrepared] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const timeoutRef = useRef<number | null>(null);
     const hasInitiated = useRef(false);
 
-    const currentSentence = xmlData.sentences[currentIndex];
+    const currentSentence = sessionData.sentences[currentIndex];
 
     // Handle initial countdown and recording start
     useEffect(() => {
@@ -55,15 +57,14 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
     }, []);
 
     useEffect(() => {
-        if (!isWaitingForRecord && isStarting && countdown > 0) {
-            const timer = setInterval(() => {
-                setCountdown(prev => prev - 1);
+        if (!isWaitingForRecord && isStarting && !isPrepared) {
+            const timer = setTimeout(() => {
+                setIsPrepared(true);
+                setIsStarting(false);
             }, 1000);
-            return () => clearInterval(timer);
-        } else if (!isWaitingForRecord && isStarting && countdown === 0) {
-            setIsStarting(false);
+            return () => clearTimeout(timer);
         }
-    }, [isWaitingForRecord, isStarting, countdown]);
+    }, [isWaitingForRecord, isStarting, isPrepared]);
 
     const playSentence = async () => {
         if (isStarting || isWaitingForRecord) return; // Don't play while countdown or prompt is active
@@ -73,7 +74,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
             return;
         }
 
-        const audioId = `${sessionId}_${currentSentence.index}_${voiceConfig.voiceId}_${voiceConfig.speed}_${voiceConfig.stability}`;
+        const stability = currentSentence.stability ?? 0.5;
+        const audioId = `${sessionId}_${currentSentence.index}_${voiceConfig.voiceId}_${voiceConfig.speed}_${stability}_${voiceConfig.similarityBoost}`;
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
@@ -101,7 +103,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
                 setCurrentRepeat(prev => prev + 1);
             } else {
                 setCurrentRepeat(0);
-                if (currentIndex < xmlData.sentences.length - 1) {
+                if (currentIndex < sessionData.sentences.length - 1) {
                     setCurrentIndex(prev => prev + 1);
                 } else {
                     onFinish();
@@ -150,17 +152,6 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
                                         듣고 따라하세요
                                     </p>
                                 </div>
-
-                                <div className="flex justify-center items-center">
-                                    <motion.div
-                                        key={countdown}
-                                        initial={{ scale: 1.5, opacity: 0 }}
-                                        animate={{ scale: 1, opacity: 1 }}
-                                        className="text-9xl font-black text-white/20 tabular-nums"
-                                    >
-                                        {countdown}
-                                    </motion.div>
-                                </div>
                             </motion.div>
                         )}
                     </motion.div>
@@ -170,7 +161,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
             {/* HUD */}
             <div className={`flex justify-between items-center text-[10px] md:text-xs text-slate-500 font-mono transition-opacity duration-500 ${isStarting ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="flex items-center gap-2">
-                    <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{xmlData.sentences.length}</span>
+                    <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{sessionData.sentences.length}</span>
                     <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Repeat {currentRepeat + 1}/{voiceConfig.repeat}</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -272,7 +263,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ xmlData, voi
                     <SkipBack className="w-6 h-6" />
                 </button>
                 <button
-                    onClick={() => setCurrentIndex(Math.min(xmlData.sentences.length - 1, currentIndex + 1))}
+                    onClick={() => setCurrentIndex(Math.min(sessionData.sentences.length - 1, currentIndex + 1))}
                     className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
                 >
                     <SkipForward className="w-6 h-6" />

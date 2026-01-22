@@ -2,35 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { Settings, BookOpen, Play, CheckCircle2, Upload, AlertCircle, Trash2, Mic, Volume2, ArrowRight, Save, Layout, Video, Radio } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { storage, ShadowSession, ShadowAudio } from './lib/storage';
-import { parseShadowXML, ShadowData } from './lib/xmlParser';
+import { parseShadowXML, parseShadowJSON, ShadowData } from './lib/dataParser';
 import { generateTTSAudio, fetchVoices } from './lib/elevenlabs';
 import { ShadowingSession } from './components/ShadowingSession';
 import { screenRecorder } from './lib/recorder';
+import voicePresets from './config/voicePresets.json';
 
-type Screen = 'upload' | 'settings' | 'setup-summary' | 'session' | 'final-summary';
+import { StorageManager } from './components/StorageManager';
+
+type Screen = 'upload' | 'settings' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
 
 interface VoiceConfig {
     voiceId: string;
     name: string;
-    stability: number;
+    similarityBoost: number;
     speed: number;
     repeat: number;
     followDelayRatio: number;
+    style?: number;
+    useSpeakerBoost?: boolean;
 }
 
 function App() {
     const [currentScreen, setCurrentScreen] = useState<Screen>('upload');
-    const [xmlData, setXmlData] = useState<ShadowData | null>(null);
+    const [sessionData, setSessionData] = useState<ShadowData | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
     const [apiKey, setApiKey] = useState(storage.getApiKey() || '');
     const [voices, setVoices] = useState<any[]>([]);
     const [selectedVoice, setSelectedVoice] = useState<VoiceConfig>({
-        voiceId: '21m00Tcm4TlvDq8ikWAM', // Rachel
-        name: 'Rachel',
-        stability: 0.7,
+        voiceId: voicePresets[0].voiceId,
+        name: voicePresets[0].name,
+        similarityBoost: voicePresets[0].similarity_boost,
         speed: 1.0,
         repeat: 2,
-        followDelayRatio: 1.2
+        followDelayRatio: 1.2,
+        style: voicePresets[0].style,
+        useSpeakerBoost: voicePresets[0].use_speaker_boost
     });
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [isDownloading, setIsDownloading] = useState(false);
@@ -68,14 +75,14 @@ function App() {
             .catch(e => console.error("Failed to load sample index", e));
     }, [apiKey]);
 
-    const generateAudioId = (text: string, voiceId: string, speed: number, stability: number) => {
+    const generateAudioId = (text: string, voiceId: string, speed: number, stability: number, similarityBoost: number, style: number = 0, speakerBoost: boolean = true) => {
         // Simple hash for text
         let hash = 0;
         for (let i = 0; i < text.length; i++) {
             hash = ((hash << 5) - hash) + text.charCodeAt(i);
             hash |= 0;
         }
-        return `ga_${hash}_${voiceId}_${speed}_${stability}`;
+        return `ga_${hash}_${voiceId}_${speed}_${stability}_${similarityBoost}_${style}_${speakerBoost}`;
     };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,15 +92,20 @@ function App() {
         reader.onload = async (event) => {
             const content = event.target?.result as string;
             try {
-                const parsed = parseShadowXML(content);
-                setXmlData(parsed);
-            } catch (err) { setError("Invalid XML structure"); }
+                if (file.name.toLowerCase().endsWith('.json')) {
+                    const parsed = parseShadowJSON(content);
+                    setSessionData(parsed);
+                } else {
+                    const parsed = parseShadowXML(content);
+                    setSessionData(parsed);
+                }
+            } catch (err) { setError("Invalid file structure. Make sure it is valid JSON or XML."); }
         };
         reader.readAsText(file);
     };
 
     const handleStartSession = async (record: boolean = false) => {
-        if (!xmlData) return;
+        if (!sessionData) return;
         setError(null);
 
         try {
@@ -101,10 +113,10 @@ function App() {
             let sessionId = currentSessionId;
             if (!sessionId) {
                 sessionId = await storage.saveSession({
-                    title: xmlData.title,
-                    description: xmlData.description,
-                    createdAt: xmlData.createdAt,
-                    xmlData: JSON.stringify(xmlData),
+                    title: sessionData.title,
+                    description: sessionData.description,
+                    createdAt: sessionData.createdAt,
+                    rawData: JSON.stringify(sessionData),
                 });
                 setCurrentSessionId(sessionId);
             }
@@ -125,30 +137,46 @@ function App() {
         if (isRecording) {
             const videoBlob = await screenRecorder.stop();
             if (videoBlob) {
-                screenRecorder.saveRecording(videoBlob, `Shadowing_${xmlData?.title || 'Session'}_${new Date().getTime()}`);
+                screenRecorder.saveRecording(videoBlob, `Shadowing_${sessionData?.title || 'Session'}_${new Date().getTime()}`);
             }
             setIsRecording(false);
         }
-        setCurrentScreen('final-summary');
+        if (!sessionData || !currentSessionId) return;
+        try {
+            await storage.updateSession(currentSessionId, {
+                completedAt: new Date().toISOString(),
+                totalSentences: sessionData.sentences.length
+            });
+            setCurrentScreen('final-summary');
+        } catch (err) { console.error("Failed to finish session", err); }
     };
 
     const startDownload = async () => {
-        if (!xmlData || !apiKey) return;
+        if (!sessionData || !apiKey) return;
         setIsDownloading(true);
         setDownloadProgress(0);
         setError(null);
         try {
             const sessionId = await storage.saveSession({
-                title: xmlData.title,
-                description: xmlData.description,
-                createdAt: xmlData.createdAt,
-                xmlData: JSON.stringify(xmlData),
+                title: sessionData.title,
+                description: sessionData.description,
+                createdAt: sessionData.createdAt,
+                rawData: JSON.stringify(sessionData),
             });
             setCurrentSessionId(sessionId);
-            const total = xmlData.sentences.length;
+            const total = sessionData.sentences.length;
             for (let i = 0; i < total; i++) {
-                const sentence = xmlData.sentences[i];
-                const globalId = generateAudioId(sentence.english, selectedVoice.voiceId, selectedVoice.speed, selectedVoice.stability);
+                const sentence = sessionData.sentences[i];
+                const stability = sentence.stability ?? 0.5;
+                const globalId = generateAudioId(
+                    sentence.english,
+                    selectedVoice.voiceId,
+                    selectedVoice.speed,
+                    stability,
+                    selectedVoice.similarityBoost,
+                    selectedVoice.style,
+                    selectedVoice.useSpeakerBoost
+                );
 
                 let audioBlob: Blob;
                 let duration: number;
@@ -161,7 +189,12 @@ function App() {
                     const audioRes = await generateTTSAudio({
                         text: sentence.english,
                         voiceId: selectedVoice.voiceId,
-                        settings: { voiceId: selectedVoice.voiceId, stability: selectedVoice.stability, similarity_boost: 0.75 }
+                        settings: {
+                            stability: stability,
+                            similarity_boost: selectedVoice.similarityBoost,
+                            style: selectedVoice.style,
+                            use_speaker_boost: selectedVoice.useSpeakerBoost
+                        }
                     });
                     audioBlob = audioRes.blob;
                     duration = audioRes.duration;
@@ -171,7 +204,10 @@ function App() {
                         text: sentence.english,
                         voiceId: selectedVoice.voiceId,
                         speed: selectedVoice.speed,
-                        stability: selectedVoice.stability,
+                        stability: stability,
+                        similarityBoost: selectedVoice.similarityBoost,
+                        style: selectedVoice.style,
+                        useSpeakerBoost: selectedVoice.useSpeakerBoost,
                         audioBlob: audioBlob,
                         duration: duration
                     });
@@ -182,7 +218,10 @@ function App() {
                     sentenceIndex: sentence.index,
                     voiceId: selectedVoice.voiceId,
                     speed: selectedVoice.speed,
-                    stability: selectedVoice.stability,
+                    stability: stability,
+                    similarityBoost: selectedVoice.similarityBoost,
+                    style: selectedVoice.style,
+                    useSpeakerBoost: selectedVoice.useSpeakerBoost,
                     audioBlob: audioBlob,
                     duration: duration
                 });
@@ -193,9 +232,8 @@ function App() {
     };
 
     const getDifficultyWords = () => {
-        if (!xmlData) return [];
-        const words = xmlData.sentences.flatMap(s => s.words);
-        // Unique words based on term, keeping highest difficulty
+        if (!sessionData) return [];
+        const words = sessionData.sentences.flatMap(s => s.words);
         const unique = new Map<string, number>();
         words.forEach(w => {
             const current = unique.get(w.term) || 0;
@@ -210,10 +248,13 @@ function App() {
         try {
             const response = await fetch(samplePath);
             const content = await response.text();
-            const parsed = parseShadowXML(content);
-            setXmlData(parsed);
+            if (samplePath.toLowerCase().endsWith('.json')) {
+                setSessionData(parseShadowJSON(content));
+            } else {
+                setSessionData(parseShadowXML(content));
+            }
         } catch (err) {
-            setError("Failed to load sample XML");
+            setError("Failed to load sample data");
         }
     };
 
@@ -256,7 +297,7 @@ function App() {
                                             <button
                                                 key={sample.id}
                                                 onClick={() => handleSampleSelect(sample.path)}
-                                                className={`px-4 py-3 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${xmlData?.title.includes(sample.name) ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                className={`px-4 py-3 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${sessionData?.title.includes(sample.name) ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
                                             >
                                                 <div className="flex flex-col">
                                                     <span className="font-bold text-sm group-hover:text-blue-400 transition-colors">{sample.name}</span>
@@ -288,34 +329,24 @@ function App() {
 
                                         <div className="flex flex-col items-center sm:items-end gap-2 shrink-0">
                                             <label className="btn-primary bg-slate-800 border border-slate-700 hover:bg-slate-700 px-6 py-2 cursor-pointer transition-all">
-                                                <input type="file" accept=".xml" className="hidden" onChange={handleFileUpload} />
-                                                Browse XML
+                                                <input type="file" accept=".xml,.json" className="hidden" onChange={handleFileUpload} />
+                                                Browse File (JSON/XML)
                                             </label>
-                                            {xmlData && (
-                                                <span className="text-xs text-blue-400 font-mono animate-in fade-in slide-in-from-top-1">
-                                                    Selected: {xmlData.title}
-                                                </span>
-                                            )}
+                                            <button
+                                                onClick={() => setCurrentScreen('storage-manager')}
+                                                className="text-xs text-slate-500 hover:text-slate-300 transition-colors underline underline-offset-4"
+                                            >
+                                                Manage Storage
+                                            </button>
                                         </div>
+                                        {sessionData && (
+                                            <span className="text-xs text-blue-400 font-mono animate-in fade-in slide-in-from-top-1">
+                                                Selected: {sessionData.title}
+                                            </span>
+                                        )}
                                     </div>
                                 </motion.div>
                             </div>
-
-                            {xmlData && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    className="fixed bottom-10 right-10 z-[60]"
-                                >
-                                    <button
-                                        onClick={() => setCurrentScreen('settings')}
-                                        className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
-                                    >
-                                        Start Configuration
-                                        <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
-                                    </button>
-                                </motion.div>
-                            )}
                         </div>
                     )}
 
@@ -328,16 +359,54 @@ function App() {
                                     <input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white" />
                                     <p className="text-[10px] text-slate-500 mt-1 italic">“이 키는 브라우저에만 저장되며 외부로 전송되지 않습니다”</p>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4">
                                     <div>
-                                        <label className="text-sm font-medium text-slate-400 block mb-2">Voice</label>
-                                        <select className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white appearance-none" value={selectedVoice.voiceId} onChange={(e) => setSelectedVoice({ ...selectedVoice, voiceId: e.target.value })}>
-                                            {voices.length > 0 ? voices.map(v => (<option key={v.voice_id} value={v.voice_id}>{v.name}</option>)) : <option value="21m00Tcm4TlvDq8ikWAM">Rachel (Default)</option>}
+                                        <label className="text-sm font-medium text-slate-400 block mb-2">Voice & Style Preset</label>
+                                        <select
+                                            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white appearance-none cursor-pointer focus:ring-2 focus:ring-blue-500/50"
+                                            value={voicePresets.findIndex(p => p.voiceId === selectedVoice.voiceId)}
+                                            onChange={(e) => {
+                                                const preset = voicePresets[parseInt(e.target.value)];
+                                                if (preset) {
+                                                    setSelectedVoice({
+                                                        ...selectedVoice,
+                                                        voiceId: preset.voiceId,
+                                                        name: preset.name,
+                                                        similarityBoost: preset.similarity_boost,
+                                                        style: preset.style,
+                                                        useSpeakerBoost: preset.use_speaker_boost
+                                                    });
+                                                }
+                                            }}
+                                        >
+                                            {voicePresets.map((p, idx) => (
+                                                <option key={p.id} value={idx}>{p.name} ({p.description.split('.')[0]})</option>
+                                            ))}
                                         </select>
                                     </div>
+                                </div>
+                                <div className="grid grid-cols-1 gap-4">
                                     <div>
-                                        <label className="text-sm font-medium text-slate-400 block mb-2">Stability ({selectedVoice.stability})</label>
-                                        <input type="range" min="0" max="1" step="0.1" value={selectedVoice.stability} onChange={(e) => setSelectedVoice({ ...selectedVoice, stability: parseFloat(e.target.value) })} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                                        <label className="text-sm font-medium text-slate-400 block mb-2">Voice Speed ({selectedVoice.speed}x)</label>
+                                        <div className="flex gap-4 items-center">
+                                            <input
+                                                type="range" min="0.5" max="2" step="0.1"
+                                                value={selectedVoice.speed}
+                                                onChange={(e) => setSelectedVoice({ ...selectedVoice, speed: parseFloat(e.target.value) })}
+                                                className="flex-grow h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                                            />
+                                            <div className="flex gap-2">
+                                                {[0.8, 1.0, 1.2].map(s => (
+                                                    <button
+                                                        key={s}
+                                                        onClick={() => setSelectedVoice({ ...selectedVoice, speed: s })}
+                                                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${selectedVoice.speed === s ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
+                                                    >
+                                                        x{s}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
@@ -365,31 +434,49 @@ function App() {
                         </motion.div>
                     )}
 
-                    {/* Floating Download Button in Settings Screen */}
-                    {currentScreen === 'settings' && !isDownloading && (
+                    {currentScreen === 'upload' && sessionData && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="fixed bottom-10 right-10 z-[70]"
+                            className="fixed bottom-10 right-10 z-[60]"
                         >
                             <button
-                                onClick={startDownload}
+                                onClick={() => setCurrentScreen('settings')}
                                 className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
                             >
-                                Download Assets
+                                Start Configuration
                                 <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
                             </button>
                         </motion.div>
                     )}
 
+                    {/* Floating Download Button in Settings Screen */}
                     {
-                        currentScreen === 'setup-summary' && xmlData && (
+                        currentScreen === 'settings' && !isDownloading && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="fixed bottom-10 right-10 z-[70]"
+                            >
+                                <button
+                                    onClick={startDownload}
+                                    className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
+                                >
+                                    Download Assets
+                                    <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </motion.div>
+                        )
+                    }
+
+                    {
+                        currentScreen === 'setup-summary' && sessionData && (
                             <motion.div key="summary" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-8 text-white max-w-2xl mx-auto space-y-8">
                                 <div className="flex items-center gap-4 border-b border-slate-700 pb-6">
                                     <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400"> <Layout className="w-8 h-8" /> </div>
                                     <div>
-                                        <h2 className="text-2xl font-bold">{xmlData.title}</h2>
-                                        <p className="text-slate-400">{xmlData.sentences.length} Sentences ready</p>
+                                        <h2 className="text-2xl font-bold">{sessionData.title}</h2>
+                                        <p className="text-slate-400">{sessionData.sentences.length} Sentences ready</p>
                                     </div>
                                 </div>
                                 <div className="space-y-4">
@@ -408,34 +495,36 @@ function App() {
                     }
 
                     {/* Floating Start Buttons for Summary Screen */}
-                    {currentScreen === 'setup-summary' && xmlData && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="fixed bottom-10 right-10 flex flex-col items-end gap-4 z-[70]"
-                        >
-                            <button
-                                onClick={() => handleStartSession(true)}
-                                className="group flex items-center gap-4 bg-rose-600 hover:bg-rose-500 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-2xl shadow-rose-500/40 transition-all hover:scale-105 active:scale-95"
+                    {
+                        currentScreen === 'setup-summary' && sessionData && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="fixed bottom-10 right-10 flex flex-col items-end gap-4 z-[70]"
                             >
-                                <Radio className="w-6 h-6 animate-pulse" />
-                                Start & Record
-                            </button>
-                            <button
-                                onClick={() => handleStartSession(false)}
-                                className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
-                            >
-                                Start Session
-                                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
-                            </button>
-                        </motion.div>
-                    )}
+                                <button
+                                    onClick={() => handleStartSession(true)}
+                                    className="group flex items-center gap-4 bg-rose-600 hover:bg-rose-500 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-2xl shadow-rose-500/40 transition-all hover:scale-105 active:scale-95"
+                                >
+                                    <Radio className="w-6 h-6 animate-pulse" />
+                                    Start & Record
+                                </button>
+                                <button
+                                    onClick={() => handleStartSession(false)}
+                                    className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
+                                >
+                                    Start Session
+                                    <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                                </button>
+                            </motion.div>
+                        )
+                    }
 
                     {
-                        currentScreen === 'session' && xmlData && currentSessionId && (
+                        currentScreen === 'session' && sessionData && currentSessionId && (
                             <motion.div key="session" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full">
                                 <ShadowingSession
-                                    xmlData={xmlData}
+                                    sessionData={sessionData}
                                     voiceConfig={selectedVoice}
                                     sessionId={currentSessionId}
                                     onFinish={handleSessionFinish}
@@ -447,12 +536,12 @@ function App() {
                     }
 
                     {
-                        currentScreen === 'final-summary' && xmlData && (
+                        currentScreen === 'final-summary' && sessionData && (
                             <motion.div key="final" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="glass-card p-12 text-center text-white max-w-3xl mx-auto space-y-12">
                                 <div className="space-y-2">
                                     <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4"> <CheckCircle2 className="w-12 h-12 text-emerald-400" /> </div>
                                     <h2 className="text-4xl font-bold">Session Complete!</h2>
-                                    <p className="text-slate-400">Great job! You've completed {xmlData.sentences.length} sentences.</p>
+                                    <p className="text-slate-400">Great job! You've completed {sessionData.sentences.length} sentences.</p>
                                 </div>
 
                                 <div className="text-left space-y-6">
@@ -469,6 +558,18 @@ function App() {
                                 <div className="pt-8">
                                     <button onClick={() => window.location.reload()} className="btn-primary bg-blue-600 px-12 py-4"> Return Home </button>
                                 </div>
+                            </motion.div>
+                        )
+                    }
+                    {
+                        currentScreen === 'storage-manager' && (
+                            <motion.div
+                                key="storage-manager"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.05 }}
+                            >
+                                <StorageManager onBack={() => setCurrentScreen('upload')} />
                             </motion.div>
                         )
                     }

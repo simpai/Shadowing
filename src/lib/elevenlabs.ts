@@ -3,7 +3,6 @@ import { storage } from './storage';
 const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1';
 
 export interface VoiceSettings {
-    voiceId: string;
     stability: number;
     similarity_boost: number;
     style?: number;

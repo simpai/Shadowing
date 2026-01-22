@@ -1,0 +1,47 @@
+[
+    {
+        "id": "jake-us-ga",
+        "name": "Jake — American GA (Standard)",
+        "description": "Main reference speaker. Neutral General American accent for base shadowing.",
+        "voiceId": "pNInz6obpgDQGcFmaJgB",
+        "similarity_boost": 0.75,
+        "style": 0.15,
+        "use_speaker_boost": true
+    },
+    {
+        "id": "emily-uk-rp",
+        "name": "Emily — British RP (Standard)",
+        "description": "Classic British RP, soft, warm and confident storyteller.",
+        "voiceId": "tmtVLLFJVXmAZYwJoVdL",
+        "similarity_boost": 0.8,
+        "style": 0.2,
+        "use_speaker_boost": true
+    },
+    {
+        "id": "raj-indian-english",
+        "name": "Raj — Indian English (Business)",
+        "description": "Indian English accent for global business listening training.",
+        "voiceId": "wJ5MX7uuKXZwFqGdWM4N",
+        "similarity_boost": 0.65,
+        "style": 0.3,
+        "use_speaker_boost": true
+    },
+    {
+        "id": "lily-chinese-english",
+        "name": "Lily — Chinese English (Professional)",
+        "description": "Mandarin-influenced English accent for advanced listening adaptation.",
+        "voiceId": "1a0nAYA3FcNQcMMfbddY",
+        "similarity_boost": 0.6,
+        "style": 0.25,
+        "use_speaker_boost": true
+    },
+    {
+        "id": "tommy-cockney",
+        "name": "Tommy — Cockney (London Street)",
+        "description": "East London Cockney accent for real-life conversational challenge.",
+        "voiceId": "1TE7ou3jyxHsyRehUuMB",
+        "similarity_boost": 0.6,
+        "style": 0.45,
+        "use_speaker_boost": true
+    }
+]
