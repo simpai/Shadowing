@@ -3,17 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, SkipForward, SkipBack, RefreshCw, Volume2, Globe, MessageSquare, Mic } from 'lucide-react';
 import { ShadowData, Sentence } from '../lib/dataParser';
 import { storage, ShadowAudio } from '../lib/storage';
+import voicePresets from '../config/voicePresets.json';
 
 interface ShadowingSessionProps {
     sessionData: ShadowData;
-    voiceConfig: {
-        voiceId: string;
+    voiceIds: string[];
+    globalConfig: {
         repeat: number;
         followDelayRatio: number;
         speed: number;
-        similarityBoost: number;
-        style?: number;
-        useSpeakerBoost?: boolean;
     };
     sessionId: number;
     onFinish: () => void;
@@ -21,10 +19,11 @@ interface ShadowingSessionProps {
     onReadyToRecord?: () => Promise<boolean>;
 }
 
-export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, voiceConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
+export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, voiceIds, globalConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentRepeat, setCurrentRepeat] = useState(0);
+    const [currentVoiceIndex, setCurrentVoiceIndex] = useState(0);
     const [isWaiting, setIsWaiting] = useState(false);
     const [isStarting, setIsStarting] = useState(true);
     const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
@@ -67,15 +66,19 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     }, [isWaitingForRecord, isStarting, isPrepared]);
 
     const playSentence = async () => {
-        if (isStarting || isWaitingForRecord) return; // Don't play while countdown or prompt is active
+        if (isStarting || isWaitingForRecord) return;
 
         if (!currentSentence) {
             onFinish();
             return;
         }
 
+        const voiceId = voiceIds[currentVoiceIndex];
         const stability = currentSentence.stability ?? 0.5;
-        const audioId = `${sessionId}_${currentSentence.index}_${voiceConfig.voiceId}_${voiceConfig.speed}_${stability}_${voiceConfig.similarityBoost}`;
+        const preset = voicePresets.find((p: any) => p.voiceId === voiceId);
+        const simBoost = preset?.similarity_boost ?? 0.75;
+
+        const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.speed}_${stability}_${simBoost}`;
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
@@ -93,20 +96,24 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         setIsPlaying(false);
         setIsWaiting(true);
 
-        // Calculate wait time: audioDuration * followDelayRatio
         const audioDuration = audioRef.current?.duration || 0;
-        const waitTime = audioDuration * voiceConfig.followDelayRatio * 1000;
+        const waitTime = audioDuration * globalConfig.followDelayRatio * 1000;
 
         timeoutRef.current = setTimeout(() => {
             setIsWaiting(false);
-            if (currentRepeat < voiceConfig.repeat - 1) {
+            if (currentRepeat < globalConfig.repeat - 1) {
                 setCurrentRepeat(prev => prev + 1);
             } else {
                 setCurrentRepeat(0);
-                if (currentIndex < sessionData.sentences.length - 1) {
-                    setCurrentIndex(prev => prev + 1);
+                if (currentVoiceIndex < voiceIds.length - 1) {
+                    setCurrentVoiceIndex(prev => prev + 1);
                 } else {
-                    onFinish();
+                    setCurrentVoiceIndex(0);
+                    if (currentIndex < sessionData.sentences.length - 1) {
+                        setCurrentIndex(prev => prev + 1);
+                    } else {
+                        onFinish();
+                    }
                 }
             }
         }, waitTime);
@@ -119,7 +126,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         return () => {
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
-    }, [currentIndex, currentRepeat, isStarting]);
+    }, [currentIndex, currentRepeat, currentVoiceIndex, isStarting]);
 
     return (
         <div className="w-full flex flex-col gap-4 relative">
@@ -162,7 +169,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             <div className={`flex justify-between items-center text-[10px] md:text-xs text-slate-500 font-mono transition-opacity duration-500 ${isStarting ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="flex items-center gap-2">
                     <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{sessionData.sentences.length}</span>
-                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Repeat {currentRepeat + 1}/{voiceConfig.repeat}</span>
+                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Actor {currentVoiceIndex + 1}/{voiceIds.length}</span>
+                    <span className="bg-blue-500/5 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Repeat {currentRepeat + 1}/{globalConfig.repeat}</span>
                 </div>
                 <div className="flex items-center gap-3">
                     {isRecording && (
@@ -171,8 +179,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                             <span>REC</span>
                         </div>
                     )}
-                    <span className="hidden sm:inline">{voiceConfig.voiceId === '21m00Tcm4TlvDq8ikWAM' ? 'Rachel' : 'Selected Voice'}</span>
-                    <span>Speed: {voiceConfig.speed}x</span>
+                    <span className="hidden sm:inline">Current: {voicePresets.find(p => p.voiceId === voiceIds[currentVoiceIndex])?.name.split(' ')[0] || 'Unknown'}</span>
+                    <span>Speed: {globalConfig.speed}x</span>
                 </div>
             </div>
 
