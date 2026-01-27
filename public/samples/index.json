@@ -5,19 +5,14 @@
         "path": "/samples/business.json"
     },
     {
+        "id": "business2",
+        "name": "Business Meeting Essentials 2",
+        "path": "/samples/business2.json"
+    },
+    {
         "id": "daily",
         "name": "Daily Coffee Shop",
         "path": "/samples/daily.json"
-    },
-    {
-        "id": "travel",
-        "name": "Airport & Travel",
-        "path": "/samples/travel.json"
-    },
-    {
-        "id": "tech",
-        "name": "Tech Interview Prep",
-        "path": "/samples/tech.json"
     },
     {
         "id": "movie",
@@ -25,8 +20,18 @@
         "path": "/samples/movie.json"
     },
     {
-        "id": "pikmin",
+        "id": "pikmin_shadowing_sample",
         "name": "Pikmin Adventure Shadowing",
         "path": "/samples/pikmin_shadowing_sample.json"
+    },
+    {
+        "id": "tech",
+        "name": "Tech Interview Prep",
+        "path": "/samples/tech.json"
+    },
+    {
+        "id": "travel",
+        "name": "Airport & Travel",
+        "path": "/samples/travel.json"
     }
 ]

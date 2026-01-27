@@ -274,16 +274,13 @@ function App() {
                     </div>
                     <h1 className="text-xl font-bold tracking-tight text-white">ShadowWeb</h1>
                 </div>
-                <button onClick={() => setCurrentScreen('settings')} className="p-2 rounded-full hover:bg-white/10 transition-colors">
-                    <Settings className="w-6 h-6 text-white/60" />
-                </button>
             </header>
 
-            <main className={`w-full z-10 pt-24 pb-12 transition-all duration-500 ${currentScreen === 'session' ? 'max-w-[98%]' : 'max-w-4xl'}`}>
+            <main className={`w-full z-10 pt-24 pb-12 transition-all duration-500 ${(currentScreen === 'session' || currentScreen === 'upload') ? 'max-w-[98%]' : 'max-w-4xl'}`}>
                 <AnimatePresence mode="wait">
                     {currentScreen === 'upload' && (
                         <div key="upload-screen-root">
-                            <div className="flex flex-col gap-6 max-w-2xl mx-auto w-full">
+                            <div className="flex flex-col gap-6 w-full px-4">
                                 {/* Samples Section First */}
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
@@ -294,16 +291,19 @@ function App() {
                                         <Layout className="w-5 h-5 text-blue-400" />
                                         Try Samples
                                     </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                                         {sampleList.map((sample) => (
                                             <button
                                                 key={sample.id}
                                                 onClick={() => handleSampleSelect(sample.path)}
-                                                className={`px-4 py-3 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${sessionData?.title.includes(sample.name) ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${sessionData?.title.includes(sample.name) ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
                                             >
-                                                <div className="flex flex-col">
-                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors">{sample.name}</span>
-                                                    <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">Sample Session</span>
+                                                <div className="flex flex-col gap-1">
+                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{sample.name}</span>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">Sample</span>
+                                                        <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                                    </div>
                                                 </div>
                                             </button>
                                         ))}
@@ -334,12 +334,6 @@ function App() {
                                                 <input type="file" accept=".xml,.json" className="hidden" onChange={handleFileUpload} />
                                                 Browse File (JSON/XML)
                                             </label>
-                                            <button
-                                                onClick={() => setCurrentScreen('storage-manager')}
-                                                className="text-xs text-slate-500 hover:text-slate-300 transition-colors underline underline-offset-4"
-                                            >
-                                                Manage Storage
-                                            </button>
                                         </div>
                                         {sessionData && (
                                             <span className="text-xs text-blue-400 font-mono animate-in fade-in slide-in-from-top-1">
@@ -349,22 +343,39 @@ function App() {
                                     </div>
                                 </motion.div>
                             </div>
+
+                            {/* Storage Manager FAB */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="fixed bottom-10 left-10 z-[60]"
+                            >
+                                <button
+                                    onClick={() => setCurrentScreen('storage-manager')}
+                                    className="flex items-center gap-3 p-4 pr-6 bg-slate-800/90 hover:bg-slate-700 text-slate-300 rounded-2xl shadow-2xl border border-slate-700 transition-all hover:scale-110 active:scale-95 group"
+                                >
+                                    <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+                                        <Trash2 className="w-5 h-5" />
+                                    </div>
+                                    <span className="text-sm font-bold tracking-tight">Manage Storage</span>
+                                </button>
+                            </motion.div>
                         </div>
                     )}
 
                     {currentScreen === 'settings' && (
-                        <motion.div key="settings" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="glass-card p-8 text-white max-w-2xl mx-auto">
+                        <motion.div key="settings" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="glass-card p-8 pb-32 text-white max-w-2xl mx-auto">
                             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"> <Settings className="w-6 h-6 text-blue-400" /> Session Settings </h2>
                             <div className="space-y-6">
                                 <div>
                                     <label className="text-sm font-medium text-slate-400 block mb-2">ElevenLabs API Key</label>
                                     <input type="password" value={apiKey} onChange={(e) => setApiKey(e.target.value)} className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white" />
-                                    <p className="text-[10px] text-slate-500 mt-1 italic">“이 키는 브라우저에만 저장되며 외부로 전송되지 않습니다”</p>
+                                    <p className="text-[10px] text-slate-500 mt-1 italic">"이 키는 브라우저에만 저장되며 외부로 전송되지 않습니다"</p>
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div>
                                         <label className="text-sm font-medium text-slate-400 block mb-3">Select Actors (Multiple Support)</label>
-                                        <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                                        <div className="grid grid-cols-1 gap-2">
                                             {voicePresets.map((p) => {
                                                 const isSelected = selectedVoiceIds.includes(p.voiceId);
                                                 return (
@@ -379,7 +390,7 @@ function App() {
                                                                 setSelectedVoiceIds([...selectedVoiceIds, p.voiceId]);
                                                             }
                                                         }}
-                                                        className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${isSelected ? 'bg-blue-600/20 border-blue-500 shadow-lg shadow-blue-500/10' : 'bg-slate-800/30 border-slate-700/50 hover:bg-slate-800/50'}`}
+                                                        className={`flex items-center gap-3 p-2 rounded-lg border transition-all text-left ${isSelected ? 'bg-blue-600/20 border-blue-500 shadow-lg shadow-blue-500/10' : 'bg-slate-800/30 border-slate-700/50 hover:bg-slate-800/50'}`}
                                                     >
                                                         <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-blue-500 border-blue-500' : 'border-slate-600'}`}>
                                                             {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
@@ -430,17 +441,48 @@ function App() {
                                 </div>
                             </div>
                             {error && (<div className="mt-6 flex items-center gap-2 text-rose-400 bg-rose-400/10 p-4 rounded-xl"> <AlertCircle className="w-5 h-5 flex-shrink-0" /> <p className="text-sm">{error}</p> </div>)}
-                            {isDownloading ? (
+                            {isDownloading && (
                                 <div className="mt-8 space-y-4">
                                     <div className="flex justify-between items-center text-sm"> <span className="text-slate-400">Downloading Voice Assets...</span> <span className="text-blue-400 font-bold">{downloadProgress}%</span> </div>
                                     <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden"> <motion.div className="bg-blue-600 h-2.5" initial={{ width: 0 }} animate={{ width: `${downloadProgress}%` }} /> </div>
                                 </div>
-                            ) : (
-                                <div className="flex gap-4 mt-8">
-                                    <button onClick={() => setCurrentScreen('upload')} className="w-full px-6 py-4 bg-slate-800 border border-slate-700 rounded-xl font-semibold hover:bg-slate-700 transition-colors">Back</button>
-                                </div>
                             )}
                         </motion.div>
+                    )}
+
+                    {currentScreen === 'settings' && !isDownloading && (
+                        <>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="fixed bottom-10 left-10 z-[70]"
+                            >
+                                <button
+                                    onClick={() => setCurrentScreen('upload')}
+                                    className="flex items-center gap-3 p-4 pr-6 bg-slate-800/90 hover:bg-slate-700 text-slate-300 rounded-2xl shadow-2xl border border-slate-700 transition-all hover:scale-110 active:scale-95 group"
+                                >
+                                    <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+                                        <ArrowRight className="w-6 h-6 rotate-180" />
+                                    </div>
+                                    <span className="text-sm font-bold tracking-tight">Back to Upload</span>
+                                </button>
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="fixed bottom-10 right-10 z-[70]"
+                            >
+                                <button
+                                    onClick={startDownload}
+                                    className="flex items-center gap-3 p-4 pr-6 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl shadow-2xl shadow-blue-500/30 border border-blue-400/30 transition-all hover:scale-110 active:scale-95 group"
+                                >
+                                    <div className="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center">
+                                        <Save className="w-6 h-6" />
+                                    </div>
+                                    <span className="text-lg font-black tracking-tight">Download Assets</span>
+                                </button>
+                            </motion.div>
+                        </>
                     )}
 
                     {currentScreen === 'upload' && sessionData && (
@@ -451,32 +493,18 @@ function App() {
                         >
                             <button
                                 onClick={() => setCurrentScreen('settings')}
-                                className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
+                                className="flex items-center gap-3 p-4 pr-6 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl shadow-2xl shadow-blue-500/30 border border-blue-400/30 transition-all hover:scale-110 active:scale-95 group"
                             >
-                                Start Configuration
-                                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                                <div className="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center">
+                                    <ArrowRight className="w-6 h-6" />
+                                </div>
+                                <span className="text-lg font-black tracking-tight">Start Configuration</span>
                             </button>
                         </motion.div>
                     )}
 
                     {/* Floating Download Button in Settings Screen */}
-                    {
-                        currentScreen === 'settings' && !isDownloading && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="fixed bottom-10 right-10 z-[70]"
-                            >
-                                <button
-                                    onClick={startDownload}
-                                    className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
-                                >
-                                    Download Assets
-                                    <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
-                                </button>
-                            </motion.div>
-                        )
-                    }
+                    {/* This section is now handled by the combined fragment above */}
 
                     {
                         currentScreen === 'setup-summary' && sessionData && (
@@ -496,9 +524,7 @@ function App() {
                                     <div> <p className="text-slate-500">Actors</p> <p className="font-bold">{selectedVoiceIds.length} Selected</p> </div>
                                     <div> <p className="text-slate-500">Repeats / Delay</p> <p className="font-bold">{globalConfig.repeat}x / {globalConfig.followDelayRatio}x</p> </div>
                                 </div>
-                                <div className="flex gap-4">
-                                    <button onClick={() => setCurrentScreen('settings')} className="w-full px-6 py-4 bg-slate-800 rounded-xl font-semibold hover:bg-slate-700 transition-colors">Change Configuration</button>
-                                </div>
+                                {/* Inline configuration button removed for FAB consistency */}
                             </motion.div>
                         )
                     }
@@ -506,26 +532,43 @@ function App() {
                     {/* Floating Start Buttons for Summary Screen */}
                     {
                         currentScreen === 'setup-summary' && sessionData && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="fixed bottom-10 right-10 flex flex-col items-end gap-4 z-[70]"
-                            >
-                                <button
-                                    onClick={() => handleStartSession(true)}
-                                    className="group flex items-center gap-4 bg-rose-600 hover:bg-rose-500 text-white px-8 py-4 rounded-2xl font-bold text-xl shadow-2xl shadow-rose-500/40 transition-all hover:scale-105 active:scale-95"
+                            <>
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="fixed bottom-10 left-10 z-[70]"
                                 >
-                                    <Radio className="w-6 h-6 animate-pulse" />
-                                    Start & Record
-                                </button>
-                                <button
-                                    onClick={() => handleStartSession(false)}
-                                    className="group flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-black text-2xl shadow-2xl shadow-blue-500/40 transition-all hover:scale-110 active:scale-95 ring-4 ring-blue-500/10"
-                                >
-                                    Start Session
-                                    <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
-                                </button>
-                            </motion.div>
+                                    <button
+                                        onClick={() => setCurrentScreen('settings')}
+                                        className="flex items-center gap-3 p-4 pr-6 bg-slate-800/90 hover:bg-slate-700 text-slate-300 rounded-2xl shadow-2xl border border-slate-700 transition-all hover:scale-110 active:scale-95 group"
+                                    >
+                                        <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+                                            <ArrowRight className="w-6 h-6 rotate-180" />
+                                        </div>
+                                        <span className="text-sm font-bold tracking-tight">Change Config</span>
+                                    </button>
+                                </motion.div>
+                                <div className="fixed bottom-10 right-10 flex flex-col items-end gap-4 z-[70]">
+                                    <button
+                                        onClick={() => handleStartSession(true)}
+                                        className="flex items-center gap-3 p-4 pr-6 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl shadow-2xl shadow-rose-500/30 border border-rose-400/30 transition-all hover:scale-110 active:scale-95 group"
+                                    >
+                                        <div className="w-10 h-10 bg-rose-700 rounded-xl flex items-center justify-center">
+                                            <Radio className="w-6 h-6 animate-pulse" />
+                                        </div>
+                                        <span className="text-lg font-black tracking-tight">Start & Record</span>
+                                    </button>
+                                    <button
+                                        onClick={() => handleStartSession(false)}
+                                        className="flex items-center gap-3 p-4 pr-6 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl shadow-2xl shadow-blue-500/30 border border-blue-400/30 transition-all hover:scale-110 active:scale-95 group"
+                                    >
+                                        <div className="w-10 h-10 bg-blue-700 rounded-xl flex items-center justify-center">
+                                            <ArrowRight className="w-6 h-6" />
+                                        </div>
+                                        <span className="text-lg font-black tracking-tight">Start Session</span>
+                                    </button>
+                                </div>
+                            </>
                         )
                     }
 
