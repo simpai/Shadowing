@@ -29,6 +29,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     const [isStarting, setIsStarting] = useState(true);
     const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
     const [isPrepared, setIsPrepared] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const timeoutRef = useRef<number | null>(null);
     const hasInitiated = useRef(false);
@@ -67,7 +68,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     }, [isWaitingForRecord, isStarting, isPrepared]);
 
     const playSentence = async () => {
-        if (isStarting || isWaitingForRecord) return;
+        if (isStarting || isWaitingForRecord || isPaused) return;
 
         if (!currentSentence) {
             onFinish();
@@ -100,34 +101,66 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         const audioDuration = audioRef.current?.duration || 0;
         const waitTime = audioDuration * globalConfig.followDelayRatio * 1000;
 
-        timeoutRef.current = setTimeout(() => {
-            setIsWaiting(false);
-            if (currentRepeat < globalConfig.repeat - 1) {
-                setCurrentRepeat(prev => prev + 1);
+        if (!isPaused) {
+            timeoutRef.current = setTimeout(() => {
+                proceedNext();
+            }, waitTime);
+        }
+    };
+
+    const proceedNext = () => {
+        setIsWaiting(false);
+        if (currentRepeat < globalConfig.repeat - 1) {
+            setCurrentRepeat(prev => prev + 1);
+        } else {
+            setCurrentRepeat(0);
+            if (currentVoiceIndex < voiceIds.length - 1) {
+                setCurrentVoiceIndex(prev => prev + 1);
             } else {
-                setCurrentRepeat(0);
-                if (currentVoiceIndex < voiceIds.length - 1) {
-                    setCurrentVoiceIndex(prev => prev + 1);
+                setCurrentVoiceIndex(0);
+                if (currentIndex < sessionData.sentences.length - 1) {
+                    setCurrentIndex(prev => prev + 1);
                 } else {
-                    setCurrentVoiceIndex(0);
-                    if (currentIndex < sessionData.sentences.length - 1) {
-                        setCurrentIndex(prev => prev + 1);
-                    } else {
-                        onFinish();
-                    }
+                    onFinish();
                 }
             }
-        }, waitTime);
+        }
+    };
+
+    const togglePause = () => {
+        if (isPaused) {
+            setIsPaused(false);
+            if (isPlaying) {
+                audioRef.current?.play();
+            } else if (isWaiting) {
+                const audioDuration = audioRef.current?.duration || 0;
+                const waitTime = audioDuration * globalConfig.followDelayRatio * 1000;
+                timeoutRef.current = setTimeout(() => {
+                    proceedNext();
+                }, waitTime);
+            } else {
+                playSentence();
+            }
+        } else {
+            setIsPaused(true);
+            if (isPlaying) {
+                audioRef.current?.pause();
+            }
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = null;
+            }
+        }
     };
 
     useEffect(() => {
-        if (!isStarting) {
+        if (!isStarting && !isPaused) {
             playSentence();
         }
         return () => {
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
-    }, [currentIndex, currentRepeat, currentVoiceIndex, isStarting]);
+    }, [currentIndex, currentRepeat, currentVoiceIndex, isStarting, isPaused]);
 
     return (
         <div className="w-full flex flex-col gap-4 relative">
@@ -266,13 +299,29 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             {/* Controls */}
             <div className={`flex justify-center items-center gap-8 py-4 transition-all duration-500 ${isRecording ? 'opacity-0 pointer-events-none translate-y-4' : 'opacity-100'}`}>
                 <button
-                    onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
+                    onClick={() => {
+                        setCurrentIndex(Math.max(0, currentIndex - 1));
+                        setCurrentVoiceIndex(0);
+                        setCurrentRepeat(0);
+                    }}
                     className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
                 >
                     <SkipBack className="w-6 h-6" />
                 </button>
+
                 <button
-                    onClick={() => setCurrentIndex(Math.min(sessionData.sentences.length - 1, currentIndex + 1))}
+                    onClick={togglePause}
+                    className="p-6 rounded-full bg-blue-500 text-white hover:bg-blue-400 transition-all transform hover:scale-110 active:scale-95 shadow-lg shadow-blue-500/20"
+                >
+                    {isPaused ? <Play className="w-8 h-8 fill-current" /> : <Pause className="w-8 h-8 fill-current" />}
+                </button>
+
+                <button
+                    onClick={() => {
+                        setCurrentIndex(Math.min(sessionData.sentences.length - 1, currentIndex + 1));
+                        setCurrentVoiceIndex(0);
+                        setCurrentRepeat(0);
+                    }}
                     className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
                 >
                     <SkipForward className="w-6 h-6" />
