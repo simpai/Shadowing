@@ -15,6 +15,11 @@
         "path": "/samples/daily.json"
     },
     {
+        "id": "minecraft_01",
+        "name": "Minecraft Movie Shadowing",
+        "path": "/samples/minecraft_01.json"
+    },
+    {
         "id": "movie",
         "name": "Famous Movie Quotes",
         "path": "/samples/movie.json"

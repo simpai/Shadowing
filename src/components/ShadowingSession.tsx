@@ -240,7 +240,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             </div>
 
             {/* Words List */}
-            <div className={`flex flex-wrap justify-center gap-2 transition-all duration-500 ${isRecording ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+            <div className="flex flex-wrap justify-center gap-2 transition-all duration-500">
                 {currentSentence.words.map((word, idx) => (
                     <motion.div
                         key={idx}

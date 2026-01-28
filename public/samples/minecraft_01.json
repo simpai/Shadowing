@@ -1,0 +1,397 @@
+{
+    "title": "Minecraft Movie Shadowing",
+    "description": "마인크래프트 무비의 명대사로 배우는 영어 쉐도잉 세션",
+    "createdAt": "2026-01-27",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "Anything you can imagine, you can create.",
+            "korean": "상상할 수 있는 것은 무엇이든 만들 수 있습니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "imagine",
+                    "meaning": "상상하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "create",
+                    "meaning": "창조하다, 만들다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "The world is full of endless possibilities.",
+            "korean": "세상은 무한한 가능성으로 가득 차 있습니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "endless",
+                    "meaning": "끝없는, 무한한",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "possibilities",
+                    "meaning": "가능성들",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "We need to work together to survive the night.",
+            "korean": "밤을 살아남으려면 함께 협력해야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "work together",
+                    "meaning": "함께 일하다, 협력하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "survive",
+                    "meaning": "살아남다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Every block has a purpose in this world.",
+            "korean": "이 세상의 모든 블록은 목적이 있습니다.",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "purpose",
+                    "meaning": "목적",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Sometimes you have to dig deep to find what you're looking for.",
+            "korean": "때로는 찾고 있는 것을 발견하려면 깊이 파야 합니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "dig deep",
+                    "meaning": "깊이 파다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "looking for",
+                    "meaning": "찾고 있는",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Crafting is the key to building something amazing.",
+            "korean": "제작은 놀라운 것을 만드는 열쇠입니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "crafting",
+                    "meaning": "제작",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "amazing",
+                    "meaning": "놀라운",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Don't be afraid to explore the unknown.",
+            "korean": "미지의 세계를 탐험하는 것을 두려워하지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "afraid",
+                    "meaning": "두려워하는",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "explore",
+                    "meaning": "탐험하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "unknown",
+                    "meaning": "미지의 것",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "The Nether is dangerous, but it holds valuable resources.",
+            "korean": "네더는 위험하지만, 귀중한 자원을 가지고 있습니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "dangerous",
+                    "meaning": "위험한",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "valuable",
+                    "meaning": "귀중한",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "resources",
+                    "meaning": "자원",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "Building a shelter is your first priority.",
+            "korean": "피난처를 짓는 것이 최우선 과제입니다.",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "shelter",
+                    "meaning": "피난처, 은신처",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "priority",
+                    "meaning": "우선순위",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "You can't mine diamonds with a wooden pickaxe.",
+            "korean": "나무 곡괭이로는 다이아몬드를 캘 수 없습니다.",
+            "stability": 0.3,
+            "words": [
+                {
+                    "term": "mine",
+                    "meaning": "채굴하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "pickaxe",
+                    "meaning": "곡괭이",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "The journey is just as important as the destination.",
+            "korean": "여정은 목적지만큼이나 중요합니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "journey",
+                    "meaning": "여정, 여행",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "destination",
+                    "meaning": "목적지",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "Creepers explode when they get too close.",
+            "korean": "크리퍼는 너무 가까이 오면 폭발합니다.",
+            "stability": 0.2,
+            "words": [
+                {
+                    "term": "explode",
+                    "meaning": "폭발하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "get close",
+                    "meaning": "가까이 오다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "We must protect the village from the raid.",
+            "korean": "습격으로부터 마을을 지켜야 합니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "protect",
+                    "meaning": "보호하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "village",
+                    "meaning": "마을",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "raid",
+                    "meaning": "습격",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Enchanting your tools makes them more powerful.",
+            "korean": "도구에 마법을 부여하면 더 강력해집니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "enchanting",
+                    "meaning": "마법 부여",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "powerful",
+                    "meaning": "강력한",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "The Ender Dragon is the ultimate challenge.",
+            "korean": "엔더 드래곤은 궁극의 도전입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "ultimate",
+                    "meaning": "궁극의, 최종의",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "challenge",
+                    "meaning": "도전",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "Always carry a water bucket for emergencies.",
+            "korean": "비상시를 위해 항상 물 양동이를 가지고 다니세요.",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "carry",
+                    "meaning": "가지고 다니다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "bucket",
+                    "meaning": "양동이",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "emergencies",
+                    "meaning": "비상사태",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Redstone allows you to create incredible machines.",
+            "korean": "레드스톤을 사용하면 놀라운 기계를 만들 수 있습니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "allows",
+                    "meaning": "허용하다, 가능하게 하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "incredible",
+                    "meaning": "믿을 수 없는, 놀라운",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "machines",
+                    "meaning": "기계들",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "Never dig straight down, it's too risky.",
+            "korean": "절대 수직으로 파지 마세요, 너무 위험합니다.",
+            "stability": 0.3,
+            "words": [
+                {
+                    "term": "straight down",
+                    "meaning": "수직으로 아래로",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "risky",
+                    "meaning": "위험한",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Friendship and courage will help us overcome any obstacle.",
+            "korean": "우정과 용기는 어떤 장애물도 극복하도록 도와줄 것입니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "friendship",
+                    "meaning": "우정",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "courage",
+                    "meaning": "용기",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "overcome",
+                    "meaning": "극복하다",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "obstacle",
+                    "meaning": "장애물",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "This world is ours to shape and defend.",
+            "korean": "이 세상은 우리가 만들고 지켜야 할 곳입니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "shape",
+                    "meaning": "형성하다, 만들다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "defend",
+                    "meaning": "방어하다, 지키다",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}
