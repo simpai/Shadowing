@@ -24,14 +24,14 @@ interface VoiceConfig {
 }
 
 function App() {
+    const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
     const [currentScreen, setCurrentScreen] = useState<Screen>('upload');
     const [sessionData, setSessionData] = useState<ShadowData | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
     const [apiKey, setApiKey] = useState(storage.getApiKey() || '');
     const [voices, setVoices] = useState<any[]>([]);
-    const [selectedVoiceIds, setSelectedVoiceIds] = useState<string[]>([voicePresets[0].voiceId]);
+    const [selectedPresetIds, setSelectedPresetIds] = useState<string[]>([voicePresets[0].id]);
     const [globalConfig, setGlobalConfig] = useState({
-        speed: 1.0,
         repeat: 2,
         followDelayRatio: 1.2,
         modelId: 'eleven_multilingual_v2'
@@ -166,14 +166,16 @@ function App() {
                 const sentence = sessionData.sentences[i];
                 const stability = sentence.stability ?? 0.5;
 
-                for (const voiceId of selectedVoiceIds) {
-                    const preset = voicePresets.find(p => p.voiceId === voiceId);
+                for (const presetId of selectedPresetIds) {
+                    const preset = voicePresets.find(p => p.id === presetId);
                     if (!preset) continue;
+
+                    const voiceId = preset.voiceId;
 
                     const globalId = generateAudioId(
                         sentence.english,
                         voiceId,
-                        globalConfig.speed,
+                        preset.speed,
                         stability,
                         preset.similarity_boost,
                         globalConfig.modelId,
@@ -198,7 +200,7 @@ function App() {
                                 similarity_boost: preset.similarity_boost,
                                 style: preset.style,
                                 use_speaker_boost: preset.use_speaker_boost,
-                                speed: globalConfig.speed
+                                speed: preset.speed
                             }
                         });
                         audioBlob = audioRes.blob;
@@ -209,7 +211,7 @@ function App() {
                             text: sentence.english,
                             voiceId: voiceId,
                             modelId: globalConfig.modelId,
-                            speed: globalConfig.speed,
+                            speed: preset.speed,
                             stability: stability,
                             similarityBoost: preset.similarity_boost,
                             style: preset.style,
@@ -224,7 +226,7 @@ function App() {
                         sentenceIndex: sentence.index,
                         voiceId: voiceId,
                         modelId: globalConfig.modelId,
-                        speed: globalConfig.speed,
+                        speed: preset.speed,
                         stability: stability,
                         similarityBoost: preset.similarity_boost,
                         style: preset.style,
@@ -383,17 +385,17 @@ function App() {
                                         <label className="text-sm font-medium text-slate-400 block mb-3">Select Actors (Multiple Support)</label>
                                         <div className="grid grid-cols-1 gap-2">
                                             {voicePresets.map((p) => {
-                                                const isSelected = selectedVoiceIds.includes(p.voiceId);
+                                                const isSelected = selectedPresetIds.includes(p.id);
                                                 return (
                                                     <button
                                                         key={p.id}
                                                         onClick={() => {
                                                             if (isSelected) {
-                                                                if (selectedVoiceIds.length > 1) {
-                                                                    setSelectedVoiceIds(selectedVoiceIds.filter(id => id !== p.voiceId));
+                                                                if (selectedPresetIds.length > 1) {
+                                                                    setSelectedPresetIds(selectedPresetIds.filter(id => id !== p.id));
                                                                 }
                                                             } else {
-                                                                setSelectedVoiceIds([...selectedVoiceIds, p.voiceId]);
+                                                                setSelectedPresetIds([...selectedPresetIds, p.id]);
                                                             }
                                                         }}
                                                         className={`flex items-center gap-3 p-2 rounded-lg border transition-all text-left ${isSelected ? 'bg-blue-600/20 border-blue-500 shadow-lg shadow-blue-500/10' : 'bg-slate-800/30 border-slate-700/50 hover:bg-slate-800/50'}`}
@@ -402,7 +404,23 @@ function App() {
                                                             {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
                                                         </div>
                                                         <div className="flex-1">
-                                                            <p className="font-bold text-sm text-white">{p.name}</p>
+                                                            <div className="flex justify-between items-center mb-1">
+                                                                <p className="font-bold text-sm text-white">{p.name}</p>
+                                                                <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                                                                    <span className="text-[10px] text-slate-400 font-mono">{p.speed}x</span>
+                                                                    <input
+                                                                        type="range" min="0.7" max="1.2" step="0.05"
+                                                                        value={p.speed}
+                                                                        onChange={(e) => {
+                                                                            const val = parseFloat(e.target.value);
+                                                                            p.speed = val; // Direct mutation of import for now, or we can state-ify if needed
+                                                                            // Actually we should probably use a state for presets if we want to edit them
+                                                                            forceUpdate();
+                                                                        }}
+                                                                        className="w-16 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                                                                    />
+                                                                </div>
+                                                            </div>
                                                             <p className="text-[10px] text-slate-500 line-clamp-1">{p.description}</p>
                                                         </div>
                                                     </button>
@@ -436,28 +454,7 @@ function App() {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-400 block mb-2">Voice Speed ({globalConfig.speed}x)</label>
-                                        <div className="flex gap-4 items-center">
-                                            <input
-                                                type="range" min="0.7" max="1.2" step="0.05"
-                                                value={globalConfig.speed}
-                                                onChange={(e) => setGlobalConfig({ ...globalConfig, speed: parseFloat(e.target.value) })}
-                                                className="flex-grow h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                                            />
-                                            <div className="flex gap-2">
-                                                {[0.7, 0.8, 1.0, 1.2].map(s => (
-                                                    <button
-                                                        key={s}
-                                                        onClick={() => setGlobalConfig({ ...globalConfig, speed: s })}
-                                                        className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${globalConfig.speed === s ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}
-                                                    >
-                                                        x{s}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {/* Global speed setting removed */}
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -551,7 +548,7 @@ function App() {
                                     <textarea value={userNote} onChange={(e) => setUserNote(e.target.value)} placeholder="Write something before starting..." className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500/50" />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4 text-sm bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
-                                    <div> <p className="text-slate-500">Actors</p> <p className="font-bold">{selectedVoiceIds.length} Selected</p> </div>
+                                    <div> <p className="text-slate-500">Actors</p> <p className="font-bold">{selectedPresetIds.length} Selected</p> </div>
                                     <div> <p className="text-slate-500">Repeats / Delay</p> <p className="font-bold">{globalConfig.repeat}x / {globalConfig.followDelayRatio}x</p> </div>
                                 </div>
                                 {/* Inline configuration button removed for FAB consistency */}
@@ -607,7 +604,7 @@ function App() {
                             <motion.div key="session" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full">
                                 <ShadowingSession
                                     sessionData={sessionData}
-                                    voiceIds={selectedVoiceIds}
+                                    presetIds={selectedPresetIds}
                                     globalConfig={globalConfig}
                                     sessionId={currentSessionId}
                                     onFinish={handleSessionFinish}

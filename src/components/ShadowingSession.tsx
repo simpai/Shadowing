@@ -7,11 +7,10 @@ import voicePresets from '../config/voicePresets.json';
 
 interface ShadowingSessionProps {
     sessionData: ShadowData;
-    voiceIds: string[];
+    presetIds: string[];
     globalConfig: {
         repeat: number;
         followDelayRatio: number;
-        speed: number;
         modelId: string;
     };
     sessionId: number;
@@ -20,7 +19,7 @@ interface ShadowingSessionProps {
     onReadyToRecord?: () => Promise<boolean>;
 }
 
-export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, voiceIds, globalConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
+export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, presetIds, globalConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentRepeat, setCurrentRepeat] = useState(0);
@@ -74,12 +73,16 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             return;
         }
 
-        const voiceId = voiceIds[currentVoiceIndex];
-        const stability = currentSentence.stability ?? 0.5;
-        const preset = voicePresets.find((p: any) => p.voiceId === voiceId);
-        const simBoost = preset?.similarity_boost ?? 0.75;
+        const presetId = presetIds[currentVoiceIndex];
+        const preset = voicePresets.find((p: any) => p.id === presetId);
+        if (!preset) return;
 
-        const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.modelId}_${globalConfig.speed}_${stability}_${simBoost}`;
+        const voiceId = preset.voiceId;
+        const speed = preset.speed ?? 1.0;
+        const stability = currentSentence.stability ?? 0.5;
+        const simBoost = preset.similarity_boost ?? 0.75;
+
+        const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.modelId}_${speed}_${stability}_${simBoost}`;
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
@@ -106,7 +109,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                 setCurrentRepeat(prev => prev + 1);
             } else {
                 setCurrentRepeat(0);
-                if (currentVoiceIndex < voiceIds.length - 1) {
+                if (currentVoiceIndex < presetIds.length - 1) {
                     setCurrentVoiceIndex(prev => prev + 1);
                 } else {
                     setCurrentVoiceIndex(0);
@@ -170,7 +173,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             <div className={`flex justify-between items-center text-[10px] md:text-xs text-slate-500 font-mono transition-opacity duration-500 ${isStarting ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="flex items-center gap-2">
                     <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{sessionData.sentences.length}</span>
-                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Actor {currentVoiceIndex + 1}/{voiceIds.length}</span>
+                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Actor {currentVoiceIndex + 1}/{presetIds.length}</span>
                     <span className="bg-blue-500/5 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Repeat {currentRepeat + 1}/{globalConfig.repeat}</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -180,8 +183,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                             <span>REC</span>
                         </div>
                     )}
-                    <span className="hidden sm:inline">Current: {voicePresets.find(p => p.voiceId === voiceIds[currentVoiceIndex])?.name.split(' ')[0] || 'Unknown'}</span>
-                    <span>Speed: {globalConfig.speed}x</span>
+                    <span className="hidden sm:inline">Current: {voicePresets.find(p => p.id === presetIds[currentVoiceIndex])?.name || 'Unknown'}</span>
+                    <span>Speed: {voicePresets.find((p: any) => p.id === presetIds[currentVoiceIndex])?.speed || 1.0}x</span>
                 </div>
             </div>
 
