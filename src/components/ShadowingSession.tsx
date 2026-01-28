@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, SkipForward, SkipBack, RefreshCw, Volume2, Globe, MessageSquare, Mic } from 'lucide-react';
 import { ShadowData, Sentence } from '../lib/dataParser';
-import { storage, ShadowAudio } from '../lib/storage';
+import { storage, ShadowAudio, AppliedVoice } from '../lib/storage';
 import voicePresets from '../config/voicePresets.json';
 
 interface ShadowingSessionProps {
     sessionData: ShadowData;
-    presetIds: string[];
+    appliedVoices: AppliedVoice[];
     globalConfig: {
-        repeat: number;
         followDelayRatio: number;
         modelId: string;
     };
@@ -19,7 +18,7 @@ interface ShadowingSessionProps {
     onReadyToRecord?: () => Promise<boolean>;
 }
 
-export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, presetIds, globalConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
+export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData, appliedVoices, globalConfig, sessionId, onFinish, isRecording, onReadyToRecord }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentRepeat, setCurrentRepeat] = useState(0);
@@ -74,12 +73,14 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             return;
         }
 
-        const presetId = presetIds[currentVoiceIndex];
-        const preset = voicePresets.find((p: any) => p.id === presetId);
+        const applied = appliedVoices[currentVoiceIndex];
+        if (!applied) return;
+
+        const preset = voicePresets.find((p: any) => p.voiceId === applied.voiceId);
         if (!preset) return;
 
-        const voiceId = preset.voiceId;
-        const speed = preset.speed ?? 1.0;
+        const voiceId = applied.voiceId;
+        const speed = applied.speed;
         const stability = currentSentence.stability ?? 0.5;
         const simBoost = preset.similarity_boost ?? 0.75;
 
@@ -112,12 +113,13 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     };
 
     const proceedNext = () => {
+        const applied = appliedVoices[currentVoiceIndex];
         setIsWaiting(false);
-        if (currentRepeat < globalConfig.repeat - 1) {
+        if (currentRepeat < applied.repeat - 1) {
             setCurrentRepeat(prev => prev + 1);
         } else {
             setCurrentRepeat(0);
-            if (currentVoiceIndex < presetIds.length - 1) {
+            if (currentVoiceIndex < appliedVoices.length - 1) {
                 setCurrentVoiceIndex(prev => prev + 1);
             } else {
                 setCurrentVoiceIndex(0);
@@ -206,8 +208,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
             <div className={`flex justify-between items-center text-[10px] md:text-xs text-slate-500 font-mono transition-opacity duration-500 ${isStarting ? 'opacity-0' : 'opacity-100'}`}>
                 <div className="flex items-center gap-2">
                     <span className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Sentence {currentIndex + 1}/{sessionData.sentences.length}</span>
-                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Actor {currentVoiceIndex + 1}/{presetIds.length}</span>
-                    <span className="bg-blue-500/5 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Repeat {currentRepeat + 1}/{globalConfig.repeat}</span>
+                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20">Actor {currentVoiceIndex + 1}/{appliedVoices.length}</span>
+                    <span className="bg-blue-500/5 text-slate-400 px-3 py-1 rounded-full border border-slate-700">Repeat {currentRepeat + 1}/{appliedVoices[currentVoiceIndex]?.repeat}</span>
                 </div>
                 <div className="flex items-center gap-3">
                     {isRecording && (
@@ -216,8 +218,8 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                             <span>REC</span>
                         </div>
                     )}
-                    <span className="hidden sm:inline">Current: {voicePresets.find(p => p.id === presetIds[currentVoiceIndex])?.name || 'Unknown'}</span>
-                    <span>Speed: {voicePresets.find((p: any) => p.id === presetIds[currentVoiceIndex])?.speed || 1.0}x</span>
+                    <span className="hidden sm:inline">Current: {appliedVoices[currentVoiceIndex]?.name || 'Unknown'}</span>
+                    <span>Speed: {appliedVoices[currentVoiceIndex]?.speed}x</span>
                 </div>
             </div>
 

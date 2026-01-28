@@ -11,12 +11,19 @@ export interface ShadowSession {
     userNote?: string;
 }
 
+export interface AppliedVoice {
+    id: string; // Unique ID for this instance
+    voiceId: string;
+    name: string;
+    speed: number;
+    repeat: number;
+}
+
 export interface SessionPreset {
     id: string;
     name: string;
-    selectedPresetIds: string[];
+    appliedVoices: AppliedVoice[];
     config: {
-        repeat: number;
         followDelayRatio: number;
         modelId: string;
     };
@@ -152,6 +159,15 @@ class StorageService {
         return localStorage.getItem('shadow_web_theme') || 'dark';
     }
 
+    setFont(fontId: string) {
+        localStorage.setItem('shadow_web_font', fontId);
+        document.body.style.fontFamily = `'${fontId}', 'Inter', sans-serif`;
+    }
+
+    getFont(): string {
+        return localStorage.getItem('shadow_web_font') || 'Inter';
+    }
+
     // Session Preset Helpers
     saveSessionPreset(preset: SessionPreset) {
         const presets = this.getSessionPresets();
@@ -166,7 +182,22 @@ class StorageService {
 
     getSessionPresets(): SessionPreset[] {
         const data = localStorage.getItem('shadow_session_presets');
-        return data ? JSON.parse(data) : [];
+        if (!data) return [];
+        try {
+            const presets = JSON.parse(data);
+            const validPresets = presets.filter((p: any) => Array.isArray(p.appliedVoices));
+
+            // Proactively clear old format presets from localStorage if detected
+            if (validPresets.length !== presets.length) {
+                localStorage.setItem('shadow_session_presets', JSON.stringify(validPresets));
+            }
+
+            return validPresets;
+        } catch (e) {
+            console.error("Failed to parse presets", e);
+            localStorage.removeItem('shadow_session_presets'); // Clear corrupted data
+            return [];
+        }
     }
 
     deleteSessionPreset(id: string) {

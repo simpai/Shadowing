@@ -1,152 +1,47 @@
 [
     {
-        "id": "jake-us-ga-slow",
-        "name": "Jake — American GA (Standard) Slow",
-        "description": "Main reference speaker. Neutral General American accent for base shadowing.",
-        "voiceId": "pNInz6obpgDQGcFmaJgB",
-        "similarity_boost": 0.75,
-        "style": 0.15,
-        "use_speaker_boost": true,
-        "speed": 0.8
-    },
-    {
-        "id": "Lily-uk-rp-slow",
-        "name": "Lily - Velvety Actress(British RP) Slow",
-        "description": "Velvety British female voice delivers news and narrations with warmth and clarity.",
-        "voiceId": "pFZP5JQG7iQjIQuC4Bku",
-        "similarity_boost": 0.8,
-        "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 0.8
-    },
-    {
-        "id": "raj-indian-english-slow",
-        "name": "Raj - Professional Indian English Slow",
-        "description": "Authentic Indian English accent with clear articulation and a professional, trustworthy tone.",
-        "voiceId": "v8N60CAs66EebzW4Qk82",
-        "similarity_boost": 0.8,
-        "style": 0.0,
-        "use_speaker_boost": true,
-        "speed": 0.8
-    },
-    {
-        "id": "sophia-multi-slow",
-        "name": "Sophia - Multi-lingual (Clear) Slow",
-        "description": "Clear, expressive multi-lingual voice with excellent articulation across different languages.",
-        "voiceId": "AZnzlk1XjtKDC6pM4vpt",
-        "similarity_boost": 0.75,
-        "style": 0.1,
-        "use_speaker_boost": true,
-        "speed": 0.8
-    },
-    {
-        "id": "marcus-us-authoritative-slow",
-        "name": "Marcus - Authoritative Narrator Slow",
-        "description": "Deep, authoritative American voice suitable for professional presentations and formal narrations.",
-        "voiceId": "pqH6Zp7VUvX96pEAdJxe",
-        "similarity_boost": 0.7,
-        "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 0.8
-    },
-    {
-        "id": "jake-us-ga",
+        "id": "Jake",
         "name": "Jake — American GA (Standard)",
         "description": "Main reference speaker. Neutral General American accent for base shadowing.",
         "voiceId": "pNInz6obpgDQGcFmaJgB",
         "similarity_boost": 0.75,
         "style": 0.15,
-        "use_speaker_boost": true,
-        "speed": 1.0
+        "use_speaker_boost": true
     },
     {
-        "id": "Lily-uk-rp",
-        "name": "Lily - Velvety Actress(British RP)",
+        "id": "Lily",
+        "name": "Lily - Velvety Actress (British RP)",
         "description": "Velvety British female voice delivers news and narrations with warmth and clarity.",
         "voiceId": "pFZP5JQG7iQjIQuC4Bku",
         "similarity_boost": 0.8,
         "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 1.0
+        "use_speaker_boost": true
     },
     {
-        "id": "raj-indian-english",
+        "id": "Raj",
         "name": "Raj - Professional Indian English",
         "description": "Authentic Indian English accent with clear articulation and a professional, trustworthy tone.",
         "voiceId": "v8N60CAs66EebzW4Qk82",
         "similarity_boost": 0.8,
         "style": 0.0,
-        "use_speaker_boost": true,
-        "speed": 1.0
+        "use_speaker_boost": true
     },
     {
-        "id": "sophia-multi",
+        "id": "Sophia",
         "name": "Sophia - Multi-lingual (Clear)",
         "description": "Clear, expressive multi-lingual voice with excellent articulation across different languages.",
         "voiceId": "AZnzlk1XjtKDC6pM4vpt",
         "similarity_boost": 0.75,
         "style": 0.1,
-        "use_speaker_boost": true,
-        "speed": 1.0
+        "use_speaker_boost": true
     },
     {
-        "id": "marcus-us-authoritative",
+        "id": "Marcus",
         "name": "Marcus - Authoritative Narrator",
         "description": "Deep, authoritative American voice suitable for professional presentations and formal narrations.",
         "voiceId": "pqH6Zp7VUvX96pEAdJxe",
         "similarity_boost": 0.7,
         "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 1.0
-    },
-    {
-        "id": "jake-us-ga-fast",
-        "name": "Jake — American GA (Standard) Fast",
-        "description": "Main reference speaker. Neutral General American accent for base shadowing.",
-        "voiceId": "pNInz6obpgDQGcFmaJgB",
-        "similarity_boost": 0.75,
-        "style": 0.15,
-        "use_speaker_boost": true,
-        "speed": 1.2
-    },
-    {
-        "id": "Lily-uk-rp-fast",
-        "name": "Lily - Velvety Actress(British RP) Fast",
-        "description": "Velvety British female voice delivers news and narrations with warmth and clarity.",
-        "voiceId": "pFZP5JQG7iQjIQuC4Bku",
-        "similarity_boost": 0.8,
-        "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 1.2
-    },
-    {
-        "id": "raj-indian-english-fast",
-        "name": "Raj - Professional Indian English Fast",
-        "description": "Authentic Indian English accent with clear articulation and a professional, trustworthy tone.",
-        "voiceId": "v8N60CAs66EebzW4Qk82",
-        "similarity_boost": 0.8,
-        "style": 0.0,
-        "use_speaker_boost": true,
-        "speed": 1.2
-    },
-    {
-        "id": "sophia-multi-fast",
-        "name": "Sophia - Multi-lingual (Clear) Fast",
-        "description": "Clear, expressive multi-lingual voice with excellent articulation across different languages.",
-        "voiceId": "AZnzlk1XjtKDC6pM4vpt",
-        "similarity_boost": 0.75,
-        "style": 0.1,
-        "use_speaker_boost": true,
-        "speed": 1.2
-    },
-    {
-        "id": "marcus-us-authoritative-fast",
-        "name": "Marcus - Authoritative Narrator Fast",
-        "description": "Deep, authoritative American voice suitable for professional presentations and formal narrations.",
-        "voiceId": "pqH6Zp7VUvX96pEAdJxe",
-        "similarity_boost": 0.7,
-        "style": 0.2,
-        "use_speaker_boost": true,
-        "speed": 1.2
+        "use_speaker_boost": true
     }
 ]
