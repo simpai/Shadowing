@@ -208,6 +208,7 @@ function App() {
                             id: globalId,
                             text: sentence.english,
                             voiceId: voiceId,
+                            modelId: globalConfig.modelId,
                             speed: globalConfig.speed,
                             stability: stability,
                             similarityBoost: preset.similarity_boost,
@@ -222,6 +223,7 @@ function App() {
                         xmlId: sessionId,
                         sentenceIndex: sentence.index,
                         voiceId: voiceId,
+                        modelId: globalConfig.modelId,
                         speed: globalConfig.speed,
                         stability: stability,
                         similarityBoost: preset.similarity_boost,
@@ -414,8 +416,9 @@ function App() {
                                         <label className="text-sm font-medium text-slate-400 block mb-3">Model Selection</label>
                                         <div className="grid grid-cols-2 gap-2">
                                             {[
-                                                { id: 'eleven_multilingual_v2', name: 'Multilingual v2', desc: 'Highest Quality' },
-                                                { id: 'eleven_multilingual_v2_5', name: 'Multilingual v2.5', desc: 'Lower Cost' }
+                                                { id: 'eleven_multilingual_v2', name: 'Multilingual v2', desc: 'Highest Quality (Standard)' },
+                                                { id: 'eleven_turbo_v2_5', name: 'Turbo v2.5', desc: 'High Quality, Low Latency' },
+                                                { id: 'eleven_flash_v2_5', name: 'Flash v2.5', desc: 'Fastest & Cheapest' }
                                             ].map(m => (
                                                 <button
                                                     key={m.id}

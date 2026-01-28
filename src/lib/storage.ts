@@ -16,6 +16,7 @@ export interface ShadowAudio {
     xmlId: number;
     sentenceIndex: number;
     voiceId: string;
+    modelId: string;
     speed: number;
     stability: number;
     similarityBoost: number;
@@ -29,6 +30,7 @@ export interface GlobalAudio {
     id: string; // textHash_voiceId_speed_stability
     text: string;
     voiceId: string;
+    modelId: string;
     speed: number;
     stability: number;
     similarityBoost: number;
@@ -76,7 +78,7 @@ class StorageService {
 
     async saveAudio(audio: ShadowAudio): Promise<string> {
         const db = await this.dbPromise;
-        const id = `${audio.xmlId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.speed}_${audio.stability}_${audio.similarityBoost}`;
+        const id = `${audio.xmlId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.modelId}_${audio.speed}_${audio.stability}_${audio.similarityBoost}`;
         await db.put('audio', { ...audio, id });
         return id;
     }

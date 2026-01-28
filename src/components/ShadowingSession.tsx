@@ -12,6 +12,7 @@ interface ShadowingSessionProps {
         repeat: number;
         followDelayRatio: number;
         speed: number;
+        modelId: string;
     };
     sessionId: number;
     onFinish: () => void;
@@ -78,7 +79,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         const preset = voicePresets.find((p: any) => p.voiceId === voiceId);
         const simBoost = preset?.similarity_boost ?? 0.75;
 
-        const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.speed}_${stability}_${simBoost}`;
+        const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.modelId}_${globalConfig.speed}_${stability}_${simBoost}`;
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
