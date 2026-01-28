@@ -45,6 +45,8 @@ function App() {
     const [isRecording, setIsRecording] = useState(false);
     const [activeSamplePath, setActiveSamplePath] = useState<string | null>(null);
     const [fontFamily, setFontFamily] = useState(storage.getFont());
+    const [voiceError, setVoiceError] = useState<string | null>(null);
+    const [audioError, setAudioError] = useState<string | null>(null);
 
     const addAppliedVoice = (preset: any) => {
         const newVoice: AppliedVoice = {
@@ -96,16 +98,113 @@ function App() {
     }, [fontFamily]);
 
     useEffect(() => {
-        if (apiKey) {
-            storage.setApiKey(apiKey);
-            fetchVoices().then(setVoices).catch(e => console.error("Failed to load voices", e));
+        // Handle API Key from Storage or Query Params
+        const params = new URLSearchParams(window.location.search);
+        const urlApiKey = params.get('apiKey');
+        const finalKey = urlApiKey || apiKey || storage.getApiKey() || '';
+
+        if (finalKey && !apiKey) {
+            setApiKey(finalKey);
+            storage.setApiKey(finalKey);
         }
-        // Fetch samples
+    }, []);
+
+    // Fetch voices when apiKey is available
+    useEffect(() => {
+        if (apiKey) {
+            setVoiceError(null);
+            fetchVoices()
+                .then(v => {
+                    if (v && v.length > 0) {
+                        setVoices(v);
+                    } else {
+                        setVoiceError("No voices returned from API");
+                    }
+                })
+                .catch(e => {
+                    console.error("Failed to load voices", e);
+                    const isPermissionError = e.message?.includes('missing_permissions') || e.message?.includes('401');
+
+                    if (isPermissionError) {
+                        // Fallback to presets if we can't fetch the list
+                        const fallbackVoices = voicePresets.map(p => ({
+                            voice_id: p.voiceId,
+                            name: p.name,
+                            preview_url: '', // Not needed for logic
+                            category: 'generated'
+                        }));
+                        setVoices(fallbackVoices);
+                        setVoiceError("Using default voices (API key lacks listing permission)");
+                    } else {
+                        setVoiceError(e.message || "Failed to load voices");
+                    }
+                });
+        }
+    }, [apiKey]);
+
+    // Handle Autoload via Query Params
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const sessionUrl = params.get('sessionUrl');
+        const autoStart = params.get('autoStart') === 'true';
+
+        if (sessionUrl) {
+            fetch(sessionUrl)
+                .then(res => res.json())
+                .then(data => {
+                    const parsed = parseShadowJSON(JSON.stringify(data));
+                    setSessionData(parsed);
+                    if (!autoStart) {
+                        setCurrentScreen('setup-summary');
+                    }
+                })
+                .catch(err => console.error("Failed to autoload session:", err));
+        }
+    }, []);
+
+    // Automation Trigger
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const autoStart = params.get('autoStart') === 'true';
+
+        if (autoStart && sessionData && currentScreen === 'upload') {
+            const runAutomation = async () => {
+                // Ensure we don't trigger multiple times
+                if (isDownloading) return;
+
+                // IMPORTANT: Wait for API key and voices to be ready
+                if (!apiKey || voices.length === 0) return;
+
+                let currentVoices = appliedVoices;
+                if (currentVoices.length === 0) {
+                    const defaultVoice: AppliedVoice = {
+                        id: 'auto-voice-1',
+                        voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
+                        name: 'Jake',
+                        speed: 1.0,
+                        repeat: 1
+                    };
+                    setAppliedVoices([defaultVoice]);
+                    currentVoices = [defaultVoice];
+                }
+
+                const result = await startDownload(currentVoices);
+                if (result) {
+                    const sessionId = typeof result === 'number' ? result : undefined;
+                    handleStartSession(true, sessionData, sessionId);
+                }
+            };
+            runAutomation();
+        }
+    }, [sessionData, voices, apiKey, currentScreen, isDownloading, appliedVoices]);
+
+    // Fetch samples index
+    useEffect(() => {
         fetch('/samples/index.json')
             .then(res => res.json())
             .then(setSampleList)
             .catch(e => console.error("Failed to load sample index", e));
-    }, [apiKey]);
+    }, []);
 
     const generateAudioId = (text: string, voiceId: string, speed: number, stability: number, similarityBoost: number, modelId: string, style: number = 0, speakerBoost: boolean = true) => {
         // Simple hash for text
@@ -231,19 +330,22 @@ function App() {
         reader.readAsText(file);
     };
 
-    const handleStartSession = async (record: boolean = false) => {
-        if (!sessionData) return;
+    const handleStartSession = async (record: boolean = false, data?: ShadowData, existingSessionId?: number) => {
+        const targetData = data || sessionData;
+        if (!targetData) return;
         setError(null);
 
         try {
             // 1. Ensure a session exists
-            let sessionId = currentSessionId;
-            if (!sessionId) {
+            let sessionId = existingSessionId || currentSessionId;
+
+            // Only create new session if we don't have one AND we aren't forced to reuse one
+            if (!sessionId || (data && !existingSessionId)) {
                 sessionId = await storage.saveSession({
-                    title: sessionData.title,
-                    description: sessionData.description,
-                    createdAt: sessionData.createdAt,
-                    rawData: JSON.stringify(sessionData),
+                    title: targetData.title,
+                    description: targetData.description,
+                    createdAt: targetData.createdAt,
+                    rawData: JSON.stringify(targetData),
                 });
                 setCurrentSessionId(sessionId);
             }
@@ -278,11 +380,15 @@ function App() {
         } catch (err) { console.error("Failed to finish session", err); }
     };
 
-    const startDownload = async () => {
-        if (!sessionData || !apiKey) return;
+    const startDownload = async (customAppliedVoices?: AppliedVoice[]) => {
+        if (!sessionData || !apiKey) return false;
+        const voicesToUse = customAppliedVoices || appliedVoices;
+        if (voicesToUse.length === 0) return false;
+
         setIsDownloading(true);
         setDownloadProgress(0);
         setError(null);
+        setAudioError(null);
         try {
             const sessionId = await storage.saveSession({
                 title: sessionData.title,
@@ -296,7 +402,7 @@ function App() {
                 const sentence = sessionData.sentences[i];
                 const stability = sentence.stability ?? 0.5;
 
-                for (const applied of appliedVoices) {
+                for (const applied of voicesToUse) {
                     const preset = voicePresets.find(p => p.voiceId === applied.voiceId);
                     if (!preset) continue;
 
@@ -367,7 +473,22 @@ function App() {
                 }
                 setDownloadProgress(Math.round(((i + 1) / total) * 100));
             }
-        } catch (err: any) { setError(err.message || "Failed to download audio"); } finally { setIsDownloading(false); }
+            setDownloadProgress(100);
+            setIsDownloading(false);
+            setAudioError(null);
+            return sessionId; // Return the ID we actually used!
+        } catch (err: any) {
+            console.error("Download failed:", err);
+            const isAuthError = err.message?.includes('401') || err.message?.includes('unauthorized') || err.message?.includes('permissions');
+            const msg = isAuthError
+                ? "API Key Auth Error (Check start-shadowing.bat)"
+                : "Failed to prepare session audio.";
+
+            setAudioError(msg);
+            setError(msg);
+            setIsDownloading(false);
+            return false;
+        }
     };
 
     const getDifficultyWords = () => {
@@ -379,8 +500,8 @@ function App() {
             if (w.difficulty > current) unique.set(w.term, w.difficulty);
         });
         return Array.from(unique.entries())
-            .map(([term, diff]) => ({ term, diff }))
-            .sort((a, b) => b.diff - a.diff);
+            .map(([term, diff]: any) => ({ term, diff }))
+            .sort((a: any, b: any) => b.diff - a.diff);
     };
 
     const handleSampleSelect = async (samplePath: string) => {
@@ -400,6 +521,41 @@ function App() {
 
     return (
         <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-4">
+            {/* Automation Diagnostic Overlay */}
+            {window.location.search.includes('autoStart=true') && currentScreen === 'upload' && !isRecording && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-sm">
+                    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl max-w-sm w-full text-center">
+                        <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto mb-6"></div>
+                        <h2 className="text-xl font-bold text-white mb-2">Automation Initializing</h2>
+                        <p className="text-slate-400 text-sm mb-6">Preparing your session assets...</p>
+
+                        <div className="space-y-3 text-left">
+                            <div className="flex items-center gap-3 text-xs">
+                                <div className={`w-2 h-2 rounded-full ${sessionData ? 'bg-emerald-500' : 'bg-slate-700 animate-pulse'}`}></div>
+                                <span className={sessionData ? 'text-emerald-400' : 'text-slate-500'}>Session Data Loaded</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs">
+                                <div className={`w-2 h-2 rounded-full ${apiKey ? (audioError?.includes('API Key') || voiceError?.includes('401') ? 'bg-rose-500' : 'bg-emerald-500') : 'bg-rose-500'}`}></div>
+                                <span className={apiKey ? (audioError?.includes('API Key') || voiceError?.includes('401') ? 'text-rose-400' : 'text-emerald-400') : 'text-rose-400'}>
+                                    {apiKey ? (audioError?.includes('API Key') ? 'API Key Auth Error (Check .bat)' : 'API Key Found') : 'API Key Missing (Check .bat)'}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs">
+                                <div className={`w-2 h-2 rounded-full ${voices.length > 0 ? (voiceError?.includes('Using default') ? 'bg-amber-500' : 'bg-emerald-500') : (voiceError ? 'bg-rose-500' : 'bg-slate-700 animate-pulse')}`}></div>
+                                <span className={voices.length > 0 ? (voiceError?.includes('Using default') ? 'text-amber-400' : 'text-emerald-400') : (voiceError ? 'text-rose-400' : 'text-slate-500')}>
+                                    {voiceError ? `Voice Engine: ${voiceError}` : (voices.length > 0 ? 'Voice Engine Ready' : 'Voice Engine Loading...')}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs">
+                                <div className={`w-2 h-2 rounded-full ${isDownloading ? 'bg-blue-500 animate-pulse' : (downloadProgress === 100 ? 'bg-emerald-500' : (audioError ? 'bg-rose-500' : 'bg-slate-700'))}`}></div>
+                                <span className={isDownloading ? 'text-blue-400' : (downloadProgress === 100 ? 'text-emerald-400' : (audioError ? 'text-rose-400' : 'text-slate-500'))}>
+                                    {isDownloading ? `Preparing Audio: ${downloadProgress}%` : (downloadProgress === 100 ? 'Audio Ready' : (audioError ? audioError : 'Waiting for audio...'))}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="absolute inset-0 z-0 bg-slate-950">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" />

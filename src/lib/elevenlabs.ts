@@ -72,8 +72,12 @@ export const fetchVoices = async (): Promise<any[]> => {
     const client = getClient();
 
     try {
-        // Use the SDK's voices.search method
-        const response = await client.voices.search();
+        const fetchPromise = client.voices.search();
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Voice fetch timeout (10s)')), 10000)
+        );
+
+        const response: any = await Promise.race([fetchPromise, timeoutPromise]);
         return response.voices || [];
     } catch (error: any) {
         const errorMessage = error?.message || 'Failed to fetch voices';

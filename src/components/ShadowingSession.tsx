@@ -38,16 +38,21 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     useEffect(() => {
         if (hasInitiated.current) return;
         hasInitiated.current = true;
+        console.log("[ShadowingSession] Initializing...");
 
         const initiate = async () => {
             if (onReadyToRecord) {
+                console.log("[ShadowingSession] Waiting for recorder...");
                 // Wait for the screen transition (opacity transition in App.tsx) to settle
                 await new Promise(r => setTimeout(r, 800));
                 const success = await onReadyToRecord();
+                console.log("[ShadowingSession] Recorder ready:", success);
                 if (!success) {
                     onFinish(); // If recording fails/cancelled, go back
                     return;
                 }
+            } else {
+                console.log("[ShadowingSession] No recorder callback provided.");
             }
             setIsWaitingForRecord(false);
         };
@@ -57,7 +62,9 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
 
     useEffect(() => {
         if (!isWaitingForRecord && isStarting && !isPrepared) {
+            console.log("[ShadowingSession] Starting countdown timer...");
             const timer = setTimeout(() => {
+                console.log("[ShadowingSession] Prepared! Starting session.");
                 setIsPrepared(true);
                 setIsStarting(false);
             }, 1000);
@@ -66,7 +73,12 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     }, [isWaitingForRecord, isStarting, isPrepared]);
 
     const playSentence = async () => {
-        if (isStarting || isWaitingForRecord || isPaused) return;
+        // Log skip reasons
+        if (isStarting || isWaitingForRecord || isPaused) {
+            // Only log once to avoid spam, or finding a way to log state change
+            if (Math.random() < 0.05) console.log("[ShadowingSession] playSentence skipped:", { isStarting, isWaitingForRecord, isPaused });
+            return;
+        }
 
         if (!currentSentence) {
             onFinish();
@@ -85,16 +97,40 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         const simBoost = preset.similarity_boost ?? 0.75;
 
         const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.modelId}_${speed}_${stability}_${simBoost}`;
+        console.log("[ShadowingSession] Attempting to play audio:", audioId);
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
+            console.log("[ShadowingSession] Audio found, playing...");
             const url = URL.createObjectURL(audioData.audioBlob);
             if (audioRef.current) {
                 audioRef.current.src = url;
-                audioRef.current.play();
+
+                // Add robust playback handling
+                audioRef.current.play()
+                    .then(() => console.log("[ShadowingSession] Play mechanism started"))
+                    .catch(err => {
+                        console.warn("[ShadowingSession] Audio playback blocked or failed:", err);
+                        // If blocked, we manually trigger handleAudioEnd after a short delay
+                        // so the session doesn't stall indefinitely.
+                        // This is a safety net for automation.
+                        setTimeout(() => {
+                            if (!isPlaying && isWaiting) {
+                                console.log("[ShadowingSession] Triggering fallback next...");
+                                handleAudioEnd();
+                            }
+                        }, 2000);
+                    });
+
                 setIsPlaying(true);
                 setIsWaiting(false);
             }
+        } else {
+            console.error("[ShadowingSession] Audio NOT found for ID:", audioId);
+            // Fallback: Skip if audio missing to prevent stall
+            setTimeout(() => {
+                handleAudioEnd();
+            }, 1000);
         }
     };
 

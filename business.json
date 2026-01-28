@@ -1,0 +1,43 @@
+{
+    "title": "Business Meeting Essentials",
+    "description": "Essential business English for meetings and negotiations.",
+    "createdAt": "2026-01-22",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "I would like to start the meeting by reviewing the agenda.",
+            "korean": "의제를 검토하면서 회의를 시작하겠습니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "reviewing",
+                    "meaning": "검토하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "agenda",
+                    "meaning": "의제",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Does anyone have any further questions before we move on?",
+            "korean": "다음으로 넘어가기 전에 더 질문 있으신 분 계신가요?",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "further",
+                    "meaning": "추가의",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "move on",
+                    "meaning": "넘어가다",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}
