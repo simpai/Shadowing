@@ -11,6 +11,17 @@ export interface ShadowSession {
     userNote?: string;
 }
 
+export interface SessionPreset {
+    id: string;
+    name: string;
+    selectedPresetIds: string[];
+    config: {
+        repeat: number;
+        followDelayRatio: number;
+        modelId: string;
+    };
+}
+
 export interface ShadowAudio {
     id?: string; // combination of hashOrXmlId_sentenceIdx_...
     xmlId: number;
@@ -139,6 +150,28 @@ class StorageService {
 
     getTheme(): string {
         return localStorage.getItem('shadow_web_theme') || 'dark';
+    }
+
+    // Session Preset Helpers
+    saveSessionPreset(preset: SessionPreset) {
+        const presets = this.getSessionPresets();
+        const index = presets.findIndex(p => p.id === preset.id);
+        if (index >= 0) {
+            presets[index] = preset;
+        } else {
+            presets.push(preset);
+        }
+        localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
+    }
+
+    getSessionPresets(): SessionPreset[] {
+        const data = localStorage.getItem('shadow_session_presets');
+        return data ? JSON.parse(data) : [];
+    }
+
+    deleteSessionPreset(id: string) {
+        const presets = this.getSessionPresets().filter(p => p.id !== id);
+        localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
     }
 }
 

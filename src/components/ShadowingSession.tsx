@@ -321,9 +321,13 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
 
                 <button
                     onClick={() => {
-                        setCurrentIndex(Math.min(sessionData.sentences.length - 1, currentIndex + 1));
-                        setCurrentVoiceIndex(0);
-                        setCurrentRepeat(0);
+                        if (currentIndex < sessionData.sentences.length - 1) {
+                            setCurrentIndex(prev => prev + 1);
+                            setCurrentVoiceIndex(0);
+                            setCurrentRepeat(0);
+                        } else {
+                            onFinish();
+                        }
                     }}
                     className="p-4 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
                 >
