@@ -33,7 +33,8 @@ function App() {
     const [globalConfig, setGlobalConfig] = useState({
         speed: 1.0,
         repeat: 2,
-        followDelayRatio: 1.2
+        followDelayRatio: 1.2,
+        modelId: 'eleven_multilingual_v2'
     });
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [isDownloading, setIsDownloading] = useState(false);
@@ -71,14 +72,14 @@ function App() {
             .catch(e => console.error("Failed to load sample index", e));
     }, [apiKey]);
 
-    const generateAudioId = (text: string, voiceId: string, speed: number, stability: number, similarityBoost: number, style: number = 0, speakerBoost: boolean = true) => {
+    const generateAudioId = (text: string, voiceId: string, speed: number, stability: number, similarityBoost: number, modelId: string, style: number = 0, speakerBoost: boolean = true) => {
         // Simple hash for text
         let hash = 0;
         for (let i = 0; i < text.length; i++) {
             hash = ((hash << 5) - hash) + text.charCodeAt(i);
             hash |= 0;
         }
-        return `ga_${hash}_${voiceId}_${speed}_${stability}_${similarityBoost}_${style}_${speakerBoost}`;
+        return `ga_${hash}_${voiceId}_${speed}_${stability}_${similarityBoost}_${modelId}_${style}_${speakerBoost}`;
     };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -175,6 +176,7 @@ function App() {
                         globalConfig.speed,
                         stability,
                         preset.similarity_boost,
+                        globalConfig.modelId,
                         preset.style,
                         preset.use_speaker_boost
                     );
@@ -190,6 +192,7 @@ function App() {
                         const audioRes = await generateTTSAudio({
                             text: sentence.english,
                             voiceId: voiceId,
+                            modelId: globalConfig.modelId,
                             settings: {
                                 stability: stability,
                                 similarity_boost: preset.similarity_boost,
@@ -403,6 +406,29 @@ function App() {
                                                     </button>
                                                 );
                                             })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label className="text-sm font-medium text-slate-400 block mb-3">Model Selection</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                { id: 'eleven_multilingual_v2', name: 'Multilingual v2', desc: 'Highest Quality' },
+                                                { id: 'eleven_multilingual_v2_5', name: 'Multilingual v2.5', desc: 'Lower Cost' }
+                                            ].map(m => (
+                                                <button
+                                                    key={m.id}
+                                                    onClick={() => setGlobalConfig({ ...globalConfig, modelId: m.id })}
+                                                    className={`p-3 rounded-xl border transition-all text-left ${globalConfig.modelId === m.id ? 'bg-blue-600/20 border-blue-500 shadow-lg shadow-blue-500/10' : 'bg-slate-800/30 border-slate-700/50 hover:bg-slate-800/50'}`}
+                                                >
+                                                    <div className="flex items-center justify-between mb-1">
+                                                        <span className="font-bold text-sm text-white">{m.name}</span>
+                                                        {globalConfig.modelId === m.id && <CheckCircle2 className="w-4 h-4 text-blue-400" />}
+                                                    </div>
+                                                    <p className="text-[10px] text-slate-500">{m.desc}</p>
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>

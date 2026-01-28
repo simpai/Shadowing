@@ -12,6 +12,7 @@ export interface VoiceSettings {
 export interface TTSRequest {
     text: string;
     voiceId: string;
+    modelId: string;
     settings: VoiceSettings;
 }
 
@@ -32,7 +33,7 @@ export const generateTTSAudio = async (req: TTSRequest): Promise<{ blob: Blob; d
         // Use the SDK's textToSpeech.convert method
         const audioStream = await client.textToSpeech.convert(req.voiceId, {
             text: req.text,
-            modelId: 'eleven_multilingual_v2',
+            modelId: req.modelId,
             voiceSettings: {
                 stability: req.settings.stability,
                 similarityBoost: req.settings.similarity_boost,
