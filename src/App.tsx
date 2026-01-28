@@ -194,7 +194,8 @@ function App() {
                                 stability: stability,
                                 similarity_boost: preset.similarity_boost,
                                 style: preset.style,
-                                use_speaker_boost: preset.use_speaker_boost
+                                use_speaker_boost: preset.use_speaker_boost,
+                                speed: globalConfig.speed
                             }
                         });
                         audioBlob = audioRes.blob;
@@ -410,13 +411,13 @@ function App() {
                                         <label className="text-sm font-medium text-slate-400 block mb-2">Voice Speed ({globalConfig.speed}x)</label>
                                         <div className="flex gap-4 items-center">
                                             <input
-                                                type="range" min="0.5" max="2" step="0.1"
+                                                type="range" min="0.7" max="1.2" step="0.05"
                                                 value={globalConfig.speed}
                                                 onChange={(e) => setGlobalConfig({ ...globalConfig, speed: parseFloat(e.target.value) })}
                                                 className="flex-grow h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
                                             />
                                             <div className="flex gap-2">
-                                                {[0.8, 1.0, 1.2].map(s => (
+                                                {[0.7, 0.8, 1.0, 1.2].map(s => (
                                                     <button
                                                         key={s}
                                                         onClick={() => setGlobalConfig({ ...globalConfig, speed: s })}

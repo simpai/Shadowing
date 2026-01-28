@@ -1,12 +1,12 @@
+import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
 import { storage } from './storage';
-
-const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1';
 
 export interface VoiceSettings {
     stability: number;
     similarity_boost: number;
     style?: number;
     use_speaker_boost?: boolean;
+    speed?: number;
 }
 
 export interface TTSRequest {
@@ -15,57 +15,68 @@ export interface TTSRequest {
     settings: VoiceSettings;
 }
 
-export const generateTTSAudio = async (req: TTSRequest): Promise<{ blob: Blob; duration: number }> => {
+// Create a function to get the ElevenLabs client instance
+const getClient = (): ElevenLabsClient => {
     const apiKey = storage.getApiKey();
     if (!apiKey) throw new Error('API Key is missing');
 
-    const response = await fetch(
-        `${ELEVENLABS_API_URL}/text-to-speech/${req.voiceId}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'xi-api-key': apiKey,
-            },
-            body: JSON.stringify({
-                text: req.text,
-                model_id: 'eleven_multilingual_v2',
-                voice_settings: req.settings,
-            }),
-        }
-    );
-
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail?.status || `TTS conversion failed: ${response.statusText}`);
-    }
-
-    const blob = await response.blob();
-
-    // Get duration using temporary audio element
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-
-    const duration = await new Promise<number>((resolve) => {
-        audio.onloadedmetadata = () => {
-            resolve(audio.duration);
-            URL.revokeObjectURL(url);
-        };
-        audio.onerror = () => resolve(0); // Fallback
+    return new ElevenLabsClient({
+        apiKey: apiKey,
     });
+};
 
-    return { blob, duration };
+export const generateTTSAudio = async (req: TTSRequest): Promise<{ blob: Blob; duration: number }> => {
+    const client = getClient();
+
+    try {
+        // Use the SDK's textToSpeech.convert method
+        const audioStream = await client.textToSpeech.convert(req.voiceId, {
+            text: req.text,
+            modelId: 'eleven_multilingual_v2',
+            voiceSettings: {
+                stability: req.settings.stability,
+                similarityBoost: req.settings.similarity_boost,
+                style: req.settings.style,
+                useSpeakerBoost: req.settings.use_speaker_boost,
+                // Clamp speed between 0.7 and 1.2 as supported by ElevenLabs API
+                speed: req.settings.speed ? Math.max(0.7, Math.min(1.2, req.settings.speed)) : undefined,
+            },
+        });
+
+        // Convert ReadableStream to Blob using Response API
+        const response = new Response(audioStream);
+        const blob = await response.blob();
+
+        // Get duration using temporary audio element
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+
+        const duration = await new Promise<number>((resolve) => {
+            audio.onloadedmetadata = () => {
+                resolve(audio.duration);
+                URL.revokeObjectURL(url);
+            };
+            audio.onerror = () => resolve(0); // Fallback
+        });
+
+        return { blob, duration };
+    } catch (error: any) {
+        // Handle SDK errors
+        const errorMessage = error?.message || error?.body?.detail?.message || 'TTS conversion failed';
+        throw new Error(errorMessage);
+    }
 };
 
 export const fetchVoices = async (): Promise<any[]> => {
-    const apiKey = storage.getApiKey();
-    if (!apiKey) throw new Error('API Key is missing');
+    const client = getClient();
 
-    const response = await fetch(`${ELEVENLABS_API_URL}/voices`, {
-        headers: { 'xi-api-key': apiKey },
-    });
-
-    if (!response.ok) throw new Error('Failed to fetch voices');
-    const data = await response.json();
-    return data.voices;
+    try {
+        // Use the SDK's voices.search method
+        const response = await client.voices.search();
+        return response.voices || [];
+    } catch (error: any) {
+        const errorMessage = error?.message || 'Failed to fetch voices';
+        throw new Error(errorMessage);
+    }
 };
+
