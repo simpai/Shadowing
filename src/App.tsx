@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BookOpen, Play, CheckCircle2, Upload, AlertCircle, Trash2, Mic, Volume2, ArrowRight, Save, Layout, Video, Radio, Plus, X, ChevronUp, ChevronDown, Download, Type, Key, Eye, EyeOff } from 'lucide-react';
+import { Settings, BookOpen, CheckCircle2, Upload, Trash2, ArrowRight, Save, Layout, Radio, Download, Type, Key, Eye, EyeOff, Plus, X, ChevronUp, ChevronDown, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { storage, ShadowSession, ShadowAudio, AppliedVoice, SessionPreset } from './lib/storage';
-import { parseShadowXML, parseShadowJSON, ShadowData } from './lib/dataParser';
+import { parseShadowJSON, ShadowData } from './lib/dataParser';
 import { generateTTSAudio, fetchVoices } from './lib/elevenlabs';
 import { ShadowingSession } from './components/ShadowingSession';
 import { screenRecorder } from './lib/recorder';
@@ -12,19 +12,8 @@ import { StorageManager } from './components/StorageManager';
 
 type Screen = 'upload' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
 
-interface VoiceConfig {
-    voiceId: string;
-    name: string;
-    similarityBoost: number;
-    speed: number;
-    repeat: number;
-    followDelayRatio: number;
-    style?: number;
-    useSpeakerBoost?: boolean;
-}
 
 function App() {
-    const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
     const [currentScreen, setCurrentScreen] = useState<Screen>('upload');
     const [sessionData, setSessionData] = useState<ShadowData | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
@@ -346,15 +335,10 @@ function App() {
         reader.onload = async (event) => {
             const content = event.target?.result as string;
             try {
-                if (file.name.toLowerCase().endsWith('.json')) {
-                    const parsed = parseShadowJSON(content);
-                    setSessionData(parsed);
-                } else {
-                    const parsed = parseShadowXML(content);
-                    setSessionData(parsed);
-                }
+                const parsed = parseShadowJSON(content);
+                setSessionData(parsed);
                 setActiveSamplePath(null);
-            } catch (err) { setError("Invalid file structure. Make sure it is valid JSON or XML."); }
+            } catch (err) { setError("Invalid file structure. Make sure it is valid JSON."); }
         };
         reader.readAsText(file);
     };
@@ -487,7 +471,7 @@ function App() {
                     }
 
                     await storage.saveAudio({
-                        xmlId: sessionId!,
+                        sessionId: sessionId!,
                         sentenceIndex: sentence.index,
                         voiceId: voiceId,
                         modelId: globalConfig.modelId,
@@ -537,11 +521,7 @@ function App() {
         try {
             const response = await fetch(samplePath);
             const content = await response.text();
-            if (samplePath.toLowerCase().endsWith('.json')) {
-                setSessionData(parseShadowJSON(content));
-            } else {
-                setSessionData(parseShadowXML(content));
-            }
+            setSessionData(parseShadowJSON(content));
             setActiveSamplePath(samplePath);
         } catch (err) {
             setError("Failed to load sample data");
@@ -754,15 +734,15 @@ function App() {
                                                 <Upload className="text-blue-400 w-6 h-6" />
                                             </div>
                                             <div>
-                                                <h2 className="text-xl font-bold">Use Custom XML</h2>
+                                                <h2 className="text-xl font-bold">Use Custom JSON</h2>
                                                 <p className="text-sm text-slate-400">Upload your own learning data.</p>
                                             </div>
                                         </div>
 
                                         <div className="flex flex-col items-center sm:items-end gap-2 shrink-0">
                                             <label className="btn-primary bg-slate-800 border border-slate-700 hover:bg-slate-700 px-6 py-2 cursor-pointer transition-all">
-                                                <input type="file" accept=".xml,.json" className="hidden" onChange={handleFileUpload} />
-                                                Browse File (JSON/XML)
+                                                <input type="file" accept=".json" className="hidden" onChange={handleFileUpload} />
+                                                Browse File (JSON)
                                             </label>
                                             {sessionData && (
                                                 <span className="text-xs text-blue-400 font-mono animate-in fade-in slide-in-from-top-1 text-right">

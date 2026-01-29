@@ -141,7 +141,6 @@ export class ScreenRecorder {
             this.mediaRecorder.ondataavailable = (e) => {
                 if (e.data && e.data.size > 0) {
                     this.chunks.push(e.data);
-                    console.debug(`[ScreenRecorder] Data chunk: ${e.data.size} bytes`);
                 }
             };
 

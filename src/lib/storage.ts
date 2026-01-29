@@ -30,8 +30,8 @@ export interface SessionPreset {
 }
 
 export interface ShadowAudio {
-    id?: string; // combination of hashOrXmlId_sentenceIdx_...
-    xmlId: number;
+    id?: string; // combination of sessionId_sentenceIdx_...
+    sessionId: number;
     sentenceIndex: number;
     voiceId: string;
     modelId: string;
@@ -96,7 +96,7 @@ class StorageService {
 
     async saveAudio(audio: ShadowAudio): Promise<string> {
         const db = await this.dbPromise;
-        const id = `${audio.xmlId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.modelId}_${audio.speed}_${audio.stability}_${audio.similarityBoost}`;
+        const id = `${audio.sessionId}_${audio.sentenceIndex}_${audio.voiceId}_${audio.modelId}_${audio.speed}_${audio.stability}_${audio.similarityBoost}`;
         await db.put('audio', { ...audio, id });
         return id;
     }

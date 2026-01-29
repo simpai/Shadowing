@@ -15,19 +15,9 @@
         "path": "/samples/daily.json"
     },
     {
-        "id": "minecraft_01",
-        "name": "Minecraft Movie Shadowing",
-        "path": "/samples/minecraft_01.json"
-    },
-    {
         "id": "movie",
         "name": "Famous Movie Quotes",
         "path": "/samples/movie.json"
-    },
-    {
-        "id": "pikmin_shadowing_sample",
-        "name": "Pikmin Adventure Shadowing",
-        "path": "/samples/pikmin_shadowing_sample.json"
     },
     {
         "id": "tech",
