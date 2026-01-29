@@ -33,6 +33,7 @@ function App() {
     const [userNote, setUserNote] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     const [activeSessionPath, setActiveSessionPath] = useState<string | null>(null);
+    const [activeFilter, setActiveFilter] = useState('all');
     const [fontFamily, setFontFamily] = useState(storage.getFont());
     const [voiceError, setVoiceError] = useState<string | null>(null);
     const [audioError, setAudioError] = useState<string | null>(null);
@@ -697,26 +698,56 @@ function App() {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="glass-card p-6 text-white w-full"
                                 >
-                                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                        <Layout className="w-5 h-5 text-blue-400" />
-                                        Default Sessions
-                                    </h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                                        {sessionList.map((session) => (
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                                        <h3 className="text-xl font-bold flex items-center gap-2">
+                                            <Layout className="w-5 h-5 text-blue-400" />
+                                            Default Sessions
+                                        </h3>
+
+                                        {/* Folder Filters */}
+                                        <div className="flex flex-wrap gap-2">
                                             <button
-                                                key={session.id}
-                                                onClick={() => handleSessionSelect(session.path)}
-                                                className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSessionPath === session.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                onClick={() => setActiveFilter('all')}
+                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${activeFilter === 'all' ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-200'}`}
                                             >
-                                                <div className="flex flex-col gap-1">
-                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
-                                                    <div className="flex items-center justify-between">
-                                                        <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath}</span>
-                                                        <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
-                                                    </div>
-                                                </div>
+                                                All
                                             </button>
-                                        ))}
+                                            {Array.from(new Set(sessionList.map(s => s.displayPath || 'Root')))
+                                                .sort((a, b) => {
+                                                    if (a === 'Root') return -1;
+                                                    if (b === 'Root') return 1;
+                                                    return a.localeCompare(b);
+                                                })
+                                                .map(folder => (
+                                                    <button
+                                                        key={folder}
+                                                        onClick={() => setActiveFilter(folder)}
+                                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border uppercase tracking-wider ${activeFilter === folder ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-200'}`}
+                                                    >
+                                                        {folder}
+                                                    </button>
+                                                ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                                        {sessionList
+                                            .filter(session => activeFilter === 'all' || (session.displayPath || 'Root') === activeFilter)
+                                            .map((session) => (
+                                                <button
+                                                    key={session.id}
+                                                    onClick={() => handleSessionSelect(session.path)}
+                                                    className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSessionPath === session.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                >
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath}</span>
+                                                            <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            ))}
                                     </div>
                                 </motion.div>
 
