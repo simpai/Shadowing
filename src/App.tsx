@@ -32,7 +32,7 @@ function App() {
     const [error, setError] = useState<string | null>(null);
     const [userNote, setUserNote] = useState('');
     const [isRecording, setIsRecording] = useState(false);
-    const [activeSamplePath, setActiveSamplePath] = useState<string | null>(null);
+    const [activeSessionPath, setActiveSessionPath] = useState<string | null>(null);
     const [fontFamily, setFontFamily] = useState(storage.getFont());
     const [voiceError, setVoiceError] = useState<string | null>(null);
     const [audioError, setAudioError] = useState<string | null>(null);
@@ -82,7 +82,7 @@ function App() {
         }
     }, [isRecording]);
 
-    const [sampleList, setSampleList] = useState<any[]>([]);
+    const [sessionList, setSessionList] = useState<any[]>([]);
 
     useEffect(() => {
         storage.setFont(fontFamily);
@@ -216,12 +216,12 @@ function App() {
         }
     }, [sessionData, voices, apiKey, currentScreen, isDownloading, appliedVoices]);
 
-    // Fetch samples index
+    // Fetch sessions index
     useEffect(() => {
-        fetch('/samples/index.json')
+        fetch('/index.json')
             .then(res => res.json())
-            .then(setSampleList)
-            .catch(e => console.error("Failed to load sample index", e));
+            .then(setSessionList)
+            .catch(e => console.error("Failed to load session index", e));
     }, []);
 
     const generateAudioId = (text: string, voiceId: string, speed: number, stability: number, similarityBoost: number, modelId: string, style: number = 0, speakerBoost: boolean = true) => {
@@ -337,7 +337,7 @@ function App() {
             try {
                 const parsed = parseShadowJSON(content);
                 setSessionData(parsed);
-                setActiveSamplePath(null);
+                setActiveSessionPath(null);
             } catch (err) { setError("Invalid file structure. Make sure it is valid JSON."); }
         };
         reader.readAsText(file);
@@ -517,14 +517,14 @@ function App() {
             .sort((a: any, b: any) => b.diff - a.diff);
     };
 
-    const handleSampleSelect = async (samplePath: string) => {
+    const handleSessionSelect = async (sessionPath: string) => {
         try {
-            const response = await fetch(samplePath);
+            const response = await fetch(sessionPath);
             const content = await response.text();
             setSessionData(parseShadowJSON(content));
-            setActiveSamplePath(samplePath);
+            setActiveSessionPath(sessionPath);
         } catch (err) {
-            setError("Failed to load sample data");
+            setError("Failed to load session data");
         }
     };
 
@@ -691,7 +691,7 @@ function App() {
                                     </div>
                                 </motion.div>
 
-                                {/* Samples Section */}
+                                {/* Default Sessions Section */}
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -699,19 +699,19 @@ function App() {
                                 >
                                     <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                                         <Layout className="w-5 h-5 text-blue-400" />
-                                        Try Samples
+                                        Default Sessions
                                     </h3>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                                        {sampleList.map((sample) => (
+                                        {sessionList.map((session) => (
                                             <button
-                                                key={sample.id}
-                                                onClick={() => handleSampleSelect(sample.path)}
-                                                className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSamplePath === sample.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                key={session.id}
+                                                onClick={() => handleSessionSelect(session.path)}
+                                                className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSessionPath === session.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
                                             >
                                                 <div className="flex flex-col gap-1">
-                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{sample.name}</span>
+                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
                                                     <div className="flex items-center justify-between">
-                                                        <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">Sample</span>
+                                                        <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath}</span>
                                                         <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
                                                     </div>
                                                 </div>

@@ -5,45 +5,69 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SAMPLES_DIR = path.join(__dirname, '../public/samples');
-const OUTPUT_FILE = path.join(SAMPLES_DIR, 'index.json');
+const SESSIONS_DIR = path.join(__dirname, '../public/sessions');
+const OUTPUT_FILE = path.join(__dirname, '../public/index.json');
 
 function getTitle(filePath, content) {
-    const ext = path.extname(filePath).toLowerCase();
-    if (ext === '.json') {
-        try {
-            const data = JSON.parse(content);
-            return data.title || path.basename(filePath, ext);
-        } catch (e) {
-            return path.basename(filePath, ext);
-        }
-    } else if (ext === '.xml') {
-        const match = content.match(/<title>(.*?)<\/title>/);
-        return match ? match[1] : path.basename(filePath, ext);
+    try {
+        const data = JSON.parse(content);
+        return data.title || path.basename(filePath, '.json');
+    } catch (e) {
+        return path.basename(filePath, '.json');
     }
-    return path.basename(filePath, ext);
+}
+
+function getAllFiles(dirPath, arrayOfFiles) {
+    const files = fs.readdirSync(dirPath);
+    arrayOfFiles = arrayOfFiles || [];
+
+    files.forEach(function (file) {
+        const fullPath = path.join(dirPath, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+            arrayOfFiles = getAllFiles(fullPath, arrayOfFiles);
+        } else {
+            if (file.endsWith('.json') && file !== 'index.json') {
+                arrayOfFiles.push(fullPath);
+            }
+        }
+    });
+
+    return arrayOfFiles;
 }
 
 function generateIndex() {
-    console.log('Scanning samples directory...');
-    const files = fs.readdirSync(SAMPLES_DIR);
+    console.log('Scanning sessions directory recursively...');
 
-    const index = files
-        .filter(file => (file.endsWith('.json') || file.endsWith('.xml')) && file !== 'index.json')
-        .map(file => {
-            const filePath = path.join(SAMPLES_DIR, file);
-            const content = fs.readFileSync(filePath, 'utf-8');
-            const title = getTitle(filePath, content);
+    if (!fs.existsSync(SESSIONS_DIR)) {
+        console.error(`Error: Directory not found: ${SESSIONS_DIR}`);
+        return;
+    }
 
-            return {
-                id: path.basename(file, path.extname(file)),
-                name: title,
-                path: `/samples/${file}`
-            };
-        });
+    const files = getAllFiles(SESSIONS_DIR);
 
-    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(index, null, 4));
-    console.log(`Successfully generated index with ${index.length} samples.`);
+    const index = files.map(filePath => {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        const title = getTitle(filePath, content);
+
+        // Create relative path for the web app (starting with /sessions/)
+        const relativePath = '/sessions' + filePath.replace(SESSIONS_DIR, '').replace(/\\/g, '/');
+
+        // Create a human-readable display path (relative to sessions folder)
+        let displayPath = filePath.replace(SESSIONS_DIR, '').replace(/\\/g, '/');
+        if (displayPath.startsWith('/')) displayPath = displayPath.substring(1);
+        displayPath = path.dirname(displayPath);
+        if (displayPath === '.') displayPath = '';
+
+        return {
+            id: path.basename(filePath, '.json').toLowerCase().replace(/\s+/g, '-'),
+            name: title,
+            path: relativePath,
+            displayPath: displayPath
+        };
+    });
+
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(index, null, 2));
+    console.log(`Successfully generated index with ${index.length} sessions.`);
 }
 
 generateIndex();

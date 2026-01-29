@@ -1,0 +1,50 @@
+[
+  {
+    "id": "business",
+    "name": "Business Meeting Essentials",
+    "path": "/sessions/business.json",
+    "displayPath": ""
+  },
+  {
+    "id": "business2",
+    "name": "Business Meeting Essentials 2",
+    "path": "/sessions/business2.json",
+    "displayPath": ""
+  },
+  {
+    "id": "daily",
+    "name": "Daily Coffee Shop",
+    "path": "/sessions/daily.json",
+    "displayPath": ""
+  },
+  {
+    "id": "minecraft_01",
+    "name": "Minecraft Movie Shadowing",
+    "path": "/sessions/minecraft/minecraft_01.json",
+    "displayPath": "minecraft"
+  },
+  {
+    "id": "movie",
+    "name": "Famous Movie Quotes",
+    "path": "/sessions/movie.json",
+    "displayPath": ""
+  },
+  {
+    "id": "pikmin_shadowing_sample",
+    "name": "Pikmin Adventure Shadowing",
+    "path": "/sessions/pikmin/pikmin_shadowing_sample.json",
+    "displayPath": "pikmin"
+  },
+  {
+    "id": "tech",
+    "name": "Tech Interview Prep",
+    "path": "/sessions/tech.json",
+    "displayPath": ""
+  },
+  {
+    "id": "travel",
+    "name": "Airport & Travel",
+    "path": "/sessions/travel.json",
+    "displayPath": ""
+  }
+]
