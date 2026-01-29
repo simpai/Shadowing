@@ -62,13 +62,11 @@ export class ScreenRecorder {
 
             // Handle System Audio Track
             displayStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
-                if (automationActive) {
-                    console.log(`[ScreenRecorder] Muting system track to avoid mic overlap: ${track.label}`);
-                    track.enabled = false; // Physically mute the track but keep it in the stream
-                } else {
-                    const source = this.audioContext!.createMediaStreamSource(new MediaStream([track]));
-                    source.connect(this.audioDestination!);
-                }
+                // We ALWAYS mute/disable the system track from getDisplayMedia.
+                // Why? Because we capture the digital audio directly from the <audio> elements (3. Connect Media Elements).
+                // If we also include this track, the user results in a double-echo effect in manual mode.
+                console.log(`[ScreenRecorder] Disabling system audio track to prevent echo: ${track.label}`);
+                track.enabled = false;
             });
 
             // 3. Connect Media Elements

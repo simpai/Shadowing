@@ -25,6 +25,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     const [currentVoiceIndex, setCurrentVoiceIndex] = useState(0);
     const [isWaiting, setIsWaiting] = useState(false);
     const [isStarting, setIsStarting] = useState(true);
+    const [showSplashText, setShowSplashText] = useState(true);
     const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
     const [isPrepared, setIsPrepared] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
@@ -78,12 +79,23 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     useEffect(() => {
         if (!isWaitingForRecord && isStarting && !isPrepared) {
             console.log("[ShadowingSession] Starting countdown timer...");
-            const timer = setTimeout(() => {
+
+            // Phase 1: Hide text after 2 seconds
+            const textTimer = setTimeout(() => {
+                setShowSplashText(false);
+            }, 2000);
+
+            // Phase 2: Start session after 3 seconds total (1s of pure blur after text)
+            const sessionTimer = setTimeout(() => {
                 console.log("[ShadowingSession] Prepared! Starting session.");
                 setIsPrepared(true);
                 setIsStarting(false);
-            }, 1000);
-            return () => clearTimeout(timer);
+            }, 3000);
+
+            return () => {
+                clearTimeout(textTimer);
+                clearTimeout(sessionTimer);
+            };
         }
     }, [isWaitingForRecord, isStarting, isPrepared]);
 
@@ -229,27 +241,33 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                         className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-xl"
                     >
                         {!isWaitingForRecord && (
-                            <motion.div
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                className="text-center space-y-8"
-                            >
-                                <div className="space-y-4">
+                            <AnimatePresence>
+                                {showSplashText && (
                                     <motion.div
-                                        animate={{
-                                            scale: [1, 1.05, 1],
-                                            opacity: [0.8, 1, 0.8]
-                                        }}
-                                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                        className="text-6xl md:text-8xl font-black text-white tracking-tighter"
+                                        key="splash-text-content"
+                                        initial={{ scale: 0.9, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 1.05, opacity: 0, transition: { duration: 0.5 } }}
+                                        className="text-center space-y-8"
                                     >
-                                        Listen & Repeat
+                                        <div className="space-y-4">
+                                            <motion.div
+                                                animate={{
+                                                    scale: [1, 1.02, 1],
+                                                    opacity: [0.9, 1, 0.9]
+                                                }}
+                                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                                className="text-6xl md:text-8xl font-black text-white tracking-tighter"
+                                            >
+                                                Listen & Repeat
+                                            </motion.div>
+                                            <p className="text-2xl md:text-3xl text-blue-400 font-bold tracking-widest uppercase">
+                                                듣고 따라하세요
+                                            </p>
+                                        </div>
                                     </motion.div>
-                                    <p className="text-2xl md:text-3xl text-blue-400 font-bold tracking-widest uppercase">
-                                        듣고 따라하세요
-                                    </p>
-                                </div>
-                            </motion.div>
+                                )}
+                            </AnimatePresence>
                         )}
                     </motion.div>
                 )}
