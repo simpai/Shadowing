@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-samples.js && vite",
-    "build": "node scripts/generate-samples.js && tsc && vite build",
+    "dev": "node scripts/generate-sessions.js && vite",
+    "build": "node scripts/generate-sessions.js && tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
