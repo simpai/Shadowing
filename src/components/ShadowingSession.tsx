@@ -40,6 +40,13 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         hasInitiated.current = true;
         console.log("[ShadowingSession] Initializing...");
 
+        // Register audio element for direct recording
+        if (audioRef.current) {
+            import('../lib/recorder').then(({ screenRecorder }) => {
+                screenRecorder.registerElement(audioRef.current!);
+            });
+        }
+
         const initiate = async () => {
             if (onReadyToRecord) {
                 console.log("[ShadowingSession] Waiting for recorder...");
@@ -58,6 +65,14 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         };
 
         initiate();
+
+        return () => {
+            if (audioRef.current) {
+                import('../lib/recorder').then(({ screenRecorder }) => {
+                    screenRecorder.unregisterElement(audioRef.current!);
+                });
+            }
+        };
     }, []);
 
     useEffect(() => {

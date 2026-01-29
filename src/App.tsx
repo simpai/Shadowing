@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BookOpen, Play, CheckCircle2, Upload, AlertCircle, Trash2, Mic, Volume2, ArrowRight, Save, Layout, Video, Radio, Plus, X, ChevronUp, ChevronDown, Download, Type } from 'lucide-react';
+import { Settings, BookOpen, Play, CheckCircle2, Upload, AlertCircle, Trash2, Mic, Volume2, ArrowRight, Save, Layout, Video, Radio, Plus, X, ChevronUp, ChevronDown, Download, Type, Key, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { storage, ShadowSession, ShadowAudio, AppliedVoice, SessionPreset } from './lib/storage';
 import { parseShadowXML, parseShadowJSON, ShadowData } from './lib/dataParser';
@@ -47,6 +47,8 @@ function App() {
     const [fontFamily, setFontFamily] = useState(storage.getFont());
     const [voiceError, setVoiceError] = useState<string | null>(null);
     const [audioError, setAudioError] = useState<string | null>(null);
+    const [showApiKey, setShowApiKey] = useState(false);
+    const [isAutomatedSession, setIsAutomatedSession] = useState(false);
 
     const addAppliedVoice = (preset: any) => {
         const newVoice: AppliedVoice = {
@@ -98,12 +100,24 @@ function App() {
     }, [fontFamily]);
 
     useEffect(() => {
-        // Handle API Key from Storage or Query Params
+        // 1. Handle API Key from external file (persistent)
+        fetch('/userConfig.json')
+            .then(res => res.json())
+            .then(config => {
+                if (config.apiKey && !apiKey) {
+                    setApiKey(config.apiKey);
+                    storage.setApiKey(config.apiKey);
+                    console.log("[App] API Key loaded from userConfig.json");
+                }
+            })
+            .catch(() => {/* Ignore if file doesn't exist or is invalid */ });
+
+        // 2. Handle API Key from Storage or Query Params
         const params = new URLSearchParams(window.location.search);
         const urlApiKey = params.get('apiKey');
-        const finalKey = urlApiKey || apiKey || storage.getApiKey() || '';
+        const finalKey = urlApiKey || storage.getApiKey() || '';
 
-        if (finalKey && !apiKey) {
+        if (finalKey) {
             setApiKey(finalKey);
             storage.setApiKey(finalKey);
         }
@@ -177,21 +191,36 @@ function App() {
 
                 let currentVoices = appliedVoices;
                 if (currentVoices.length === 0) {
-                    const defaultVoice: AppliedVoice = {
-                        id: 'auto-voice-1',
-                        voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
-                        name: 'Jake',
-                        speed: 1.0,
-                        repeat: 1
-                    };
-                    setAppliedVoices([defaultVoice]);
-                    currentVoices = [defaultVoice];
+                    const presets = storage.getSessionPresets();
+                    if (presets.length > 0) {
+                        currentVoices = presets[0].appliedVoices;
+                        setAppliedVoices(currentVoices);
+                    } else {
+                        // Hard fallback if storage fails
+                        const defaultVoice: AppliedVoice = {
+                            id: 'auto-voice-1',
+                            voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
+                            name: 'Jake',
+                            speed: 1.0,
+                            repeat: 1
+                        };
+                        setAppliedVoices([defaultVoice]);
+                        currentVoices = [defaultVoice];
+                    }
                 }
 
                 const result = await startDownload(currentVoices);
                 if (result) {
+                    // CLEAR URL PARAMS to prevent infinite loop on return
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({ path: newUrl }, '', newUrl);
+
                     const sessionId = typeof result === 'number' ? result : undefined;
-                    handleStartSession(true, sessionData, sessionId);
+                    import('./lib/recorder').then(({ screenRecorder }) => {
+                        screenRecorder.setAutomationMode(true);
+                        setIsAutomatedSession(true);
+                        handleStartSession(true, sessionData, sessionId);
+                    });
                 }
             };
             runAutomation();
@@ -570,6 +599,28 @@ function App() {
                 </div>
                 {!isRecording && currentScreen !== 'session' && (
                     <div className="flex items-center gap-3">
+                        {/* API Key Input */}
+                        <div className="flex items-center gap-2 bg-slate-800/30 px-3 py-1.5 rounded-xl border border-slate-700/50 focus-within:border-blue-500/50 transition-all">
+                            <Key className="w-4 h-4 text-slate-500" />
+                            <input
+                                type={showApiKey ? "text" : "password"}
+                                value={apiKey}
+                                onChange={(e) => {
+                                    setApiKey(e.target.value);
+                                    storage.setApiKey(e.target.value);
+                                }}
+                                className="bg-transparent text-xs text-slate-300 focus:outline-none w-24 md:w-32 font-mono"
+                                placeholder="API Key"
+                            />
+                            <button
+                                onClick={() => setShowApiKey(!showApiKey)}
+                                className="text-slate-500 hover:text-slate-300 transition-colors"
+                            >
+                                {showApiKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                            </button>
+                        </div>
+
+                        {/* Font Selector */}
                         <div className="flex items-center gap-2 bg-slate-800/30 px-3 py-1.5 rounded-xl border border-slate-700/50">
                             <Type className="w-4 h-4 text-slate-500" />
                             <select
@@ -886,7 +937,7 @@ function App() {
                                 sessionId={currentSessionId}
                                 onFinish={handleSessionFinish}
                                 isRecording={isRecording}
-                                onReadyToRecord={isRecording ? () => screenRecorder.start() : undefined}
+                                onReadyToRecord={isRecording ? () => screenRecorder.start(isAutomatedSession) : undefined}
                             />
                         </motion.div>
                     )}
@@ -977,20 +1028,6 @@ function App() {
                                                 <Plus className="w-3.5 h-3.5 text-slate-600 group-hover:text-blue-400" />
                                             </button>
                                         ))}
-                                    </div>
-                                    {/* API Key Section */}
-                                    <div className="p-4 bg-slate-900 border-t border-slate-800">
-                                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">ElevenLabs API Key</label>
-                                        <input
-                                            type="password"
-                                            value={apiKey}
-                                            onChange={(e) => {
-                                                setApiKey(e.target.value);
-                                                storage.setApiKey(e.target.value);
-                                            }}
-                                            className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-blue-500/50 font-mono"
-                                            placeholder="Paste your API key here..."
-                                        />
                                     </div>
                                 </div>
 
