@@ -1,0 +1,33 @@
+{
+    "title": "Airport & Travel",
+    "description": "Useful English for navigating airports and travel situations.",
+    "createdAt": "2026-01-22",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "Which gate is my flight to London departing from?",
+            "korean": "런던행 비행기는 몇 번 게이트에서 출발하나요?",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "departing",
+                    "meaning": "출발하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "I am so excited for this long vacation!",
+            "korean": "이번 긴 휴가가 정말 너무 기대돼요!",
+            "stability": 0.2,
+            "words": [
+                {
+                    "term": "vacation",
+                    "meaning": "휴가",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

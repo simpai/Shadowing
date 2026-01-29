@@ -25,6 +25,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     const [currentVoiceIndex, setCurrentVoiceIndex] = useState(0);
     const [isWaiting, setIsWaiting] = useState(false);
     const [isStarting, setIsStarting] = useState(true);
+    const [showSplashText, setShowSplashText] = useState(true);
     const [isWaitingForRecord, setIsWaitingForRecord] = useState(!!onReadyToRecord);
     const [isPrepared, setIsPrepared] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
@@ -38,35 +39,73 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     useEffect(() => {
         if (hasInitiated.current) return;
         hasInitiated.current = true;
+        console.log("[ShadowingSession] Initializing...");
+
+        // Register audio element for direct recording
+        if (audioRef.current) {
+            import('../lib/recorder').then(({ screenRecorder }) => {
+                screenRecorder.registerElement(audioRef.current!);
+            });
+        }
 
         const initiate = async () => {
             if (onReadyToRecord) {
+                console.log("[ShadowingSession] Waiting for recorder...");
                 // Wait for the screen transition (opacity transition in App.tsx) to settle
                 await new Promise(r => setTimeout(r, 800));
                 const success = await onReadyToRecord();
+                console.log("[ShadowingSession] Recorder ready:", success);
                 if (!success) {
                     onFinish(); // If recording fails/cancelled, go back
                     return;
                 }
+            } else {
+                console.log("[ShadowingSession] No recorder callback provided.");
             }
             setIsWaitingForRecord(false);
         };
 
         initiate();
+
+        return () => {
+            if (audioRef.current) {
+                import('../lib/recorder').then(({ screenRecorder }) => {
+                    screenRecorder.unregisterElement(audioRef.current!);
+                });
+            }
+        };
     }, []);
 
     useEffect(() => {
         if (!isWaitingForRecord && isStarting && !isPrepared) {
-            const timer = setTimeout(() => {
+            console.log("[ShadowingSession] Starting countdown timer...");
+
+            // Phase 1: Hide text after 2 seconds
+            const textTimer = setTimeout(() => {
+                setShowSplashText(false);
+            }, 2000);
+
+            // Phase 2: Start session after 3 seconds total (1s of pure blur after text)
+            const sessionTimer = setTimeout(() => {
+                console.log("[ShadowingSession] Prepared! Starting session.");
                 setIsPrepared(true);
                 setIsStarting(false);
-            }, 1000);
-            return () => clearTimeout(timer);
+            }, 3000);
+
+            return () => {
+                clearTimeout(textTimer);
+                clearTimeout(sessionTimer);
+            };
         }
     }, [isWaitingForRecord, isStarting, isPrepared]);
 
     const playSentence = async () => {
-        if (isStarting || isWaitingForRecord || isPaused) return;
+        // Log skip reasons
+        if (isStarting || isWaitingForRecord || isPaused) {
+            // Only log once to avoid spam, or finding a way to log state change
+            if (Math.random() < 0.05) console.log("[ShadowingSession] playSentence skipped:", { isStarting, isWaitingForRecord, isPaused });
+            return;
+        }
 
         if (!currentSentence) {
             onFinish();
@@ -85,16 +124,40 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
         const simBoost = preset.similarity_boost ?? 0.75;
 
         const audioId = `${sessionId}_${currentSentence.index}_${voiceId}_${globalConfig.modelId}_${speed}_${stability}_${simBoost}`;
+        console.log("[ShadowingSession] Attempting to play audio:", audioId);
         const audioData = await storage.getAudio(audioId);
 
         if (audioData) {
+            console.log("[ShadowingSession] Audio found, playing...");
             const url = URL.createObjectURL(audioData.audioBlob);
             if (audioRef.current) {
                 audioRef.current.src = url;
-                audioRef.current.play();
+
+                // Add robust playback handling
+                audioRef.current.play()
+                    .then(() => console.log("[ShadowingSession] Play mechanism started"))
+                    .catch(err => {
+                        console.warn("[ShadowingSession] Audio playback blocked or failed:", err);
+                        // If blocked, we manually trigger handleAudioEnd after a short delay
+                        // so the session doesn't stall indefinitely.
+                        // This is a safety net for automation.
+                        setTimeout(() => {
+                            if (!isPlaying && isWaiting) {
+                                console.log("[ShadowingSession] Triggering fallback next...");
+                                handleAudioEnd();
+                            }
+                        }, 2000);
+                    });
+
                 setIsPlaying(true);
                 setIsWaiting(false);
             }
+        } else {
+            console.error("[ShadowingSession] Audio NOT found for ID:", audioId);
+            // Fallback: Skip if audio missing to prevent stall
+            setTimeout(() => {
+                handleAudioEnd();
+            }, 1000);
         }
     };
 
@@ -178,27 +241,33 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                         className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-xl"
                     >
                         {!isWaitingForRecord && (
-                            <motion.div
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                className="text-center space-y-8"
-                            >
-                                <div className="space-y-4">
+                            <AnimatePresence>
+                                {showSplashText && (
                                     <motion.div
-                                        animate={{
-                                            scale: [1, 1.05, 1],
-                                            opacity: [0.8, 1, 0.8]
-                                        }}
-                                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                        className="text-6xl md:text-8xl font-black text-white tracking-tighter"
+                                        key="splash-text-content"
+                                        initial={{ scale: 0.9, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 1.05, opacity: 0, transition: { duration: 0.5 } }}
+                                        className="text-center space-y-8"
                                     >
-                                        Listen & Repeat
+                                        <div className="space-y-4">
+                                            <motion.div
+                                                animate={{
+                                                    scale: [1, 1.02, 1],
+                                                    opacity: [0.9, 1, 0.9]
+                                                }}
+                                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                                className="text-6xl md:text-8xl font-black text-white tracking-tighter"
+                                            >
+                                                Listen & Repeat
+                                            </motion.div>
+                                            <p className="text-2xl md:text-3xl text-blue-400 font-bold tracking-widest uppercase">
+                                                듣고 따라하세요
+                                            </p>
+                                        </div>
                                     </motion.div>
-                                    <p className="text-2xl md:text-3xl text-blue-400 font-bold tracking-widest uppercase">
-                                        듣고 따라하세요
-                                    </p>
-                                </div>
-                            </motion.div>
+                                )}
+                            </AnimatePresence>
                         )}
                     </motion.div>
                 )}

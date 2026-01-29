@@ -143,11 +143,14 @@ class StorageService {
 
     // LocalStorage Helpers
     setApiKey(key: string) {
+        if (!key) return;
         localStorage.setItem('eleven_labs_api_key', key);
+        // Also save to a "persistent" key that doesn't get cleared as easily by mistake
+        localStorage.setItem('shadow_persistent_api_key', key);
     }
 
     getApiKey(): string | null {
-        return localStorage.getItem('eleven_labs_api_key');
+        return localStorage.getItem('eleven_labs_api_key') || localStorage.getItem('shadow_persistent_api_key');
     }
 
     setTheme(themeId: string) {
@@ -170,7 +173,7 @@ class StorageService {
 
     // Session Preset Helpers
     saveSessionPreset(preset: SessionPreset) {
-        const presets = this.getSessionPresets();
+        const presets = this.getSessionPresets(true); // Don't include default here
         const index = presets.findIndex(p => p.id === preset.id);
         if (index >= 0) {
             presets[index] = preset;
@@ -180,28 +183,45 @@ class StorageService {
         localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
     }
 
-    getSessionPresets(): SessionPreset[] {
+    getSessionPresets(excludeDefault: boolean = false): SessionPreset[] {
         const data = localStorage.getItem('shadow_session_presets');
-        if (!data) return [];
-        try {
-            const presets = JSON.parse(data);
-            const validPresets = presets.filter((p: any) => Array.isArray(p.appliedVoices));
+        let userPresets: SessionPreset[] = [];
 
-            // Proactively clear old format presets from localStorage if detected
-            if (validPresets.length !== presets.length) {
-                localStorage.setItem('shadow_session_presets', JSON.stringify(validPresets));
+        if (data) {
+            try {
+                const parsed = JSON.parse(data);
+                userPresets = parsed.filter((p: any) => Array.isArray(p.appliedVoices));
+            } catch (e) {
+                console.error("Failed to parse presets", e);
             }
-
-            return validPresets;
-        } catch (e) {
-            console.error("Failed to parse presets", e);
-            localStorage.removeItem('shadow_session_presets'); // Clear corrupted data
-            return [];
         }
+
+        if (excludeDefault) return userPresets;
+
+        // If no user presets, or specifically requested, provide a default
+        const defaultPreset: SessionPreset = {
+            id: 'default-preset-1',
+            name: 'Standard Practice (Default)',
+            appliedVoices: [
+                {
+                    id: 'default-voice-jake',
+                    voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
+                    name: 'Jake',
+                    speed: 1.0,
+                    repeat: 1
+                }
+            ],
+            config: {
+                followDelayRatio: 1.2,
+                modelId: 'eleven_multilingual_v2'
+            }
+        };
+
+        return userPresets.length > 0 ? userPresets : [defaultPreset];
     }
 
     deleteSessionPreset(id: string) {
-        const presets = this.getSessionPresets().filter(p => p.id !== id);
+        const presets = this.getSessionPresets(true).filter(p => p.id !== id);
         localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
     }
 }
