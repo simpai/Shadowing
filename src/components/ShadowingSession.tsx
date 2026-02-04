@@ -34,6 +34,9 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
     const hasInitiated = useRef(false);
 
     const currentSentence = sessionData.sentences[currentIndex];
+    const currentVoice = appliedVoices[currentVoiceIndex];
+    const showTranslation = currentVoice?.showTranslation !== false;
+    const showWords = currentVoice?.showWords !== false;
 
     // Handle initial countdown and recording start
     useEffect(() => {
@@ -312,7 +315,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                         <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tight leading-tight drop-shadow-2xl">
                             {currentSentence?.english}
                         </h2>
-                        <p className="text-xl md:text-2xl text-slate-400 font-medium">
+                        <p className={`text-xl md:text-2xl text-slate-400 font-medium transition-opacity duration-500 ${showTranslation ? 'opacity-100' : 'opacity-0 select-none'}`}>
                             {currentSentence?.korean}
                         </p>
                     </div>
@@ -359,7 +362,7 @@ export const ShadowingSession: React.FC<ShadowingSessionProps> = ({ sessionData,
                     >
                         <div className="flex items-baseline gap-2">
                             <span className="font-bold text-white group-hover:text-blue-400 transition-colors">{word.term}</span>
-                            <span className="text-xs text-slate-400 whitespace-nowrap">{word.meaning}</span>
+                            <span className={`text-xs text-slate-400 whitespace-nowrap transition-opacity duration-500 ${showWords ? 'opacity-100' : 'opacity-0 select-none'}`}>{word.meaning}</span>
                         </div>
                         <div className="flex gap-0.5">
                             {[1, 2, 3].map(d => (

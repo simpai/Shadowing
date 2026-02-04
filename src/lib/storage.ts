@@ -17,6 +17,8 @@ export interface AppliedVoice {
     name: string;
     speed: number;
     repeat: number;
+    showTranslation?: boolean;
+    showWords?: boolean;
 }
 
 export interface SessionPreset {
@@ -208,7 +210,9 @@ class StorageService {
                     voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
                     name: 'Jake',
                     speed: 1.0,
-                    repeat: 1
+                    repeat: 1,
+                    showTranslation: true,
+                    showWords: true
                 }
             ],
             config: {

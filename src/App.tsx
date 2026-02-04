@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BookOpen, CheckCircle2, Upload, Trash2, ArrowRight, Save, Layout, Radio, Download, Type, Key, Eye, EyeOff, Plus, X, ChevronUp, ChevronDown, Volume2 } from 'lucide-react';
+import { Settings, BookOpen, CheckCircle2, Upload, Trash2, ArrowRight, Save, Layout, Radio, Download, Type, Key, Eye, EyeOff, Plus, X, ChevronUp, ChevronDown, Volume2, Compass, Globe, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { storage, ShadowSession, ShadowAudio, AppliedVoice, SessionPreset } from './lib/storage';
 import { parseShadowJSON, ShadowData } from './lib/dataParser';
@@ -38,6 +38,7 @@ function App() {
     const [audioError, setAudioError] = useState<string | null>(null);
     const [showApiKey, setShowApiKey] = useState(false);
     const [isAutomatedSession, setIsAutomatedSession] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState<string>('All');
 
     const addAppliedVoice = (preset: any) => {
         const newVoice: AppliedVoice = {
@@ -45,7 +46,9 @@ function App() {
             voiceId: preset.voiceId,
             name: preset.name.split(' — ')[0].split(' - ')[0], // Simplify name
             speed: 1.0,
-            repeat: 1
+            repeat: 1,
+            showTranslation: true,
+            showWords: true
         };
         setAppliedVoices([...appliedVoices, newVoice]);
     };
@@ -573,9 +576,9 @@ function App() {
             <header className={`fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-50 transition-all duration-700 ease-in-out ${isRecording ? 'opacity-0 -translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.reload()}>
                     <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <BookOpen className="text-white w-6 h-6" />
+                        <Compass className="text-white w-6 h-6" />
                     </div>
-                    <h1 className="text-xl font-bold tracking-tight text-white">ShadowWeb</h1>
+                    <h1 className="text-xl font-bold tracking-tight text-white">ShadowQuest</h1>
                 </div>
                 {!isRecording && currentScreen !== 'session' && (
                     <div className="flex items-center gap-3">
@@ -691,32 +694,53 @@ function App() {
                                     </div>
                                 </motion.div>
 
-                                {/* Default Sessions Section */}
+                                {/* Session Library Section */}
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className="glass-card p-6 text-white w-full"
                                 >
-                                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                        <Layout className="w-5 h-5 text-blue-400" />
-                                        Default Sessions
-                                    </h3>
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                                        <h3 className="text-xl font-bold flex items-center gap-2">
+                                            <Layout className="w-5 h-5 text-blue-400" />
+                                            Session Library
+                                        </h3>
+
+                                        {/* Filter Chips */}
+                                        <div className="flex flex-wrap gap-2">
+                                            {['All', ...Array.from(new Set(sessionList.map(s => s.displayPath || 'General')))].map(filter => (
+                                                <button
+                                                    key={filter}
+                                                    onClick={() => setSelectedFilter(filter)}
+                                                    className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${selectedFilter === filter
+                                                        ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20'
+                                                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300 hover:bg-slate-700'
+                                                        }`}
+                                                >
+                                                    {filter}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                                        {sessionList.map((session) => (
-                                            <button
-                                                key={session.id}
-                                                onClick={() => handleSessionSelect(session.path)}
-                                                className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSessionPath === session.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
-                                            >
-                                                <div className="flex flex-col gap-1">
-                                                    <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
-                                                    <div className="flex items-center justify-between">
-                                                        <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath}</span>
-                                                        <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                        {sessionList
+                                            .filter(s => selectedFilter === 'All' || (s.displayPath || 'General') === selectedFilter)
+                                            .map((session) => (
+                                                <button
+                                                    key={session.id}
+                                                    onClick={() => handleSessionSelect(session.path)}
+                                                    className={`px-4 py-4 rounded-xl border border-slate-700/50 text-left hover:bg-blue-500/10 hover:border-blue-500/30 transition-all group ${activeSessionPath === session.path ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-800/30'}`}
+                                                >
+                                                    <div className="flex flex-col gap-1">
+                                                        <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath || 'General'}</span>
+                                                            <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </button>
-                                        ))}
+                                                </button>
+                                            ))}
                                     </div>
                                 </motion.div>
 
@@ -785,12 +809,6 @@ function App() {
                                             <span className="text-xs text-blue-200 block -mb-1">Ready to go?</span>
                                             <span className="text-2xl font-black tracking-tight uppercase">Next</span>
                                         </div>
-                                    </button>
-                                    <button
-                                        onClick={() => setIsSettingsOpen(true)}
-                                        className="text-xs text-slate-500 hover:text-blue-400 transition-colors flex items-center gap-1 mt-2"
-                                    >
-                                        <Settings className="w-3 h-3" /> or configure first
                                     </button>
                                 </div>
                             )}
@@ -1043,6 +1061,23 @@ function App() {
                                                         </button>
                                                     </div>
 
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <button
+                                                            onClick={() => updateAppliedVoice(v.id, { showTranslation: !v.showTranslation })}
+                                                            className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[9px] font-bold transition-all border ${v.showTranslation !== false ? 'bg-blue-600/20 border-blue-500/50 text-blue-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}
+                                                            title="Toggle Translation"
+                                                        >
+                                                            <Globe className="w-2.5 h-2.5" /> Trans
+                                                        </button>
+                                                        <button
+                                                            onClick={() => updateAppliedVoice(v.id, { showWords: !v.showWords })}
+                                                            className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[9px] font-bold transition-all border ${v.showWords !== false ? 'bg-purple-600/20 border-purple-500/50 text-purple-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}
+                                                            title="Toggle Word Meaning"
+                                                        >
+                                                            <MessageSquare className="w-2.5 h-2.5" /> Mean
+                                                        </button>
+                                                    </div>
+
                                                     <div className="grid grid-cols-2 gap-x-3 gap-y-1">
                                                         <div className="flex flex-col">
                                                             <div className="flex justify-between items-center text-[9px] font-bold mb-0.5">
@@ -1126,7 +1161,7 @@ function App() {
             </AnimatePresence>
 
             <footer className="fixed bottom-0 left-0 right-0 p-6 text-center text-sm text-slate-600 pointer-events-none">
-                <p>© 2026 Shadowing Web Service</p>
+                <p>Powered by ElevenLabs AI Audio Technology</p>
             </footer>
         </div>
     );
