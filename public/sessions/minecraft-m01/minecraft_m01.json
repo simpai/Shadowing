@@ -1,0 +1,317 @@
+{
+    "title": "Minecraft Day 1: The First Day",
+    "description": "Basic survival and gathering resources / 기본 생존과 자원 채집",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "First, you need to gather some wood from trees.",
+            "korean": "먼저, 나무에서 목재를 좀 모아야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "gather",
+                    "meaning": "모으다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "wood",
+                    "meaning": "나무/목재",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Open your inventory to see what you have.",
+            "korean": "인벤토리를 열어 무엇을 가지고 있는지 확인하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "inventory",
+                    "meaning": "인벤토리",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "You should craft a crafting table immediately.",
+            "korean": "즉시 제작대를 만드는 게 좋습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "craft",
+                    "meaning": "제작하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "immediately",
+                    "meaning": "즉시",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "It takes time to build a proper shelter.",
+            "korean": "제대로 된 피난처를 짓는 데는 시간이 걸립니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "proper",
+                    "meaning": "적절한/지표의",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "shelter",
+                    "meaning": "피난처",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "I am planning to explore the surrounding area.",
+            "korean": "주변 지역을 탐험할 계획입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "explore",
+                    "meaning": "탐험하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "surrounding",
+                    "meaning": "주변의",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Watch out for monsters when the sun goes down.",
+            "korean": "해가 지면 괴물들을 조심하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "watch out for",
+                    "meaning": "~을 조심하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Make sure to crafting some wooden tools.",
+            "korean": "나무 도구를 잊지 말고 만드세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "make sure to",
+                    "meaning": "꼭 ~하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "We have to survive the first night.",
+            "korean": "우리는 첫날 밤을 살아남아야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "survive",
+                    "meaning": "살아남다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "There is a cave nearby that looks interesting.",
+            "korean": "근처에 흥미로워 보이는 동굴이 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "nearby",
+                    "meaning": "근처에",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "interesting",
+                    "meaning": "흥미로운",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Don't forget to collect saplings to plant trees.",
+            "korean": "나무를 심기 위해 묘목을 모으는 것을 잊지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "collect",
+                    "meaning": "수집하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "saplings",
+                    "meaning": "묘목",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "I can make planks by refining logs.",
+            "korean": "통나무를 정제해서 판자를 만들 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "planks",
+                    "meaning": "판자",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "refining",
+                    "meaning": "정제하는",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "logs",
+                    "meaning": "통나무",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "It is useful to find sheep for wool.",
+            "korean": "양털을 얻기 위해 양을 찾는 것이 유용합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "useful",
+                    "meaning": "유용한",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "wool",
+                    "meaning": "양털",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "I used to protect myself with dirt blocks.",
+            "korean": "저는 흙 블록으로 자신을 보호하곤 했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "protect",
+                    "meaning": "보호하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Suddenly, a zombie appeared from the darkness.",
+            "korean": "갑자기, 어둠 속에서 좀비가 나타났습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "suddenly",
+                    "meaning": "갑자기",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "appear",
+                    "meaning": "나타나다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Therefore, we need to build a door.",
+            "korean": "그러므로, 우리는 문을 만들어야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "therefore",
+                    "meaning": "그러므로",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "Crafting a bed allows you to sleep through the night.",
+            "korean": "침대를 만들면 밤에 잠을 잘 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "allow",
+                    "meaning": "가능하게 하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Keep hitting the stone until it breaks.",
+            "korean": "깨질 때까지 돌을 계속 치세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hit",
+                    "meaning": "치다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "This island is full of valuable resources.",
+            "korean": "이 섬은 귀중한 자원으로 가득 차 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "valuable",
+                    "meaning": "귀중한",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "I think we should stay here for now.",
+            "korean": "지금은 여기에 머무르는 게 좋을 것 같아요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "stay",
+                    "meaning": "머무르다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Finally, the sun is rising.",
+            "korean": "마침내, 해가 떠오르고 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "finally",
+                    "meaning": "마침내",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

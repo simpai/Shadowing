@@ -1,0 +1,282 @@
+{
+    "title": "Minecraft Day 10: The End",
+    "description": "Defeating the Ender Dragon / 엔더 드래곤 물리치기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "Finally, we are ready for the End.",
+            "korean": "마침내, 우리는 엔드로 갈 준비가 되었습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "finally",
+                    "meaning": "마침내",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "We found the Stronghold using Eyes of Ender.",
+            "korean": "우리는 엔더의 눈을 사용하여 유적을 찾았습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "stronghold",
+                    "meaning": "요새/유적",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "I am nervous about fighting the dragon.",
+            "korean": "용과 싸울 생각에 긴장됩니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "nervous",
+                    "meaning": "긴장된",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Jump into the portal together.",
+            "korean": "다 함께 포털로 뛰어드세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "jump",
+                    "meaning": "뛰다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Destroy the crystals on the obsidian pillars.",
+            "korean": "흑요석 기둥 위의 크리스탈을 파괴하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "destroy",
+                    "meaning": "파괴하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "pillar",
+                    "meaning": "기둥",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "She heals from the crystals.",
+            "korean": "그녀(드래곤)는 크리스탈로부터 치유됩니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "heal",
+                    "meaning": "치유하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Watch out for the dragon's breath!",
+            "korean": "용의 숨결을 조심하세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "breath",
+                    "meaning": "숨결",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Collect the dragon's breath in a bottle.",
+            "korean": "용의 숨결을 병에 모으세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "collect",
+                    "meaning": "모으다/수집하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "bottle",
+                    "meaning": "병",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "Shoot arrows when she flies.",
+            "korean": "그녀가 날 때 화살을 쏘세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fly",
+                    "meaning": "날다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Use a bed to explode her damage.",
+            "korean": "침대를 사용하여 폭발 피해를 입히세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "explode",
+                    "meaning": "폭발하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "Don't look at the Endermen's eyes here.",
+            "korean": "여기서 엔더맨의 눈을 보지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "look at",
+                    "meaning": "보다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "We have to keep moving.",
+            "korean": "계속 움직여야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "keep moving",
+                    "meaning": "계속 움직이다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "The dragon is coming down to perch.",
+            "korean": "드래곤이 앉으려고 내려오고 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "perch",
+                    "meaning": "앉다/자리 잡다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Attack with your sword now!",
+            "korean": "지금 칼로 공격하세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "attack",
+                    "meaning": "공격하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "She is defeated!",
+            "korean": "그녀가 쓰러졌습니다!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "defeat",
+                    "meaning": "패배시키다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "Lots of experience spread everywhere.",
+            "korean": "엄청난 경험치가 사방에 흩어집니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "experience",
+                    "meaning": "경험치",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "spread",
+                    "meaning": "퍼지다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "The egg appeared on the portal.",
+            "korean": "포털 위에 알이 나타났습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "appear",
+                    "meaning": "나타나다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "Don't hit the egg, tap it with a piston.",
+            "korean": "알을 치지 말고, 피스톤으로 미세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "tap",
+                    "meaning": "가볍게 치다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "We completed the game.",
+            "korean": "우리는 게임을 완료했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "complete",
+                    "meaning": "완료하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Let's go home and celebrate.",
+            "korean": "집에 가서 축하합시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "celebrate",
+                    "meaning": "축하하다",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

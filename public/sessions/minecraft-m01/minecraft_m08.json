@@ -1,0 +1,282 @@
+{
+    "title": "Minecraft Day 8: Exploration",
+    "description": "Maps, boats, and hiding treasures / 지도, 보트, 그리고 보물 찾기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "I made a map to see where we are.",
+            "korean": "우리가 어디 있는지 보려고 지도를 만들었습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "map",
+                    "meaning": "지도",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "We should build a boat to cross the ocean.",
+            "korean": "바다를 건너기 위해 보트를 만들어야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "cross",
+                    "meaning": "건너다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "ocean",
+                    "meaning": "바다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "There might be a shipwreck underwater.",
+            "korean": "물속에 난파선이 있을지도 모릅니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "shipwreck",
+                    "meaning": "난파선",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Dolphins can lead you to treasure.",
+            "korean": "돌고래는 당신을 보물이 있는 곳으로 이끌 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "treasure",
+                    "meaning": "보물",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Breathing underwater requires a potion or a turtle shell.",
+            "korean": "수중 호흡은 물약이나 거북 등껍질이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "breathe",
+                    "meaning": "숨쉬다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Look! There is a desert temple over there.",
+            "korean": "봐요! 저기 사막 사원이 있어요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "temple",
+                    "meaning": "사원",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Don't dig the blue wool, it's a trap!",
+            "korean": "파란 양털을 파지 마세요, 함정이에요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "trap",
+                    "meaning": "함정",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "We found diamonds and golden apples.",
+            "korean": "우리는 다이아몬드와 황금 사과를 발견했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "found",
+                    "meaning": "발견했다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "I want to tame a horse for faster travel.",
+            "korean": "더 빠른 여행을 위해 말을 길들이고 싶습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "tame",
+                    "meaning": "길들이다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "You need a saddle to ride it.",
+            "korean": "말을 타려면 안장이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "saddle",
+                    "meaning": "안장",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "This jungle is so dense and hard to walk through.",
+            "korean": "이 정글은 너무 빽빽해서 걷기가 힘듭니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "dense",
+                    "meaning": "빽빽한",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "Maybe we can find a bamboo forest.",
+            "korean": "아마 대나무 숲을 찾을 수 있을 겁니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "bamboo",
+                    "meaning": "대나무",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Pandas are very rare and cute.",
+            "korean": "판다는 매우 희귀하고 귀엽습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "rare",
+                    "meaning": "희귀한",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "I'm planning to make a large map room.",
+            "korean": "나는 큰 지도 방을 만들 계획입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "room",
+                    "meaning": "방",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Mark this location with a banner.",
+            "korean": "이 위치를 현수막으로 표시하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "mark",
+                    "meaning": "표시하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "location",
+                    "meaning": "위치",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "It is getting dark, let's camp here.",
+            "korean": "어두워지고 있어요, 여기서 캠핑합시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "camp",
+                    "meaning": "야영하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "The world of Minecraft is endless.",
+            "korean": "마인크래프트의 세계는 끝이 없습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "endless",
+                    "meaning": "끝없는",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "We have explored thousands of blocks.",
+            "korean": "우리는 수천 블록을 탐험했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "thousands",
+                    "meaning": "수천의",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Adventure comes with risks.",
+            "korean": "모험에는 위험이 따릅니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "adventure",
+                    "meaning": "모험",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "risk",
+                    "meaning": "위험",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Let's head back home now.",
+            "korean": "이제 집으로 돌아갑시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "head back",
+                    "meaning": "돌아가다",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

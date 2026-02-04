@@ -1,0 +1,277 @@
+{
+    "title": "Minecraft Day 7: Into the Nether",
+    "description": "Explring the dangerous dimension / 위험한 차원 탐험하기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "We need obsidian to build a Nether portal.",
+            "korean": "네더 포털을 만들려면 흑요석이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "obsidian",
+                    "meaning": "흑요석",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Pour water on lava to make obsidian.",
+            "korean": "용암에 물을 부어 흑요석을 만드세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "pour",
+                    "meaning": "붓다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "You must use a diamond pickaxe to mine it.",
+            "korean": "그것을 캐려면 다이아몬드 곡괭이를 사용해야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "mine",
+                    "meaning": "채광하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Are you ready to enter the Nether?",
+            "korean": "네더로 들어갈 준비가 되었나요?",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "ready",
+                    "meaning": "준비된",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "The Nether is extremely dangerous and hot.",
+            "korean": "네더는 극도로 위험하고 뜨겁습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "extremely",
+                    "meaning": "극도로",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "dangerous",
+                    "meaning": "위험한",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Watch out for lava lakes!",
+            "korean": "용암 호수를 조심하세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "lake",
+                    "meaning": "호수",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Ghasts shoot fireballs at you.",
+            "korean": "가스트는 당신에게 화염구를 쏩니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "shoot",
+                    "meaning": "쏘다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "You can hit the fireball back.",
+            "korean": "화염구를 되쳐낼 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hit back",
+                    "meaning": "되치다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "Wear one piece of gold armor.",
+            "korean": "금 갑옷 한 부위를 입으세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "wear",
+                    "meaning": "입다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Piglin won't attack you if you wear gold.",
+            "korean": "금을 입으면 피글린이 공격하지 않을 것입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "attack",
+                    "meaning": "공격하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "We are looking for a Nether Fortress.",
+            "korean": "우리는 네더 요새를 찾고 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fortress",
+                    "meaning": "요새",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "Blazes drop rods needed for potions.",
+            "korean": "블레이즈는 물약에 필요한 막대를 떨어뜨립니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "potion",
+                    "meaning": "물약",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Don't get lost in the crimson forest.",
+            "korean": "진홍빛 숲에서 길을 잃지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "forest",
+                    "meaning": "숲",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Suddenly, the ground started shaking.",
+            "korean": "갑자기 땅이 흔들리기 시작했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "shake",
+                    "meaning": "흔들리다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "I accidentally hit a Zombie Pigman.",
+            "korean": "실수로 좀비 피그맨을 때렸습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "accidentally",
+                    "meaning": "실수로",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "Run! They are all coming for us!",
+            "korean": "뛰어! 그들이 전부 우리에게 오고 있어!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "run",
+                    "meaning": "달리다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "We need to trade gold for ender pearls.",
+            "korean": "엔더 진주를 얻기 위해 금을 거래해야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "pearl",
+                    "meaning": "진주",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "It is hard to survive here without food.",
+            "korean": "음식 없이 여기서 살아남기는 어렵습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hard",
+                    "meaning": "어려운",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "survive",
+                    "meaning": "살아남다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Let's go back to the Overworld.",
+            "korean": "오버월드로 돌아갑시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "return",
+                    "meaning": "돌아가다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Traveling in the Nether feels like a nightmare.",
+            "korean": "네더를 여행하는 것은 악몽 같습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "nightmare",
+                    "meaning": "악몽",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

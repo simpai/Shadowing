@@ -1,0 +1,272 @@
+{
+    "title": "Minecraft Day 4: Building a House",
+    "description": "Constructing a safe and nice shelter / 안전하고 멋진 집 짓기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "It is time to build a proper house.",
+            "korean": "이제 제대로 된 집을 지을 시간입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "proper",
+                    "meaning": "적절한, 제대로 된",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "What kind of material should we use?",
+            "korean": "어떤 재료를 사용하는 게 좋을까요?",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "material",
+                    "meaning": "재료",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "I suggest using oak planks and cobblestone.",
+            "korean": "참나무 판자와 조약돌을 사용하는 것을 제안합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "suggest",
+                    "meaning": "제안하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "First, make the foundation of the building.",
+            "korean": "먼저, 건물의 기초를 만드세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "foundation",
+                    "meaning": "기초/토대",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "I think glass windows will look nice.",
+            "korean": "유리 창문이 멋져 보일 것 같아요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "glass",
+                    "meaning": "유리",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "You need to smelt sand to get glass.",
+            "korean": "유리를 얻으려면 모래를 구워야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "sand",
+                    "meaning": "모래",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "How about adding a second floor?",
+            "korean": "2층을 추가하는 건 어때요?",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "floor",
+                    "meaning": "층/바닥",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Make sure the roof is not too flat.",
+            "korean": "지붕이 너무 평평하지 않게 하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "roof",
+                    "meaning": "지붕",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "We can decorate the interior with paintings.",
+            "korean": "그림으로 실내를 장식할 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "decorate",
+                    "meaning": "장식하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "A fireplace makes the house feel cozy.",
+            "korean": "벽난로는 집을 아늑하게 느끼게 해줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fireplace",
+                    "meaning": "벽난로",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "Be careful not to burn the house down!",
+            "korean": "집을 태워먹지 않게 조심하세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "burn",
+                    "meaning": "태우다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "We have to place torches to stop monsters spawning.",
+            "korean": "몬스터 생성을 막기 위해 횃불을 설치해야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "spawn",
+                    "meaning": "생성되다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "I want to build a balcony with a view.",
+            "korean": "전망이 있는 발코니를 짓고 싶습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "view",
+                    "meaning": "전망",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "It takes a lot of wood to finish the roof.",
+            "korean": "지붕을 완성하는 데 나무가 많이 듭니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "finish",
+                    "meaning": "끝내다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Finally, our house is complete!",
+            "korean": "드디어, 우리 집이 완성되었습니다!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "finally",
+                    "meaning": "마침내",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "complete",
+                    "meaning": "완성된",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "It looks much better than the dirt hut.",
+            "korean": "흙 오두막보다 훨씬 좋아 보이네요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hut",
+                    "meaning": "오두막",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Let's put a sign in front of the door.",
+            "korean": "문 앞에 표지판을 세워둡시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "sign",
+                    "meaning": "표지판",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "I'm going to plant some flowers around here.",
+            "korean": "이 주변에 꽃을 좀 심을 거예요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "plant",
+                    "meaning": "심다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "This place is safe from creepers.",
+            "korean": "이곳은 크리퍼로부터 안전합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "safe",
+                    "meaning": "안전한",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Building together is very fun.",
+            "korean": "함께 짓는 것은 매우 즐겁습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "together",
+                    "meaning": "함께",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,217 @@
+{
+    "title": "Pikmin Adventure 2: Exploring Playstyles",
+    "description": "피크민 게임 방법과 흥미로운 요소들을 배우는 영어 쉐도잉 세션",
+    "createdAt": "2026-01-29",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "You need to pull the Pikmin out of the ground to start your adventure.",
+            "korean": "모험을 시작하려면 땅에서 피크민을 뽑아야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "pull out",
+                    "meaning": "뽑아내다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "ground",
+                    "meaning": "땅",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Throwing Pikmin at objects allows them to carry items back to base.",
+            "korean": "물체에 피크민을 던지면 그들이 아이템을 기지로 운반할 수 있게 해줍니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "allow",
+                    "meaning": "~하게 하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "carry",
+                    "meaning": "운반하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "base",
+                    "meaning": "기지",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "Make sure to gather as many fruits as possible before sunset.",
+            "korean": "해가 지기 전에 가능한 한 많은 과일을 모으도록 하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "make sure to",
+                    "meaning": "반드시 ~하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "gather",
+                    "meaning": "모으다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "sunset",
+                    "meaning": "일몰",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Pikmin become stronger when they drink nectar from flowers.",
+            "korean": "피크민은 꽃에서 꿀을 마시면 더 강해집니다.",
+            "stability": 0.7,
+            "words": [
+                {
+                    "term": "nectar",
+                    "meaning": "꿀, 과즙",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "flower",
+                    "meaning": "꽃",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "It is important to keep an eye on your Pikmin count at all times.",
+            "korean": "항상 피크민 수를 주시하는 것이 중요합니다.",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "keep an eye on",
+                    "meaning": "~을 주시하다, 지켜보다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "count",
+                    "meaning": "수, 계산",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "at all times",
+                    "meaning": "항상",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Some obstacles can only be destroyed by charging with many Pikmin.",
+            "korean": "어떤 장애물들은 많은 피크민으로 돌격해야만 파괴할 수 있습니다.",
+            "stability": 0.8,
+            "words": [
+                {
+                    "term": "obstacle",
+                    "meaning": "장애물",
+                    "difficulty": "difficult"
+                },
+                {
+                    "term": "destroy",
+                    "meaning": "파괴하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "charge",
+                    "meaning": "돌격하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "If you act quickly, you can defeat enemies without losing any Pikmin.",
+            "korean": "빠르게 행동한다면, 피크민을 잃지 않고 적을 물리칠 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "act",
+                    "meaning": "행동하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "defeat",
+                    "meaning": "물리치다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "lose",
+                    "meaning": "잃다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Exploring new areas is exciting because you never know what you will find.",
+            "korean": "새로운 지역을 탐험하는 것은 무엇을 발견할지 모르기 때문에 흥미진진합니다.",
+            "stability": 0.6,
+            "words": [
+                {
+                    "term": "explore",
+                    "meaning": "탐험하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "exciting",
+                    "meaning": "흥미진진한",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "Don't forget to call your Pikmin back with your whistle.",
+            "korean": "호루라기로 피크민을 다시 부르는 것을 잊지 마세요.",
+            "stability": 0.4,
+            "words": [
+                {
+                    "term": "don't forget to",
+                    "meaning": "~하는 것을 잊지 마라",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "whistle",
+                    "meaning": "호루라기",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Working together with your Pikmin is the key to solving puzzles.",
+            "korean": "피크민과 함께 협력하는 것이 퍼즐을 푸는 열쇠입니다.",
+            "stability": 0.3,
+            "words": [
+                {
+                    "term": "work together",
+                    "meaning": "협력하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "key",
+                    "meaning": "핵심, 열쇠",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "solve",
+                    "meaning": "풀다, 해결하다",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}

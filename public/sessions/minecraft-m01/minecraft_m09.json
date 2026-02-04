@@ -1,0 +1,282 @@
+{
+    "title": "Minecraft Day 9: Redstone Engineering",
+    "description": "Creating automatic machines / 자동화 기계 만들기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "Redstone works like electricity.",
+            "korean": "레드스톤은 전기처럼 작동합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "electricity",
+                    "meaning": "전기",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "I want to build an automatic door.",
+            "korean": "저는 자동문을 만들고 싶습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "automatic",
+                    "meaning": "자동의",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "You need a lever or a button.",
+            "korean": "레버나 버튼이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "lever",
+                    "meaning": "레버",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Pistons can push blocks.",
+            "korean": "피스톤은 블록을 밀 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "push",
+                    "meaning": "밀다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Sticky pistons create complex mechanisms.",
+            "korean": "끈끈이 피스톤은 복잡한 메커니즘을 만듭니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "complex",
+                    "meaning": "복잡한",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Let's make a trap for monsters.",
+            "korean": "몬스터를 위한 함정을 만들어 봅시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "trap",
+                    "meaning": "함정",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Connect the redstone dust to the lamp.",
+            "korean": "레드스톤 가루를 램프에 연결하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "connect",
+                    "meaning": "연결하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Observers detect changes in front of them.",
+            "korean": "관측기는 앞의 변화를 감지합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "detect",
+                    "meaning": "감지하다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "This machine harvests crops automatically.",
+            "korean": "이 기계는 작물을 자동으로 수확합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "harvest",
+                    "meaning": "수확하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "It is difficult to understand redstone circuits.",
+            "korean": "레드스톤 회로를 이해하는 것은 어렵습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "difficult",
+                    "meaning": "어려운",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "understand",
+                    "meaning": "이해하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "circuit",
+                    "meaning": "회로",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "However, it is very useful.",
+            "korean": "하지만, 그것은 매우 유용합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "useful",
+                    "meaning": "유용한",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "I made a hidden secret entrance.",
+            "korean": "숨겨진 비밀 입구를 만들었습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hidden",
+                    "meaning": "숨겨진",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "entrance",
+                    "meaning": "입구",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Make sure the signal is strong enough.",
+            "korean": "신호가 충분히 강한지 확인하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "signal",
+                    "meaning": "신호",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Use a repeater to extend the signal.",
+            "korean": "신호를 연장하려면 중계기를 사용하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "extend",
+                    "meaning": "연장하다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Logic gates are the brain of the machine.",
+            "korean": "논리 회로는 기계의 두뇌입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "brain",
+                    "meaning": "뇌/두뇌",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "I spent hours designing this farm.",
+            "korean": "이 농장을 설계하는 데 몇 시간을 보냈습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "design",
+                    "meaning": "설계하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Creativity is the limit with redstone.",
+            "korean": "레드스톤의 한계는 창의력뿐입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "limit",
+                    "meaning": "한계",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "Can you help me fix this broken wire?",
+            "korean": "이 끊어진 전선을 고치는 걸 도와줄래요?",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fix",
+                    "meaning": "고치다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Now the lights turn on at night.",
+            "korean": "이제 밤에 불이 켜집니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "light",
+                    "meaning": "빛/전등",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Engineering in Minecraft is amazing.",
+            "korean": "마인크래프트에서의 공학은 놀랍습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "engineering",
+                    "meaning": "공학",
+                    "difficulty": "hard"
+                }
+            ]
+        }
+    ]
+}
