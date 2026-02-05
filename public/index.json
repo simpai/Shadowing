@@ -24,15 +24,81 @@
     "displayPath": "minecraft"
   },
   {
+    "id": "minecraft_m01",
+    "name": "Minecraft Day 1: The First Day",
+    "path": "/sessions/minecraft-m01/minecraft_m01.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m02",
+    "name": "Minecraft Day 2: Mining Deep",
+    "path": "/sessions/minecraft-m01/minecraft_m02.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m03",
+    "name": "Minecraft Day 3: Farming and Food",
+    "path": "/sessions/minecraft-m01/minecraft_m03.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m04",
+    "name": "Minecraft Day 4: Building a House",
+    "path": "/sessions/minecraft-m01/minecraft_m04.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m05",
+    "name": "Minecraft Day 5: Combat Training",
+    "path": "/sessions/minecraft-m01/minecraft_m05.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m06",
+    "name": "Minecraft Day 6: Village Life",
+    "path": "/sessions/minecraft-m01/minecraft_m06.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m07",
+    "name": "Minecraft Day 7: Into the Nether",
+    "path": "/sessions/minecraft-m01/minecraft_m07.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m08",
+    "name": "Minecraft Day 8: Exploration",
+    "path": "/sessions/minecraft-m01/minecraft_m08.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m09",
+    "name": "Minecraft Day 9: Redstone Engineering",
+    "path": "/sessions/minecraft-m01/minecraft_m09.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
+    "id": "minecraft_m10",
+    "name": "Minecraft Day 10: The End",
+    "path": "/sessions/minecraft-m01/minecraft_m10.json",
+    "displayPath": "minecraft-m01"
+  },
+  {
     "id": "movie",
     "name": "Famous Movie Quotes",
     "path": "/sessions/movie.json",
     "displayPath": ""
   },
   {
-    "id": "pikmin_shadowing_sample",
+    "id": "pikmin_01",
     "name": "Pikmin Adventure Shadowing",
-    "path": "/sessions/pikmin/pikmin_shadowing_sample.json",
+    "path": "/sessions/pikmin/pikmin_01.json",
+    "displayPath": "pikmin"
+  },
+  {
+    "id": "pikmin_02",
+    "name": "Pikmin Adventure 2: Exploring Playstyles",
+    "path": "/sessions/pikmin/pikmin_02.json",
     "displayPath": "pikmin"
   },
   {

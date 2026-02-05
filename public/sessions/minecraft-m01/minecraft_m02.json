@@ -1,0 +1,277 @@
+{
+    "title": "Minecraft Day 2: Mining Deep",
+    "description": "Going underground and finding ores / 지하 탐험과 광물 찾기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "Today, I am going to explore a deep cave.",
+            "korean": "오늘은 깊은 동굴을 탐험할 것입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "explore",
+                    "meaning": "탐험하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "deep",
+                    "meaning": "깊은",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Don't forget to bring enough torches.",
+            "korean": "횃불을 충분히 챙기는 것을 잊지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "torch",
+                    "meaning": "횃불",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "I need to find coal to cook food.",
+            "korean": "음식을 요리하려면 석탄을 찾아야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "coal",
+                    "meaning": "석탄",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "There is iron ore on the cave wall.",
+            "korean": "동굴 벽에 철 광석이 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "iron ore",
+                    "meaning": "철 광석",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "You should use a stone pickaxe for iron.",
+            "korean": "철을 캐려면 돌 곡괭이를 사용해야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "pickaxe",
+                    "meaning": "곡괭이",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "It is dark and scary down here.",
+            "korean": "여기도는 어둡고 무섭습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "scary",
+                    "meaning": "무서운",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Listen! I can hear a skeleton nearby.",
+            "korean": "들어보세요! 근처에서 해골 소리가 들려요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "skeleton",
+                    "meaning": "해골",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "We have to light up the area.",
+            "korean": "우리는 이 지역을 밝혀야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "light up",
+                    "meaning": "밝히다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "I have never seen diamonds before.",
+            "korean": "나는 다이아몬드를 본 적이 없습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "diamond",
+                    "meaning": "다이아몬드",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Be careful not to fall into the lava.",
+            "korean": "용암에 빠지지 않도록 조심하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "lava",
+                    "meaning": "용암",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "It's hard to see without light.",
+            "korean": "빛이 없으면 보기 힘듭니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "without",
+                    "meaning": "~없이",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "Let's dig deeper to find better materials.",
+            "korean": "더 좋은 재료를 찾기 위해 더 깊이 파봅시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "dig",
+                    "meaning": "파다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Luckily, I brought a water bucket.",
+            "korean": "다행히도, 물 양동이를 가져왔습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "luckily",
+                    "meaning": "다행히도",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Make sure to check your durability.",
+            "korean": "내구도를 꼭 확인하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "durability",
+                    "meaning": "내구도",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "You can smelt iron in a furnace.",
+            "korean": "화로에서 철을 제련할 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "smelt",
+                    "meaning": "제련하다",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "furnace",
+                    "meaning": "화로",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "However, we ran out of wood for sticks.",
+            "korean": "하지만, 막대기를 만들 나무가 다 떨어졌습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "run out of",
+                    "meaning": "~이 다 떨어지다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Go straight and turn left at the intersection.",
+            "korean": "쭉 가다가 교차로에서 왼쪽으로 도세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "intersection",
+                    "meaning": "교차로",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "I decided to return to the surface.",
+            "korean": "나는 지상으로 돌아가기로 결정했습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "surface",
+                    "meaning": "표면/지상",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "This pickaxe is about to break.",
+            "korean": "이 곡괭이는 곧 부서질 것 같습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "break",
+                    "meaning": "부서지다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "Mining is essential for survival.",
+            "korean": "광질은 생존에 필수적입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "essential",
+                    "meaning": "필수적인",
+                    "difficulty": "hard"
+                }
+            ]
+        }
+    ]
+}

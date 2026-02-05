@@ -1,0 +1,292 @@
+{
+    "title": "Minecraft Day 5: Combat Training",
+    "description": "Fighting monsters / 몬스터와 싸우기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "The night is full of dangerous creatures.",
+            "korean": "밤은 위험한 생명체들로 가득합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "dangerous",
+                    "meaning": "위험한",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "creature",
+                    "meaning": "생명체",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "You should craft a shield to defend yourself.",
+            "korean": "자신을 방어하기 위해 방패를 만들어야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "shield",
+                    "meaning": "방패",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "defend",
+                    "meaning": "방어하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "A sword is essential for fighting.",
+            "korean": "검은 싸움에 필수적입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "sword",
+                    "meaning": "검",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "essential",
+                    "meaning": "필수적인",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "Watch out for the skeleton's arrows!",
+            "korean": "해골의 화살을 조심하세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "arrow",
+                    "meaning": "화살",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Creepers explode if you get too close.",
+            "korean": "너무 가까이 가면 크리퍼가 폭발합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "explode",
+                    "meaning": "폭발하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Hit them and step back quickly.",
+            "korean": "때리고 빨리 뒤로 물러나세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "step back",
+                    "meaning": "뒤로 물러나다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "I'm worried about facing an Enderman.",
+            "korean": "엔더맨과 마주칠까 봐 걱정돼요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "face",
+                    "meaning": "마주하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "Whatever you do, don't look at its eyes.",
+            "korean": "무엇을 하든, 눈을 쳐다보지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "look at",
+                    "meaning": "쳐다보다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "Iron armor reduces damage significantly.",
+            "korean": "철 갑옷은 데미지를 크게 줄여줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "reduce",
+                    "meaning": "줄이다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "damage",
+                    "meaning": "피해",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "We have to protect the villagers from zombies.",
+            "korean": "우리는 좀비로부터 마을 주민들을 지켜야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "protect",
+                    "meaning": "보호하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "villager",
+                    "meaning": "마을 주민",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "Spiders can climb walls.",
+            "korean": "거미는 벽을 탈 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "climb",
+                    "meaning": "오르다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "I realized I ran out of food during the fight.",
+            "korean": "싸우는 도중에 음식이 다 떨어졌다는 걸 깨달았습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "realize",
+                    "meaning": "깨닫다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Wait for your attack meter to recharge.",
+            "korean": "공격 게이지가 찰 때까지 기다리세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "recharge",
+                    "meaning": "재충전하다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "Critical hits deal more damage.",
+            "korean": "치명타는 더 많은 피해를 줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "deal",
+                    "meaning": "(피해를) 주다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Unfortunately, my sword broke.",
+            "korean": "불행히도, 내 검이 부서졌습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "unfortunately",
+                    "meaning": "불행히도",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "Run away if there are too many enemies.",
+            "korean": "적이 너무 많으면 도망치세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "enemy",
+                    "meaning": "적",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Golden apples can save your life.",
+            "korean": "황금 사과는 당신의 목숨을 구할 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "save",
+                    "meaning": "구하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "I plan to enchant my armor tomorrow.",
+            "korean": "내일 갑옷에 마법을 부여할 계획입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "enchant",
+                    "meaning": "마법을 부여하다",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Victory requires good strategy.",
+            "korean": "승리는 좋은 전략을 필요로 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "strategy",
+                    "meaning": "전략",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "We survived another night!",
+            "korean": "우리는 또 다른 밤을 살아남았습니다!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "survived",
+                    "meaning": "살아남았다",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

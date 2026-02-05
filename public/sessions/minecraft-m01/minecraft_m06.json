@@ -1,0 +1,292 @@
+{
+    "title": "Minecraft Day 6: Village Life",
+    "description": "Trading and living with villagers / 주민들과 거래하고 함께 살기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "There is a village across the plain.",
+            "korean": "평원 건너편에 마을이 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "plain",
+                    "meaning": "평원",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "Villagers offer different trades.",
+            "korean": "마을 주민들은 다양한 거래를 제안합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "offer",
+                    "meaning": "제안하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "trade",
+                    "meaning": "거래",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "Emeralds are the currency of the village.",
+            "korean": "에메랄드는 마을의 화폐입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "currency",
+                    "meaning": "통화/화폐",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "You can trade wheat for emeralds with the farmer.",
+            "korean": "농부와 밀을 에메랄드로 교환할 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "farmer",
+                    "meaning": "농부",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "The librarian sells enchanted books.",
+            "korean": "사서는 마법 부여 책을 팝니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "librarian",
+                    "meaning": "사서",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "Be careful not to hit the Iron Golem.",
+            "korean": "철 골렘을 때리지 않도록 조심하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "golem",
+                    "meaning": "골렘",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "It protects the village from monsters.",
+            "korean": "그것은 몬스터로부터 마을을 보호합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "protect",
+                    "meaning": "보호하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "I want to upgrade the village houses.",
+            "korean": "저는 마을 집들을 업그레이드하고 싶습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "upgrade",
+                    "meaning": "개선하다/업그레이드하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "We should place more beds for baby villagers.",
+            "korean": "아기 주민들을 위해 침대를 더 놓아야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "place",
+                    "meaning": "놓다/설치하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Don't steal from their chests!",
+            "korean": "그들의 상자에서 훔치지 마세요!",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "steal",
+                    "meaning": "훔치다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "A raid happens if you enter a village with Bad Omen.",
+            "korean": "흉조 효과를 가지고 마을에 들어가면 습격이 발생합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "happen",
+                    "meaning": "발생하다",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "omen",
+                    "meaning": "징조",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "We have to ring the bell to warn everyone.",
+            "korean": "모두에게 경고하기 위해 종을 울려야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "warn",
+                    "meaning": "경고하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "everyone",
+                    "meaning": "모든 사람",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Trading is a quick way to get diamond gear.",
+            "korean": "거래는 다이아몬드 장비를 얻는 빠른 방법입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "gear",
+                    "meaning": "장비",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "They sleep in their beds at night.",
+            "korean": "그들은 밤에 침대에서 잠을 잡니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "sleep",
+                    "meaning": "자다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Cats allow you to scare away Creepers.",
+            "korean": "고양이는 크리퍼를 쫓아낼 수 있게 해줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "allow",
+                    "meaning": "허락하다/가능하게 하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "scare away",
+                    "meaning": "겁주어 쫓아내다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "I think this village is peaceful.",
+            "korean": "이 마을은 평화롭다고 생각합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "peaceful",
+                    "meaning": "평화로운",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Let's build a wall around the village.",
+            "korean": "마을 주변에 벽을 쌓읍시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "wall",
+                    "meaning": "벽",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "The blacksmith has some loot in his house.",
+            "korean": "대장장이 집에 전리품이 좀 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "blacksmith",
+                    "meaning": "대장장이",
+                    "difficulty": "hard"
+                },
+                {
+                    "term": "loot",
+                    "meaning": "전리품",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "It takes a lot of resources to defend a village.",
+            "korean": "마을을 지키는 데는 많은 자원이 듭니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "resources",
+                    "meaning": "자원",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "We are heroes of the village now.",
+            "korean": "우린 이제 마을의 영웅입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hero",
+                    "meaning": "영웅",
+                    "difficulty": "easy"
+                }
+            ]
+        }
+    ]
+}

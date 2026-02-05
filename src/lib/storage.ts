@@ -17,6 +17,8 @@ export interface AppliedVoice {
     name: string;
     speed: number;
     repeat: number;
+    showTranslation?: boolean;
+    showWords?: boolean;
 }
 
 export interface SessionPreset {
@@ -208,7 +210,9 @@ class StorageService {
                     voiceId: 'pNInz6obpgDQGcFmaJgB', // Jake
                     name: 'Jake',
                     speed: 1.0,
-                    repeat: 1
+                    repeat: 1,
+                    showTranslation: true,
+                    showWords: true
                 }
             ],
             config: {
@@ -223,6 +227,18 @@ class StorageService {
     deleteSessionPreset(id: string) {
         const presets = this.getSessionPresets(true).filter(p => p.id !== id);
         localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
+    }
+
+    setAuthToken(token: string) {
+        localStorage.setItem('shadow_quest_auth', token);
+    }
+
+    getAuthToken(): string | null {
+        return localStorage.getItem('shadow_quest_auth');
+    }
+
+    clearAuthToken() {
+        localStorage.removeItem('shadow_quest_auth');
     }
 }
 

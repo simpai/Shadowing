@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, BookOpen, CheckCircle2, Upload, Trash2, ArrowRight, Save, Layout, Radio, Download, Type, Key, Eye, EyeOff, Plus, X, ChevronUp, ChevronDown, Volume2 } from 'lucide-react';
+import { Settings, BookOpen, CheckCircle2, Upload, Trash2, ArrowRight, Save, Layout, Radio, Download, Type, Key, Eye, EyeOff, Plus, X, ChevronUp, ChevronDown, Volume2, Compass, Globe, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { storage, ShadowSession, ShadowAudio, AppliedVoice, SessionPreset } from './lib/storage';
 import { parseShadowJSON, ShadowData } from './lib/dataParser';
@@ -9,12 +9,19 @@ import { screenRecorder } from './lib/recorder';
 import voicePresets from './config/voicePresets.json';
 
 import { StorageManager } from './components/StorageManager';
+import { LectureIndex } from './components/LectureIndex';
 
-type Screen = 'upload' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
+type Screen = 'lecture-index' | 'upload' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
 
 
 function App() {
-    const [currentScreen, setCurrentScreen] = useState<Screen>('upload');
+    const [currentScreen, setCurrentScreen] = useState<Screen>('lecture-index');
+    const [isAuthorized, setIsAuthorized] = useState(!!storage.getAuthToken());
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authCode, setAuthCode] = useState('');
+    const [authError, setAuthError] = useState('');
+    const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+
     const [sessionData, setSessionData] = useState<ShadowData | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
     const [apiKey, setApiKey] = useState(storage.getApiKey() || '');
@@ -39,6 +46,7 @@ function App() {
     const [audioError, setAudioError] = useState<string | null>(null);
     const [showApiKey, setShowApiKey] = useState(false);
     const [isAutomatedSession, setIsAutomatedSession] = useState(false);
+    const [selectedFilter, setSelectedFilter] = useState<string>('All');
 
     const addAppliedVoice = (preset: any) => {
         const newVoice: AppliedVoice = {
@@ -46,7 +54,9 @@ function App() {
             voiceId: preset.voiceId,
             name: preset.name.split(' — ')[0].split(' - ')[0], // Simplify name
             speed: 1.0,
-            repeat: 1
+            repeat: 1,
+            showTranslation: true,
+            showWords: true
         };
         setAppliedVoices([...appliedVoices, newVoice]);
     };
@@ -88,6 +98,39 @@ function App() {
     useEffect(() => {
         storage.setFont(fontFamily);
     }, [fontFamily]);
+
+    const handleCheckAuth = async () => {
+        setIsCheckingAuth(true);
+        setAuthError('');
+        try {
+            const res = await fetch('/api/check-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: authCode })
+            });
+            const data = await res.json();
+            if (data.success) {
+                storage.setAuthToken(data.token);
+                setIsAuthorized(true);
+                setIsAuthModalOpen(false);
+                setCurrentScreen('upload'); // Redirect to library after successful auth
+            } else {
+                setAuthError(data.message || 'Invalid access code.');
+            }
+        } catch (err) {
+            setAuthError('Failed to verify code. Please try again.');
+        } finally {
+            setIsCheckingAuth(false);
+        }
+    };
+
+    const handleEnterLibrary = () => {
+        if (isAuthorized) {
+            setCurrentScreen('upload');
+        } else {
+            setIsAuthModalOpen(true);
+        }
+    };
 
     useEffect(() => {
         // 1. Handle API Key from external file (persistent)
@@ -572,13 +615,46 @@ function App() {
             </div>
 
             <header className={`fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-50 transition-all duration-700 ease-in-out ${isRecording ? 'opacity-0 -translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
-                <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.reload()}>
-                    <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <BookOpen className="text-white w-6 h-6" />
-                    </div>
-                    <h1 className="text-xl font-bold tracking-tight text-white">ShadowWeb</h1>
+                {/* Logo and Nav */}
+                <div className="flex items-center gap-6">
+                    <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        onClick={() => setCurrentScreen('lecture-index')}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/20 rounded-2xl cursor-pointer group hover:bg-blue-600/20 transition-all shadow-lg shadow-blue-500/10"
+                    >
+                        <Compass className="w-6 h-6 text-blue-400 group-hover:rotate-12 transition-transform" />
+                        <span className="text-xl font-black text-white tracking-tighter">ShadowQuest</span>
+                    </motion.div>
+
+                    {currentScreen !== 'lecture-index' && (
+                        <nav className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-2xl border border-slate-800">
+                            <button
+                                onClick={() => setCurrentScreen('lecture-index')}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen === 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                            >
+                                Lectures
+                            </button>
+                            <button
+                                onClick={handleEnterLibrary}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen !== 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                            >
+                                Shadowing
+                            </button>
+                        </nav>
+                    )}
                 </div>
-                {!isRecording && currentScreen !== 'session' && (
+                {currentScreen === 'lecture-index' && !isRecording && (
+                    <button
+                        onClick={handleEnterLibrary}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95 group"
+                    >
+                        <BookOpen className="w-4 h-4" />
+                        <span className="text-xs font-bold">Library</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                )}
+                {!isRecording && currentScreen !== 'session' && currentScreen !== 'lecture-index' && (
                     <div className="flex items-center gap-3">
                         {/* API Key Input */}
                         <div className="flex items-center gap-2 bg-slate-800/30 px-3 py-1.5 rounded-xl border border-slate-700/50 focus-within:border-blue-500/50 transition-all">
@@ -627,6 +703,12 @@ function App() {
 
             <main className={`w-full z-10 pt-24 pb-12 transition-all duration-500 ${(currentScreen === 'session' || currentScreen === 'upload') ? 'max-w-[98%]' : 'max-w-4xl'}`}>
                 <AnimatePresence mode="wait">
+                    {currentScreen === 'lecture-index' && (
+                        <motion.div key="lecture-index" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <LectureIndex onStartLearning={handleEnterLibrary} />
+                        </motion.div>
+                    )}
+
                     {currentScreen === 'upload' && (
                         <div key="upload-screen-root">
                             <div className="flex flex-col gap-6 w-full px-4 text-center items-center">
@@ -692,47 +774,38 @@ function App() {
                                     </div>
                                 </motion.div>
 
-                                {/* Default Sessions Section */}
+                                {/* Session Library Section */}
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     className="glass-card p-6 text-white w-full"
                                 >
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                                         <h3 className="text-xl font-bold flex items-center gap-2">
                                             <Layout className="w-5 h-5 text-blue-400" />
-                                            Default Sessions
+                                            Session Library
                                         </h3>
 
-                                        {/* Folder Filters */}
+                                        {/* Filter Chips */}
                                         <div className="flex flex-wrap gap-2">
-                                            <button
-                                                onClick={() => setActiveFilter('all')}
-                                                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${activeFilter === 'all' ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-200'}`}
-                                            >
-                                                All
-                                            </button>
-                                            {Array.from(new Set(sessionList.map(s => s.displayPath || 'Root')))
-                                                .sort((a, b) => {
-                                                    if (a === 'Root') return -1;
-                                                    if (b === 'Root') return 1;
-                                                    return a.localeCompare(b);
-                                                })
-                                                .map(folder => (
-                                                    <button
-                                                        key={folder}
-                                                        onClick={() => setActiveFilter(folder)}
-                                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all border uppercase tracking-wider ${activeFilter === folder ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20' : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-slate-200'}`}
-                                                    >
-                                                        {folder}
-                                                    </button>
-                                                ))}
+                                            {['All', ...Array.from(new Set(sessionList.map(s => s.displayPath || 'General')))].map(filter => (
+                                                <button
+                                                    key={filter}
+                                                    onClick={() => setSelectedFilter(filter)}
+                                                    className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${selectedFilter === filter
+                                                        ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/20'
+                                                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-300 hover:bg-slate-700'
+                                                        }`}
+                                                >
+                                                    {filter}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
                                         {sessionList
-                                            .filter(session => activeFilter === 'all' || (session.displayPath || 'Root') === activeFilter)
+                                            .filter(s => selectedFilter === 'All' || (s.displayPath || 'General') === selectedFilter)
                                             .map((session) => (
                                                 <button
                                                     key={session.id}
@@ -742,7 +815,7 @@ function App() {
                                                     <div className="flex flex-col gap-1">
                                                         <span className="font-bold text-sm group-hover:text-blue-400 transition-colors line-clamp-1">{session.name}</span>
                                                         <div className="flex items-center justify-between">
-                                                            <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath}</span>
+                                                            <span className="text-[10px] text-slate-500 italic uppercase tracking-wider">{session.displayPath || 'General'}</span>
                                                             <ArrowRight className="w-3 h-3 text-slate-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
                                                         </div>
                                                     </div>
@@ -816,12 +889,6 @@ function App() {
                                             <span className="text-xs text-blue-200 block -mb-1">Ready to go?</span>
                                             <span className="text-2xl font-black tracking-tight uppercase">Next</span>
                                         </div>
-                                    </button>
-                                    <button
-                                        onClick={() => setIsSettingsOpen(true)}
-                                        className="text-xs text-slate-500 hover:text-blue-400 transition-colors flex items-center gap-1 mt-2"
-                                    >
-                                        <Settings className="w-3 h-3" /> or configure first
                                     </button>
                                 </div>
                             )}
@@ -1074,6 +1141,23 @@ function App() {
                                                         </button>
                                                     </div>
 
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <button
+                                                            onClick={() => updateAppliedVoice(v.id, { showTranslation: !v.showTranslation })}
+                                                            className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[9px] font-bold transition-all border ${v.showTranslation !== false ? 'bg-blue-600/20 border-blue-500/50 text-blue-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}
+                                                            title="Toggle Translation"
+                                                        >
+                                                            <Globe className="w-2.5 h-2.5" /> Trans
+                                                        </button>
+                                                        <button
+                                                            onClick={() => updateAppliedVoice(v.id, { showWords: !v.showWords })}
+                                                            className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[9px] font-bold transition-all border ${v.showWords !== false ? 'bg-purple-600/20 border-purple-500/50 text-purple-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}
+                                                            title="Toggle Word Meaning"
+                                                        >
+                                                            <MessageSquare className="w-2.5 h-2.5" /> Mean
+                                                        </button>
+                                                    </div>
+
                                                     <div className="grid grid-cols-2 gap-x-3 gap-y-1">
                                                         <div className="flex flex-col">
                                                             <div className="flex justify-between items-center text-[9px] font-bold mb-0.5">
@@ -1155,9 +1239,73 @@ function App() {
                     </div>
                 )}
             </AnimatePresence>
+            {/* Authentication Modal */}
+            <AnimatePresence>
+                {isAuthModalOpen && (
+                    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsAuthModalOpen(false)}
+                            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-8 space-y-6"
+                        >
+                            <div className="text-center space-y-2">
+                                <div className="w-16 h-16 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <Key className="w-8 h-8 text-blue-400" />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white">Access Locked</h2>
+                                <p className="text-slate-400 text-sm">쉐도잉 학습 라이브러리에 접근하려면 <br />액세스 코드를 입력해 주세요.</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="relative">
+                                    <input
+                                        type="password"
+                                        placeholder="Enter Access Code"
+                                        value={authCode}
+                                        onChange={(e) => setAuthCode(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleCheckAuth()}
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-center text-xl tracking-widest"
+                                        autoFocus
+                                    />
+                                    {authError && (
+                                        <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-rose-500 text-xs font-bold mt-2 text-center">
+                                            {authError}
+                                        </motion.p>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={handleCheckAuth}
+                                    disabled={isCheckingAuth}
+                                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-blue-600/20 flex items-center justify-center gap-2"
+                                >
+                                    {isCheckingAuth ? (
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    ) : (
+                                        <>Unlock Library <ArrowRight className="w-4 h-4" /></>
+                                    )}
+                                </button>
+                                <button
+                                    onClick={() => setIsAuthModalOpen(false)}
+                                    className="w-full py-2 text-slate-500 hover:text-slate-400 text-sm font-medium transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
 
             <footer className="fixed bottom-0 left-0 right-0 p-6 text-center text-sm text-slate-600 pointer-events-none">
-                <p>© 2026 Shadowing Web Service</p>
+                <p>Powered by ElevenLabs AI Audio Technology</p>
             </footer>
         </div>
     );

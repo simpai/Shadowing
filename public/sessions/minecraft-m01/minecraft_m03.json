@@ -1,0 +1,297 @@
+{
+    "title": "Minecraft Day 3: Farming and Food",
+    "description": "Securing a food source / 식량원 확보하기",
+    "createdAt": "2026-02-04",
+    "sentences": [
+        {
+            "index": 1,
+            "english": "I am hungry and need to eat something.",
+            "korean": "배가 고파서 뭔가를 먹어야 합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hungry",
+                    "meaning": "배고픈",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "something",
+                    "meaning": "무언가",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 2,
+            "english": "How about making a wheat farm?",
+            "korean": "밀 농장을 만드는 건 어때요?",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "wheat",
+                    "meaning": "밀",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 3,
+            "english": "First, find some seeds by breaking grass.",
+            "korean": "먼저, 풀을 부숴서 씨앗을 찾으세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "seed",
+                    "meaning": "씨앗",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 4,
+            "english": "You need water to grow crops efficiently.",
+            "korean": "작물을 효율적으로 기르려면 물이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "crops",
+                    "meaning": "작물",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "efficiently",
+                    "meaning": "효율적으로",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 5,
+            "english": "Turn the dirt into farmland with a hoe.",
+            "korean": "괭이로 흙을 경작지로 바꾸세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "hoe",
+                    "meaning": "괭이",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 6,
+            "english": "It takes time for the wheat to grow.",
+            "korean": "밀이 자라는 데는 시간이 걸립니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "grow",
+                    "meaning": "자라다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 7,
+            "english": "Don't jump on the crops, or they will break.",
+            "korean": "작물 위에서 점프하지 마세요, 안 그러면 부서집니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "jump",
+                    "meaning": "점프하다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 8,
+            "english": "We can bake bread with three pieces of wheat.",
+            "korean": "밀 세 개로 빵을 구울 수 있습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "bake",
+                    "meaning": "굽다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 9,
+            "english": "I'm able to attract cows with wheat.",
+            "korean": "밀로 소들을 유인할 수 있어요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "attract",
+                    "meaning": "유인하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 10,
+            "english": "Let's build a fence so they don't escape.",
+            "korean": "그들이 도망가지 않게 울타리를 짓읍시다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fence",
+                    "meaning": "울타리",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "escape",
+                    "meaning": "탈출하다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 11,
+            "english": "Make sure to feed the animals.",
+            "korean": "동물들에게 먹이 주는 것을 잊지 마세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "feed",
+                    "meaning": "먹이를 주다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 12,
+            "english": "I used to hunt pigs, but now I raise them.",
+            "korean": "예전엔 돼지를 사냥했지만, 지금은 기릅니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "raise",
+                    "meaning": "기르다",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 13,
+            "english": "Steak gives you more energy than apples.",
+            "korean": "스테이크는 사과보다 더 많은 에너지를 줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "energy",
+                    "meaning": "에너지",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 14,
+            "english": "We should look for some chickens too.",
+            "korean": "우리 닭도 좀 찾아보는 게 좋겠어요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "chicken",
+                    "meaning": "닭",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 15,
+            "english": "Fishing is another good way to get food.",
+            "korean": "낚시는 음식을 얻는 또 다른 좋은 방법입니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "fishing",
+                    "meaning": "낚시",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 16,
+            "english": "It requires patience to catch a fish.",
+            "korean": "물고기를 잡으려면 인내심이 필요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "patience",
+                    "meaning": "인내심",
+                    "difficulty": "hard"
+                }
+            ]
+        },
+        {
+            "index": 17,
+            "english": "Finally, we have enough food for the winter.",
+            "korean": "마침내, 겨울을 날 충분한 식량이 생겼습니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "finally",
+                    "meaning": "마침내",
+                    "difficulty": "easy"
+                },
+                {
+                    "term": "enough",
+                    "meaning": "충분한",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 18,
+            "english": "Sharing food with friends is important.",
+            "korean": "친구들과 음식을 나누는 것은 중요합니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "share",
+                    "meaning": "나누다",
+                    "difficulty": "easy"
+                }
+            ]
+        },
+        {
+            "index": 19,
+            "english": "Keep harvesting until your inventory is full.",
+            "korean": "인벤토리가 꽉 찰 때까지 계속 수확하세요.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "harvest",
+                    "meaning": "수확하다",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "inventory",
+                    "meaning": "인벤토리",
+                    "difficulty": "medium"
+                }
+            ]
+        },
+        {
+            "index": 20,
+            "english": "A stable food source allows us to explore further.",
+            "korean": "안정적인 식량원은 우리가 더 멀리 탐험할 수 있게 해줍니다.",
+            "stability": 0.5,
+            "words": [
+                {
+                    "term": "stable",
+                    "meaning": "안정적인",
+                    "difficulty": "medium"
+                },
+                {
+                    "term": "explore",
+                    "meaning": "탐험하다",
+                    "difficulty": "medium"
+                }
+            ]
+        }
+    ]
+}
