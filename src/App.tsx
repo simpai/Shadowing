@@ -9,12 +9,19 @@ import { screenRecorder } from './lib/recorder';
 import voicePresets from './config/voicePresets.json';
 
 import { StorageManager } from './components/StorageManager';
+import { LectureIndex } from './components/LectureIndex';
 
-type Screen = 'upload' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
+type Screen = 'lecture-index' | 'upload' | 'setup-summary' | 'session' | 'final-summary' | 'storage-manager';
 
 
 function App() {
-    const [currentScreen, setCurrentScreen] = useState<Screen>('upload');
+    const [currentScreen, setCurrentScreen] = useState<Screen>('lecture-index');
+    const [isAuthorized, setIsAuthorized] = useState(!!storage.getAuthToken());
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authCode, setAuthCode] = useState('');
+    const [authError, setAuthError] = useState('');
+    const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+
     const [sessionData, setSessionData] = useState<ShadowData | null>(null);
     const [currentSessionId, setCurrentSessionId] = useState<number | null>(null);
     const [apiKey, setApiKey] = useState(storage.getApiKey() || '');
@@ -90,6 +97,39 @@ function App() {
     useEffect(() => {
         storage.setFont(fontFamily);
     }, [fontFamily]);
+
+    const handleCheckAuth = async () => {
+        setIsCheckingAuth(true);
+        setAuthError('');
+        try {
+            const res = await fetch('/api/check-auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: authCode })
+            });
+            const data = await res.json();
+            if (data.success) {
+                storage.setAuthToken(data.token);
+                setIsAuthorized(true);
+                setIsAuthModalOpen(false);
+                setCurrentScreen('upload'); // Redirect to library after successful auth
+            } else {
+                setAuthError(data.message || 'Invalid access code.');
+            }
+        } catch (err) {
+            setAuthError('Failed to verify code. Please try again.');
+        } finally {
+            setIsCheckingAuth(false);
+        }
+    };
+
+    const handleEnterLibrary = () => {
+        if (isAuthorized) {
+            setCurrentScreen('upload');
+        } else {
+            setIsAuthModalOpen(true);
+        }
+    };
 
     useEffect(() => {
         // 1. Handle API Key from external file (persistent)
@@ -574,13 +614,46 @@ function App() {
             </div>
 
             <header className={`fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-50 transition-all duration-700 ease-in-out ${isRecording ? 'opacity-0 -translate-y-8 pointer-events-none' : 'opacity-100 translate-y-0'}`}>
-                <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.reload()}>
-                    <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <Compass className="text-white w-6 h-6" />
-                    </div>
-                    <h1 className="text-xl font-bold tracking-tight text-white">ShadowQuest</h1>
+                {/* Logo and Nav */}
+                <div className="flex items-center gap-6">
+                    <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        onClick={() => setCurrentScreen('lecture-index')}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600/10 border border-blue-500/20 rounded-2xl cursor-pointer group hover:bg-blue-600/20 transition-all shadow-lg shadow-blue-500/10"
+                    >
+                        <Compass className="w-6 h-6 text-blue-400 group-hover:rotate-12 transition-transform" />
+                        <span className="text-xl font-black text-white tracking-tighter">ShadowQuest</span>
+                    </motion.div>
+
+                    {currentScreen !== 'lecture-index' && (
+                        <nav className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-2xl border border-slate-800">
+                            <button
+                                onClick={() => setCurrentScreen('lecture-index')}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen === 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                            >
+                                Lectures
+                            </button>
+                            <button
+                                onClick={handleEnterLibrary}
+                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen !== 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                            >
+                                Shadowing
+                            </button>
+                        </nav>
+                    )}
                 </div>
-                {!isRecording && currentScreen !== 'session' && (
+                {currentScreen === 'lecture-index' && !isRecording && (
+                    <button
+                        onClick={handleEnterLibrary}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:scale-105 active:scale-95 group"
+                    >
+                        <BookOpen className="w-4 h-4" />
+                        <span className="text-xs font-bold">Library</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                )}
+                {!isRecording && currentScreen !== 'session' && currentScreen !== 'lecture-index' && (
                     <div className="flex items-center gap-3">
                         {/* API Key Input */}
                         <div className="flex items-center gap-2 bg-slate-800/30 px-3 py-1.5 rounded-xl border border-slate-700/50 focus-within:border-blue-500/50 transition-all">
@@ -629,6 +702,12 @@ function App() {
 
             <main className={`w-full z-10 pt-24 pb-12 transition-all duration-500 ${(currentScreen === 'session' || currentScreen === 'upload') ? 'max-w-[98%]' : 'max-w-4xl'}`}>
                 <AnimatePresence mode="wait">
+                    {currentScreen === 'lecture-index' && (
+                        <motion.div key="lecture-index" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                            <LectureIndex onStartLearning={handleEnterLibrary} />
+                        </motion.div>
+                    )}
+
                     {currentScreen === 'upload' && (
                         <div key="upload-screen-root">
                             <div className="flex flex-col gap-6 w-full px-4 text-center items-center">
@@ -1154,6 +1233,70 @@ function App() {
                                         Close
                                     </button>
                                 </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+            {/* Authentication Modal */}
+            <AnimatePresence>
+                {isAuthModalOpen && (
+                    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsAuthModalOpen(false)}
+                            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-8 space-y-6"
+                        >
+                            <div className="text-center space-y-2">
+                                <div className="w-16 h-16 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <Key className="w-8 h-8 text-blue-400" />
+                                </div>
+                                <h2 className="text-2xl font-bold text-white">Access Locked</h2>
+                                <p className="text-slate-400 text-sm">쉐도잉 학습 라이브러리에 접근하려면 <br />액세스 코드를 입력해 주세요.</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="relative">
+                                    <input
+                                        type="password"
+                                        placeholder="Enter Access Code"
+                                        value={authCode}
+                                        onChange={(e) => setAuthCode(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleCheckAuth()}
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-center text-xl tracking-widest"
+                                        autoFocus
+                                    />
+                                    {authError && (
+                                        <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-rose-500 text-xs font-bold mt-2 text-center">
+                                            {authError}
+                                        </motion.p>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={handleCheckAuth}
+                                    disabled={isCheckingAuth}
+                                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-blue-600/20 flex items-center justify-center gap-2"
+                                >
+                                    {isCheckingAuth ? (
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    ) : (
+                                        <>Unlock Library <ArrowRight className="w-4 h-4" /></>
+                                    )}
+                                </button>
+                                <button
+                                    onClick={() => setIsAuthModalOpen(false)}
+                                    className="w-full py-2 text-slate-500 hover:text-slate-400 text-sm font-medium transition-colors"
+                                >
+                                    Cancel
+                                </button>
                             </div>
                         </motion.div>
                     </div>

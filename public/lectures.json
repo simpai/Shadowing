@@ -1,0 +1,42 @@
+[
+    {
+        "id": "lec_01",
+        "title": "마인크래프트 생존 영어 - 기초편",
+        "topic": "Minecraft",
+        "difficulty": "Easy",
+        "platform": "YouTube",
+        "url": "https://youtube.com/example1",
+        "thumbnail": "https://img.youtube.com/vi/example1/hqdefault.jpg",
+        "date": "2026-02-01"
+    },
+    {
+        "id": "lec_02",
+        "title": "피크민과 함께하는 일상 영어",
+        "topic": "Pikmin",
+        "difficulty": "Easy",
+        "platform": "Twitter",
+        "url": "https://twitter.com/example2",
+        "thumbnail": "",
+        "date": "2026-02-02"
+    },
+    {
+        "id": "lec_03",
+        "title": "경제 용어 마스터하기: 인플레이션",
+        "topic": "Economy",
+        "difficulty": "Medium",
+        "platform": "YouTube",
+        "url": "https://youtube.com/example3",
+        "thumbnail": "https://img.youtube.com/vi/example3/hqdefault.jpg",
+        "date": "2026-02-03"
+    },
+    {
+        "id": "lec_04",
+        "title": "투자 기초: 주식 vs 채권",
+        "topic": "Investment",
+        "difficulty": "Hard",
+        "platform": "YouTube",
+        "url": "https://youtube.com/example4",
+        "thumbnail": "https://img.youtube.com/vi/example4/hqdefault.jpg",
+        "date": "2026-02-04"
+    }
+]

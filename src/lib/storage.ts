@@ -228,6 +228,18 @@ class StorageService {
         const presets = this.getSessionPresets(true).filter(p => p.id !== id);
         localStorage.setItem('shadow_session_presets', JSON.stringify(presets));
     }
+
+    setAuthToken(token: string) {
+        localStorage.setItem('shadow_quest_auth', token);
+    }
+
+    getAuthToken(): string | null {
+        return localStorage.getItem('shadow_quest_auth');
+    }
+
+    clearAuthToken() {
+        localStorage.removeItem('shadow_quest_auth');
+    }
 }
 
 export const storage = new StorageService();
