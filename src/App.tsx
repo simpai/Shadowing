@@ -631,13 +631,13 @@ function App() {
                         <nav className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-2xl border border-slate-800">
                             <button
                                 onClick={() => setCurrentScreen('lecture-index')}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen === 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                                className="px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800"
                             >
                                 Lectures
                             </button>
                             <button
                                 onClick={handleEnterLibrary}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${currentScreen !== 'lecture-index' ? 'text-blue-400 bg-blue-400/10' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                                className="px-4 py-2 rounded-xl text-xs font-bold transition-all text-blue-400 bg-blue-400/10"
                             >
                                 Shadowing
                             </button>
